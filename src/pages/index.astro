@@ -597,7 +597,7 @@ const strip = [
     display: grid;
     gap: 1.5rem;
     justify-items: start;
-    max-width: 50rem;
+    max-width: 54rem;
   }
 
   .hero__content h1 {
@@ -687,9 +687,10 @@ const strip = [
 
   .hero__card-title {
     font-family: var(--font-display);
-    font-size: 2.6rem;
+    font-size: 2.3rem;
     line-height: 1.05;
-    font-weight: 520;
+    font-weight: 700;
+    letter-spacing: -0.04em;
   }
 
   .hero__card-text {
@@ -761,10 +762,11 @@ const strip = [
   .facts dd {
     font-family: var(--font-display);
     font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.75rem);
-    font-weight: 500;
+    font-weight: 650;
     line-height: 1;
     color: var(--white);
     font-variant-numeric: tabular-nums;
+    letter-spacing: -0.035em;
   }
 
   /* Why ----------------------------------------------------------------------- */
@@ -818,9 +820,11 @@ const strip = [
 
   .why__badge-num {
     font-family: var(--font-display);
-    font-size: 2.3rem;
+    font-size: 2.1rem;
     line-height: 1;
     color: var(--gold-400);
+    font-weight: 700;
+    letter-spacing: -0.04em;
   }
 
   .why__badge-text {
@@ -943,9 +947,11 @@ const strip = [
 
   .results__pct {
     font-family: var(--font-display);
-    font-size: 1.35rem;
+    font-size: 1.15rem;
     color: var(--gold-300);
     font-variant-numeric: tabular-nums;
+    font-weight: 650;
+    letter-spacing: -0.02em;
   }
 
   .results__count {
@@ -979,6 +985,8 @@ const strip = [
     line-height: 1;
     color: var(--white);
     font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.045em;
   }
 
   .results__stats dt {
@@ -1018,7 +1026,7 @@ const strip = [
   }
 
   .honour__title {
-    font-size: 1.6rem;
+    font-size: 1.35rem;
     color: var(--white);
   }
 
@@ -1065,19 +1073,21 @@ const strip = [
 
   .honour__list li.is-first .honour__name {
     font-family: var(--font-display);
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     color: var(--white);
+    font-weight: 650;
+    letter-spacing: -0.015em;
   }
 
   .honour__list li.is-first .honour__score {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: 700;
   }
 
   .honour__foot {
     margin-top: 1.25rem;
     font-size: 0.88rem;
-    font-style: italic;
     color: rgb(255 255 255 / 0.6);
   }
 
@@ -1143,8 +1153,8 @@ const strip = [
     top: 1.25rem;
     left: 1.4rem;
     font-family: var(--font-display);
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 650;
     padding: 0.25rem 0.7rem;
     border-radius: 999px;
     background: rgb(6 17 42 / 0.45);
@@ -1166,7 +1176,7 @@ const strip = [
   }
 
   .stage-card__title {
-    font-size: 1.85rem;
+    font-size: 1.55rem;
     color: var(--white);
   }
 
@@ -1273,12 +1283,15 @@ const strip = [
 
   .bento__title {
     font-family: var(--font-display);
-    font-size: 1.45rem;
+    font-size: 1.2rem;
     line-height: 1.15;
+    font-weight: 650;
+    letter-spacing: -0.02em;
   }
 
   .bento__item--wide .bento__title {
-    font-size: clamp(1.7rem, 1.2rem + 1.6vw, 2.6rem);
+    font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.2rem);
+    letter-spacing: -0.03em;
   }
 
   .bento__text {
@@ -1308,9 +1321,11 @@ const strip = [
 
   .bento__rooms-title {
     font-family: var(--font-display);
-    font-size: 1.45rem;
+    font-size: 1.2rem;
     line-height: 1.2;
     color: var(--white);
+    font-weight: 650;
+    letter-spacing: -0.02em;
   }
 
   .bento__rooms-text {
@@ -1370,16 +1385,14 @@ const strip = [
   }
 
   .leader-card__name {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     line-height: 1.2;
   }
 
   .leader-card__quote {
     flex: 1;
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.02rem;
-    line-height: 1.55;
+    font-size: 0.97rem;
+    line-height: 1.6;
     color: var(--ink-2);
   }
 
@@ -1460,8 +1473,9 @@ const strip = [
     font-family: var(--font-display);
     font-size: 3.2rem;
     line-height: 1;
-    font-weight: 600;
+    font-weight: 800;
     color: var(--white);
+    letter-spacing: -0.04em;
   }
 
   .house__name {
@@ -1574,8 +1588,9 @@ const strip = [
 
   .event__day {
     font-family: var(--font-display);
-    font-size: 1.8rem;
-    font-weight: 560;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
   }
 
   .event__month {
@@ -1597,7 +1612,7 @@ const strip = [
 
   .event__title {
     margin-top: 0.2rem;
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     line-height: 1.25;
   }
 
@@ -1647,7 +1662,7 @@ const strip = [
     background: var(--white);
     border: 1.5px solid var(--line-2);
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 700;
     color: var(--red-600);
   }
 </style>

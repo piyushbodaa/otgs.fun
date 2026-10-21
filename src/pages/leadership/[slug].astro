@@ -157,9 +157,11 @@ const person = {
   .message__name {
     margin-top: 0.35rem;
     font-family: var(--font-display);
-    font-size: 1.6rem;
+    font-size: 1.35rem;
     line-height: 1.2;
     color: var(--ink);
+    font-weight: 650;
+    letter-spacing: -0.02em;
   }
 
   .message__honour {
@@ -182,27 +184,18 @@ const person = {
   }
 
   .message__headline {
-    font-size: clamp(1.9rem, 1.2rem + 2.4vw, 3.1rem);
-    line-height: 1.15;
-    font-weight: 480;
-    font-style: italic;
+    font-size: clamp(1.7rem, 1.1rem + 1.9vw, 2.55rem);
+    line-height: 1.2;
+    font-weight: 650;
+    letter-spacing: -0.03em;
   }
 
   .message__prose {
-    font-size: 1.1rem;
+    font-size: 1.06rem;
     line-height: 1.8;
     max-width: 66ch;
   }
 
-  .message__prose p:first-child::first-letter {
-    float: left;
-    margin: 0.35rem 0.6rem 0 0;
-    font-family: var(--font-display);
-    font-size: 4.2rem;
-    line-height: 0.8;
-    font-weight: 600;
-    color: var(--red-600);
-  }
 
   .message__sign {
     display: flex;
@@ -223,8 +216,9 @@ const person = {
 
   .message__sign-name {
     font-family: var(--font-display);
-    font-size: 1.35rem;
+    font-size: 1.15rem;
     color: var(--ink);
+    font-weight: 650;
   }
 
   .message__sign-role {

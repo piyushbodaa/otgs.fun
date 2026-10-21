@@ -249,9 +249,9 @@ const philosophy = [
   .story__num {
     font-family: var(--font-display);
     font-size: clamp(6rem, 4rem + 9vw, 11rem);
-    font-weight: 500;
+    font-weight: 700;
     line-height: 0.9;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.055em;
     color: var(--navy-900);
     margin-top: 0.75rem;
     background: linear-gradient(180deg, var(--navy-800), var(--navy-600));
@@ -273,10 +273,10 @@ const philosophy = [
     border-radius: 0 var(--radius) var(--radius) 0;
     background: var(--white);
     font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.25rem;
-    line-height: 1.5;
+    font-size: 1.15rem;
+    line-height: 1.55;
     color: var(--ink);
+    font-weight: 500;
   }
 
   .motto {
@@ -315,6 +315,8 @@ const philosophy = [
     font-size: clamp(2.2rem, 1.4rem + 3.5vw, 4.25rem);
     line-height: 1;
     color: var(--white);
+    font-weight: 700;
+    letter-spacing: -0.035em;
   }
 
   .motto__dot {
@@ -339,14 +341,12 @@ const philosophy = [
   }
 
   .vision-statement__text {
-    font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.3rem);
-    line-height: 1.15;
-    font-weight: 480;
+    font-size: clamp(1.65rem, 1.05rem + 2vw, 2.6rem);
+    line-height: 1.22;
+    font-weight: 600;
+    letter-spacing: -0.03em;
   }
 
-  .vision-statement__text em {
-    color: var(--red-600);
-  }
 
   .vm {
     display: grid;
@@ -424,10 +424,12 @@ const philosophy = [
 
   .value__name {
     font-family: var(--font-display);
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     line-height: 1.1;
     color: var(--ink);
     transition: color 0.3s var(--ease);
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
 
   .philosophy__grid {
