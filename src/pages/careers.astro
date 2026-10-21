@@ -1,0 +1,200 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import Icon from '@/components/Icon.astro';
+import { site } from '@/data/site';
+import hero from '@/assets/photos/faculty.jpg';
+
+const crumbs = [{ label: 'Careers', href: '/careers' }];
+
+const qualities = [
+  { icon: 'message', label: 'Great communicator' },
+  { icon: 'list-checks', label: 'Competent organiser' },
+  { icon: 'graduation', label: 'A degree in education' },
+  { icon: 'heart', label: 'Exemplary dedication' },
+  { icon: 'star', label: 'Positive attitude & leadership' },
+  { icon: 'book', label: 'Expertise in your subject' },
+  { icon: 'sparkles', label: 'Willingness to keep learning' },
+  { icon: 'rocket', label: 'Fascinated by modern trends' },
+  { icon: 'shield', label: 'Accountable for outcomes' },
+  { icon: 'monitor', label: 'Computer experience' },
+];
+
+const mailto = `mailto:${site.email}?subject=${encodeURIComponent('Teaching application: [Your subject]')}&body=${encodeURIComponent('Dear OTGS team,\n\nPlease find my CV attached for the role of …\n\nRegards,\n')}`;
+---
+
+<BaseLayout
+  title="Careers"
+  description="Teach at Oxford The Global School, Nanded. We recruit qualified, trained and passionate educators through a transparent, direct recruitment process."
+  image={hero}
+  header="overlay"
+  crumbs={crumbs}
+>
+  <PageHero
+    image={hero}
+    alt="The OTGS faculty gathered for a group photograph"
+    eyebrow="Careers at OTGS"
+    title="Give wings <em>to your talent</em>"
+    intro="Join a close-knit community of passionate educators who inspire, empower and prepare students for a future filled with purpose."
+    crumbs={crumbs}
+    position="50% 40%"
+  >
+    <a href={mailto} class="btn btn--gold">Send your CV <Icon name="arrow-right" class="arrow" /></a>
+  </PageHero>
+
+  <section class="section" aria-labelledby="hiring-title">
+    <div class="container hiring">
+      <div class="stack" style="--stack: 1.3rem" data-reveal>
+        <p class="eyebrow">How we hire</p>
+        <h2 class="t-h2" id="hiring-title">A transparent, <em>direct</em> recruitment process</h2>
+        <div class="prose">
+          <p class="lead">
+            We primarily recruit directly, ensuring transparency and fairness in all our hiring. We may engage reliable external partners only
+            if suitable candidates are not identified through direct applications.
+          </p>
+          <p>
+            If you are provisionally selected, further interaction takes place with the Principal, the Academic Head or the relevant subject
+            heads. Final confirmation, or regret, is always communicated through an official email or phone call from the school.
+          </p>
+        </div>
+        <p class="notice">
+          <Icon name="shield" size={20} />
+          <span>All communication about your application comes directly from the school’s official representatives.</span>
+        </p>
+      </div>
+
+      <div class="criteria" data-reveal="fade">
+        <h3 class="t-h4">Who we’re looking for</h3>
+        <ul class="checklist" role="list">
+          <li>Candidates qualified and trained in the relevant subject, meeting the standards of the school’s academic framework.</li>
+          <li>Prior teaching experience is an added advantage, though passionate and capable fresh applicants are welcome too.</li>
+          <li>Enthusiastic learners with fluent language skills, clear diction, and strong interpersonal and classroom-management abilities.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="qualities-title">
+    <div class="container">
+      <SectionHead eyebrow="The OTGS educator" title="Ten qualities <em>we value</em>" align="center" id="qualities-title" />
+      <ul class="qualities" role="list">
+        {
+          qualities.map((q, i) => (
+            <li data-reveal style={`--d: ${(i % 5) * 70}`}>
+              <span class="icon-badge">
+                <Icon name={q.icon} />
+              </span>
+              <span>{q.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="apply-title">
+    <div class="container">
+      <div class="apply on-dark" data-reveal>
+        <div>
+          <p class="eyebrow">Apply</p>
+          <h2 class="t-h3" id="apply-title">Candidates who meet these criteria may forward their CVs to</h2>
+          <a href={mailto} class="apply__email">{site.email}</a>
+        </div>
+        <a href={mailto} class="btn btn--gold">Email your CV <Icon name="mail" /></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hiring {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 1024px) {
+    .hiring {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: start;
+    }
+  }
+
+  .notice {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius);
+    background: var(--gold-100);
+    color: #6d5010;
+    font-size: 0.95rem;
+    font-weight: 560;
+  }
+
+  .notice :global(svg) {
+    flex: none;
+    margin-top: 0.1rem;
+  }
+
+  .criteria {
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    border-radius: var(--radius-xl);
+    background: var(--white);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+
+  .qualities {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+  }
+
+  .qualities li {
+    display: grid;
+    justify-items: center;
+    gap: 0.9rem;
+    padding: 1.75rem 1rem;
+    border-radius: var(--radius-lg);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    text-align: center;
+    font-weight: 650;
+    color: var(--ink);
+  }
+
+  .apply {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(30rem 18rem at 100% 0%, rgb(226 174 56 / 0.25), transparent 70%),
+      var(--navy-900);
+  }
+
+  @media (min-width: 900px) {
+    .apply {
+      grid-template-columns: 1fr auto;
+    }
+  }
+
+  .apply h2 {
+    margin-top: 0.75rem;
+    max-width: 32ch;
+  }
+
+  .apply__email {
+    display: inline-block;
+    margin-top: 0.9rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.4rem);
+    color: var(--gold-300);
+    text-decoration-thickness: 1px;
+    overflow-wrap: anywhere;
+  }
+</style>

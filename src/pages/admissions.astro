@@ -1,0 +1,448 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import EnquiryForm from '@/components/EnquiryForm.astro';
+import Faq from '@/components/Faq.astro';
+import Icon from '@/components/Icon.astro';
+import { site } from '@/data/site';
+import { steps, documents, placement, faqs } from '@/data/admissions';
+import { disclosures } from '@/data/disclosures';
+import hero from '@/assets/photos/graduates.jpg';
+
+const crumbs = [{ label: 'Admissions', href: '/admissions' }];
+const fee = disclosures.find((d) => d.no === 9)!;
+const calendar = disclosures.find((d) => d.no === 10)!;
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<BaseLayout
+  title={`Admissions ${site.admissionsYear}`}
+  description={`Admissions for ${site.admissionsYear} are open at Oxford The Global School, Nanded, from Pre-Primary to Grade 10. Process, documents, placement interaction and FAQs.`}
+  image={hero}
+  header="overlay"
+  crumbs={crumbs}
+  jsonLd={faqSchema}
+>
+  <PageHero
+    image={hero}
+    alt="Pre-primary graduates throwing their caps in the air"
+    eyebrow={`Admissions ${site.admissionsYear}`}
+    title="Application to confirmation, <em>simplified</em>"
+    intro="Selecting the right CBSE school is a big decision. We welcome your questions about our philosophy, our teaching and student life."
+    crumbs={crumbs}
+    position="50% 30%"
+  >
+    <div class="cluster hero-actions">
+      <a href="#enquire" class="btn btn--primary">Start your enquiry <Icon name="arrow-right" class="arrow" /></a>
+      <a href={`https://wa.me/${site.whatsapp}`} class="btn btn--outline-light" target="_blank" rel="noopener"><Icon name="whatsapp" /> WhatsApp us</a>
+    </div>
+  </PageHero>
+
+  <section class="open-band on-dark" aria-label="Admissions status">
+    <div class="container open-band__inner">
+      <p>
+        <span class="open-band__dot" aria-hidden="true"></span>
+        <span>Admissions for <strong>{site.admissionsYear}</strong> are open from <strong>Pre-Primary to Grade 10</strong>.</span>
+      </p>
+      <a href="#enquire" class="link-arrow">Enquire now <Icon name="arrow-right" /></a>
+    </div>
+  </section>
+
+  <!-- Process --------------------------------------------------------------->
+  <section class="section" aria-labelledby="process-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Admission process"
+        title="Four simple steps <em>to joining OTGS</em>"
+        lead="The best way to understand what sets us apart is to connect with our admissions team and see the school for yourself."
+        align="split"
+        id="process-title"
+      />
+      <ol class="process" role="list">
+        {
+          steps.map((s, i) => (
+            <li class="process__step" data-reveal style={`--d: ${i * 110}`}>
+              <span class="process__num">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="t-h4">{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Documents & placement --------------------------------------------->
+  <section class="section section--white" aria-label="Documents and placement">
+    <div class="container docs">
+      <div id="documents" class="docs__card" data-reveal>
+        <span class="icon-badge"><Icon name="clipboard" /></span>
+        <h2 class="t-h3">Required documents</h2>
+        <p class="muted">To complete the admission process, please provide:</p>
+        <ul class="checklist" role="list">
+          {documents.map((d) => <li>{d}</li>)}
+        </ul>
+        <p class="docs__note">
+          <Icon name="eye" size={18} />
+          All documents must be submitted in original for verification, along with photocopies.
+        </p>
+      </div>
+
+      <div id="placement" class="placement" data-reveal style="--d: 120">
+        <h2 class="t-h3">Placement interaction</h2>
+        <p class="muted">
+          Portions for the entry-level assessment, when admission is for the beginning of the academic year. No prior preparation is
+          required.
+        </p>
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Placement interaction portions by grade">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Grade</th>
+                <th scope="col">What to expect</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                placement.map((p) => (
+                  <tr>
+                    <th scope="row">{p.grade}</th>
+                    <td>{p.portion}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources ------------------------------------------------------------>
+  <section class="section section--tight" aria-labelledby="resources-title">
+    <div class="container">
+      <h2 class="t-h3 resources-title" id="resources-title">Helpful documents</h2>
+      <ul class="resources" role="list">
+        <li>
+          <a href={fee.url} target="_blank" rel="noopener" class="resource">
+            <Icon name="file" size={26} />
+            <span><strong>Fee structure, Grades I–X</strong><span>2025–26 · PDF</span></span>
+            <Icon name="arrow-up-right" size={20} />
+          </a>
+        </li>
+        <li>
+          <a href={calendar.url} target="_blank" rel="noopener" class="resource">
+            <Icon name="calendar" size={26} />
+            <span><strong>Academic calendar</strong><span>2026–27 · PDF</span></span>
+            <Icon name="arrow-up-right" size={20} />
+          </a>
+        </li>
+        <li>
+          <a href="/mandatory-disclosure" class="resource">
+            <Icon name="shield" size={26} />
+            <span><strong>Mandatory public disclosure</strong><span>CBSE documents</span></span>
+            <Icon name="arrow-right" size={20} />
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQs + enquiry -------------------------------------------------------->
+  <section class="section section--paper-2" id="enquire" aria-labelledby="faq-title">
+    <div class="container enquire">
+      <div>
+        <SectionHead eyebrow="Questions parents ask" title="Frequently asked <em>questions</em>" id="faq-title" />
+        <Faq items={faqs} />
+      </div>
+      <div class="enquire__form" data-reveal="fade">
+        <EnquiryForm id="admissions-enquiry" />
+        <div class="enquire__contact">
+          <p>Prefer to talk to someone?</p>
+          <div class="cluster">
+            {
+              site.phones.map((p) => (
+                <a href={p.href} class="chip">
+                  <Icon name="phone" /> {p.label}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-actions {
+    margin-top: 0.75rem;
+  }
+
+  .open-band {
+    background: var(--red-600);
+    color: var(--white);
+  }
+
+  .open-band__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    padding-block: 1.1rem;
+  }
+
+  .open-band p {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+  }
+
+  .open-band__dot {
+    width: 10px;
+    height: 10px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--gold-300);
+    box-shadow: 0 0 0 4px rgb(255 255 255 / 0.2);
+  }
+
+  .open-band .link-arrow {
+    color: var(--white);
+  }
+
+  .process {
+    display: grid;
+    gap: 1.25rem;
+    counter-reset: step;
+  }
+
+  @media (min-width: 720px) {
+    .process {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .process {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .process__step {
+    position: relative;
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding: 2rem 1.75rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+
+  .process__num {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    line-height: 1;
+    font-weight: 500;
+    color: var(--gold-700);
+  }
+
+  @media (min-width: 1080px) {
+    .process__step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 3.3rem;
+      right: -1.25rem;
+      width: 1.25rem;
+      height: 2px;
+      background: var(--line-2);
+    }
+  }
+
+  .docs {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .docs {
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: start;
+    }
+  }
+
+  .docs__card {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    border-radius: var(--radius-xl);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
+  }
+
+  .docs__card .checklist {
+    margin-block: 0.5rem;
+  }
+
+  .docs__note {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    padding: 1rem 1.1rem;
+    border-radius: 12px;
+    background: var(--gold-100);
+    color: #6d5010;
+    font-size: 0.93rem;
+    font-weight: 560;
+  }
+
+  .docs__note :global(svg) {
+    flex: none;
+    margin-top: 0.15rem;
+  }
+
+  .placement {
+    display: grid;
+    gap: 1rem;
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+    margin-top: 0.5rem;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background: var(--white);
+  }
+
+  .table th,
+  .table td {
+    padding: 0.9rem 1.15rem;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .table thead th {
+    background: var(--navy-900);
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .table tbody th {
+    white-space: nowrap;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .table tbody tr:nth-child(even) {
+    background: var(--paper);
+  }
+
+  .table tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+
+  .resources-title {
+    margin-bottom: 1.5rem;
+  }
+
+  .resources {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 900px) {
+    .resources {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .resource {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.35rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+    text-decoration: none;
+    transition:
+      box-shadow 0.3s var(--ease),
+      transform 0.3s var(--ease);
+  }
+
+  .resource:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  .resource > :global(svg:first-child) {
+    color: var(--red-600);
+  }
+
+  .resource > span {
+    display: grid;
+  }
+
+  .resource strong {
+    color: var(--ink);
+  }
+
+  .resource span span {
+    font-size: 0.85rem;
+    color: var(--ink-3);
+  }
+
+  .enquire {
+    display: grid;
+    gap: clamp(3rem, 6vw, 4.5rem);
+    scroll-margin-top: var(--header-h);
+  }
+
+  @media (min-width: 1080px) {
+    .enquire {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .enquire__form {
+      position: sticky;
+      top: calc(var(--header-h) + 1.5rem);
+    }
+  }
+
+  .enquire__contact {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-inline: 0.5rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .enquire__contact .chip {
+    text-decoration: none;
+  }
+</style>

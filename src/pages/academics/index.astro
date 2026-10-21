@@ -1,0 +1,672 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { stages, talkingPoints, structure, exams } from '@/data/academics';
+
+import hero from '@/assets/photos/creativity.jpg';
+import faculty from '@/assets/photos/faculty.jpg';
+import inclusion from '@/assets/photos/inclusion.jpg';
+import handsOn from '@/assets/photos/hands-on.jpg';
+
+const crumbs = [{ label: 'Academics', href: '/academics' }];
+---
+
+<BaseLayout
+  title="Academics: CBSE Curriculum from Pre-Primary to Grade 10"
+  description="The CBSE curriculum at Oxford The Global School, Nanded: Pre-Primary, Primary, Middle and Secondary stages, our teaching approach, faculty, and inclusion & wellbeing."
+  image={hero}
+  header="overlay"
+  crumbs={crumbs}
+>
+  <PageHero
+    image={hero}
+    alt="Students gathered around an anatomy model during a science lesson"
+    eyebrow="Academics"
+    title="Curious minds, <em>confident learners</em>"
+    intro="The CBSE curriculum, taught for understanding rather than by rote, by teachers who know every learner’s strengths, interests and challenges."
+    crumbs={crumbs}
+    position="50% 35%"
+  >
+    <nav class="jump" aria-label="On this page">
+      <a href="#stages">Stages</a>
+      <a href="#approach">Our approach</a>
+      <a href="#faculty">Faculty</a>
+      <a href="#inclusion">Inclusion</a>
+      <a href="/academics/prep-zone">Prep Zone</a>
+    </nav>
+  </PageHero>
+
+  <!-- Overview ------------------------------------------------------------>
+  <section class="section" aria-labelledby="overview-title">
+    <div class="container overview">
+      <div class="stack" style="--stack: 1.3rem" data-reveal>
+        <p class="eyebrow">Overview</p>
+        <h2 class="t-h2" id="overview-title">Nurturing students to become <em>confident learners</em></h2>
+        <div class="prose">
+          <p class="lead">
+            OTGS follows the curriculum prescribed by the Central Board of Secondary Education (CBSE), New Delhi: structured, comprehensive
+            and future-focused, designed to help students grow intellectually, emotionally and socially.
+          </p>
+          <p>
+            Meaningful learning begins with dedicated educators. Our qualified, experienced and passionate teachers stay at the forefront of
+            teaching practice through regular in-house professional development, and use student-centred, interactive methods that promote
+            curiosity, collaboration and real-world application.
+          </p>
+          <p>
+            Beyond academic rigour, we develop essential life skills and digital literacy. Students use technology meaningfully for
+            research, analysis and creative expression. And because play is a powerful tool for learning, children in the early years enjoy
+            indoor and outdoor play, while older students take part in structured physical education sessions every week.
+          </p>
+        </div>
+      </div>
+
+      <div class="structure" data-reveal="fade">
+        <h3 class="structure__title" id="structure-title">Our school structure</h3>
+        <dl class="structure__grid">
+          {
+            structure.map((s) => (
+              <div>
+                <dt>{s.label}</dt>
+                <dd>
+                  {s.value}
+                  {s.unit && <span>{s.unit}</span>}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+        <p class="structure__note">
+          Children stay with the same group from KG through UKG, building friendships and a strong classroom community. The move into Grade 1
+          is marked with a convocation ceremony, and in Primary children meet new peer groups to build adaptability and collaboration.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stages ---------------------------------------------------------------->
+  <section class="section section--white" id="stages" aria-labelledby="stages-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Schooling stages"
+        title="Four stages, <em>one continuous journey</em>"
+        lead="OTGS is organised into four distinct phases: Pre-Primary, Primary, Middle School and Secondary."
+        align="split"
+        id="stages-title"
+      />
+
+      <nav class="stage-tabs" aria-label="Stages">
+        {
+          stages.map((s, i) => (
+            <a href={`#${s.id}`}>
+              <span class="stage-tabs__num">0{i + 1}</span> {s.name}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="stage-list">
+        {
+          stages.map((s, i) => (
+            <article class:list={['stage', { 'stage--flip': i % 2 === 1 }]} id={s.id} aria-labelledby={`${s.id}-title`}>
+              <div class="stage__media media" data-reveal="fade">
+                <Image src={s.image} alt={s.alt} widths={[480, 720, 960, 1200]} sizes="(min-width: 960px) 46vw, 92vw" />
+                <span class="stage__badge">{s.grades}</span>
+              </div>
+              <div class="stage__body" data-reveal>
+                <p class="eyebrow">
+                  Stage 0{i + 1} · {s.grades}
+                </p>
+                <h3 class="t-h2" id={`${s.id}-title`}>{s.name}</h3>
+                <p class="stage__tagline">{s.tagline}</p>
+                <div class="prose">
+                  {s.detail.map((d) => (
+                    <p>{d}</p>
+                  ))}
+                </div>
+                <ul class="cluster stage__chips" role="list">
+                  {s.highlights.map((h) => (
+                    <li class="chip">
+                      <Icon name="check" />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach -------------------------------------------------------------->
+  <section class="section" id="approach" aria-labelledby="approach-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Talking points"
+        title="How we teach, and <em>how we stay in step with parents</em>"
+        lead="The highlights that make OTGS one of the most trusted schools in Nanded."
+        align="split"
+        id="approach-title"
+      />
+      <ul class="points" role="list">
+        {
+          talkingPoints.map((t, i) => (
+            <li class="point" data-reveal style={`--d: ${(i % 3) * 90}`}>
+              <span class="icon-badge">
+                <Icon name={t.icon} />
+              </span>
+              <h3 class="t-h4">{t.title}</h3>
+              <p>{t.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="ihw" data-reveal>
+        <div class="media ihw__media">
+          <Image src={handsOn} alt="Two young students absorbed in a hands-on shape activity" widths={[480, 720, 960]} sizes="(min-width: 900px) 40vw, 92vw" />
+        </div>
+        <div class="ihw__body">
+          <p class="eyebrow eyebrow--gold">The “i-Homework” policy</p>
+          <h3 class="t-h3">Learning that stays joyful, and stress-free</h3>
+          <p>
+            For early primary classes, we replace traditional homework with daily learning and reading woven into the school day. Children
+            build comprehension, curiosity and a lifelong love for knowledge, without the evening stress.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Faculty --------------------------------------------------------------->
+  <section class="section section--paper-2" id="faculty" aria-labelledby="faculty-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Faculty"
+        title="Well qualified, highly aspiring, <em>enthusiastic teachers</em>"
+        align="split"
+        id="faculty-title"
+        lead="Our greatest strength is our faculty: a close-knit community of passionate professionals united by a shared mission to inspire, empower and prepare students for a future filled with purpose and possibility."
+      />
+      <figure class="faculty__photo media" data-reveal="fade">
+        <Image src={faculty} alt="The teaching staff of Oxford The Global School assembled for a group photograph" widths={[640, 960, 1280, 1600, 1920]} sizes="(min-width: 1240px) 1240px, 92vw" />
+      </figure>
+      <div class="faculty__cols">
+        <div data-reveal>
+          <h3 class="t-h4">Carefully selected</h3>
+          <p>
+            Every member of our academic team is chosen for their qualifications, experience and passion for teaching, with strong
+            foundations in the CBSE curriculum and a commitment to ongoing professional growth.
+          </p>
+        </div>
+        <div data-reveal style="--d: 100">
+          <h3 class="t-h4">Student-centred</h3>
+          <p>
+            Our teachers take the time to understand each learner. Through differentiated instruction, one-on-one support and engaging
+            classroom strategies, they meet each child where they are, and help them go further than they imagined.
+          </p>
+        </div>
+        <div data-reveal style="--d: 200">
+          <h3 class="t-h4">Always learning</h3>
+          <p>
+            Teachers collaborate, share best practice and continuously upskill. Their goal is not just academic achievement but the
+            holistic development of every student: creativity, critical thinking, empathy and self-confidence.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inclusion ------------------------------------------------------------>
+  <section class="section" id="inclusion" aria-labelledby="inclusion-title">
+    <div class="container inclusion">
+      <div class="stack" style="--stack: 1.3rem" data-reveal>
+        <p class="eyebrow">Inclusion &amp; wellbeing</p>
+        <h2 class="t-h2" id="inclusion-title">Every child is unique, <em>and no child is left behind</em></h2>
+        <div class="prose">
+          <p class="lead">
+            Our approach embraces diversity, welcoming students with varying abilities, backgrounds and learning styles. Whether a child needs
+            extra academic support or is ready for enrichment beyond the curriculum, we tailor our teaching to their needs.
+          </p>
+          <p>
+            It begins at admission, when we take time to understand each child’s strengths and areas of need, and continues through regular
+            observation, open communication with parents and active collaboration among teachers.
+          </p>
+          <p>
+            A child’s emotional, social and behavioural wellbeing matters as much as academics. Teachers act as mentors in a safe, respectful
+            and encouraging space where students feel heard and valued, and parents are our partners in building a consistent support system
+            from school to home.
+          </p>
+        </div>
+      </div>
+      <div class="inclusion__aside" data-reveal="fade">
+        <div class="media inclusion__media">
+          <Image src={inclusion} alt="Students presenting their work in front of a smart screen" widths={[480, 720, 1060]} sizes="(min-width: 960px) 42vw, 92vw" />
+        </div>
+        <blockquote class="inclusion__quote">
+          <p>
+            “At OTGS, inclusion and wellbeing are not additional features. They are woven into the very fabric of our school culture.”
+          </p>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prep zone teaser ------------------------------------------------------>
+  <section class="section section--tight" aria-labelledby="prep-title">
+    <div class="container">
+      <a href="/academics/prep-zone" class="prep-card on-dark" data-reveal>
+        <div class="prep-card__text">
+          <p class="eyebrow">Scholars’ Prep Zone</p>
+          <h2 class="t-h3" id="prep-title">Olympiads, scholarships and competitive exams, with coaching every step of the way</h2>
+          <span class="link-arrow">Explore the Prep Zone <Icon name="arrow-right" /></span>
+        </div>
+        <ul class="prep-card__codes" role="list">
+          {exams.map((e) => <li>{e.code}</li>)}
+        </ul>
+      </a>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .jump a {
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.3);
+    background: rgb(255 255 255 / 0.08);
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    transition: background-color 0.2s var(--ease);
+  }
+
+  .jump a:hover {
+    background: rgb(255 255 255 / 0.2);
+  }
+
+  .overview {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 1024px) {
+    .overview {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      align-items: start;
+    }
+  }
+
+  .structure {
+    padding: clamp(1.6rem, 3vw, 2.25rem);
+    border-radius: var(--radius-xl);
+    background: var(--navy-900);
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  .structure__title {
+    color: var(--white);
+    font-size: 1.5rem;
+  }
+
+  .structure__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin-block: 1.5rem;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.12);
+  }
+
+  .structure__grid > div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    padding: 1.25rem;
+    background: var(--navy-900);
+  }
+
+  .structure__grid dt {
+    font-size: 0.85rem;
+    line-height: 1.35;
+  }
+
+  .structure__grid dd {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .structure__grid dd span {
+    margin-left: 0.35rem;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-400);
+  }
+
+  .structure__note {
+    font-size: 0.93rem;
+    line-height: 1.6;
+  }
+
+  .stage-tabs {
+    position: sticky;
+    top: calc(var(--header-h) + 0.75rem);
+    z-index: 5;
+    display: flex;
+    gap: 0.4rem;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    padding: 0.35rem;
+    border-radius: 999px;
+    background: rgb(250 247 241 / 0.92);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    scrollbar-width: none;
+  }
+
+  .stage-tabs a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    font-size: 0.92rem;
+    font-weight: 620;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--ink-2);
+    transition:
+      background-color 0.2s var(--ease),
+      color 0.2s var(--ease);
+  }
+
+  .stage-tabs a:hover,
+  .stage-tabs a.is-active {
+    background: var(--navy-900);
+    color: var(--white);
+  }
+
+  .stage-tabs__num {
+    font-size: 0.75rem;
+    color: var(--ink-3);
+  }
+
+  .stage-tabs a:hover .stage-tabs__num,
+  .stage-tabs a.is-active .stage-tabs__num {
+    color: rgb(255 255 255 / 0.75);
+  }
+
+  .stage-list {
+    display: grid;
+    gap: clamp(4rem, 9vw, 7rem);
+  }
+
+  .stage {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    scroll-margin-top: calc(var(--header-h) + 5rem);
+  }
+
+  @media (min-width: 960px) {
+    .stage {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 5rem);
+    }
+
+    .stage--flip .stage__media {
+      order: 2;
+    }
+  }
+
+  .stage__media {
+    aspect-ratio: 5 / 4.4;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .stage__badge {
+    position: absolute;
+    left: 1.25rem;
+    bottom: 1.25rem;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.92);
+    color: var(--navy-900);
+    font-weight: 700;
+    font-size: 0.88rem;
+    backdrop-filter: blur(6px);
+  }
+
+  .stage__body {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .stage__tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.35rem;
+    line-height: 1.35;
+    color: var(--red-600);
+  }
+
+  .stage__chips {
+    margin-top: 0.5rem;
+  }
+
+  .points {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  @media (min-width: 640px) {
+    .points {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .points {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .point {
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+    padding: 1.6rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+
+  .point .icon-badge {
+    margin-bottom: 0.35rem;
+  }
+
+  .ihw {
+    display: grid;
+    gap: 0;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: var(--navy-900);
+    color: rgb(255 255 255 / 0.8);
+  }
+
+  @media (min-width: 900px) {
+    .ihw {
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: stretch;
+    }
+  }
+
+  .ihw__media {
+    border-radius: 0;
+    min-height: 16rem;
+  }
+
+  .ihw__media :global(img) {
+    position: absolute;
+    inset: 0;
+  }
+
+  .ihw__body {
+    display: grid;
+    gap: 1rem;
+    align-content: center;
+    padding: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .ihw__body h3 {
+    color: var(--white);
+  }
+
+  .faculty__photo {
+    margin: 0;
+    aspect-ratio: 1920 / 1000;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .faculty__photo :global(img) {
+    object-position: 50% 40%;
+  }
+
+  .faculty__cols {
+    display: grid;
+    gap: 2rem;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  @media (min-width: 900px) {
+    .faculty__cols {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+  }
+
+  .faculty__cols h3 {
+    margin-bottom: 0.6rem;
+  }
+
+  .inclusion {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 960px) {
+    .inclusion {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      align-items: center;
+    }
+  }
+
+  .inclusion__media {
+    aspect-ratio: 16 / 10;
+    box-shadow: var(--shadow);
+  }
+
+  .inclusion__quote {
+    margin-top: 1.5rem;
+    padding: 1.4rem 1.6rem;
+    border-radius: var(--radius-lg);
+    background: var(--gold-100);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .prep-card {
+    display: grid;
+    gap: 2rem;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(30rem 20rem at 100% 0%, rgb(196 30 51 / 0.35), transparent 70%),
+      var(--navy-900);
+    text-decoration: none;
+    transition: transform 0.35s var(--ease);
+  }
+
+  .prep-card:hover {
+    transform: translateY(-4px);
+  }
+
+  @media (min-width: 960px) {
+    .prep-card {
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+    }
+  }
+
+  .prep-card__text {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
+  .prep-card__codes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .prep-card__codes li {
+    padding: 0.45rem 0.85rem;
+    border-radius: 10px;
+    border: 1px solid rgb(255 255 255 / 0.2);
+    background: rgb(255 255 255 / 0.05);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+  }
+</style>
+
+<script>
+  // Highlight the stage tab for the stage currently in view.
+  const tabs = [...document.querySelectorAll<HTMLAnchorElement>('.stage-tabs a')];
+  const targets = tabs.map((a) => document.querySelector<HTMLElement>(a.hash)).filter(Boolean) as HTMLElement[];
+  if ('IntersectionObserver' in window && targets.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          tabs.forEach((a) => a.classList.toggle('is-active', a.hash === `#${e.target.id}`));
+        }
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    targets.forEach((t) => io.observe(t));
+  }
+</script>

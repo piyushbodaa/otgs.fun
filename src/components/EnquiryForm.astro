@@ -1,0 +1,313 @@
+---
+import Icon from './Icon.astro';
+import { site } from '@/data/site';
+
+interface Props {
+  id?: string;
+  title?: string;
+  intro?: string;
+  defaultPurpose?: 'admission' | 'tour';
+  headingLevel?: 'h2' | 'h3';
+}
+
+const {
+  id = 'enquiry',
+  title = `Enquire for ${site.admissionsYear}`,
+  intro = 'Share a few details and our admissions team will get in touch.',
+  defaultPurpose = 'admission',
+  headingLevel = 'h3',
+} = Astro.props;
+const Heading = headingLevel;
+---
+
+<form class="enquiry" data-enquiry-form data-whatsapp={site.whatsapp} data-email={site.email} novalidate aria-labelledby={`${id}-title`}>
+  <div class="enquiry__head">
+    <Heading class="t-h3" id={`${id}-title`}>{title}</Heading>
+    <p class="muted">{intro}</p>
+  </div>
+
+  <fieldset class="enquiry__purpose">
+    <legend class="sr-only">I would like to</legend>
+    <label>
+      <input type="radio" name="purpose" value="admission" checked={defaultPurpose === 'admission'} />
+      <span><Icon name="graduation" size={18} /> Admission enquiry</span>
+    </label>
+    <label>
+      <input type="radio" name="purpose" value="tour" checked={defaultPurpose === 'tour'} />
+      <span><Icon name="calendar" size={18} /> Book a school tour</span>
+    </label>
+  </fieldset>
+
+  <div class="enquiry__grid">
+    <div class="field">
+      <label for={`${id}-name`}>Parent’s name</label>
+      <input class="input" id={`${id}-name`} name="name" autocomplete="name" required minlength="2" aria-describedby={`${id}-name-err`} />
+      <p class="field-error" id={`${id}-name-err`} hidden>Please tell us your name.</p>
+    </div>
+    <div class="field">
+      <label for={`${id}-phone`}>Mobile number</label>
+      <input class="input" id={`${id}-phone`} name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="10-digit mobile" required aria-describedby={`${id}-phone-err`} />
+      <p class="field-error" id={`${id}-phone-err`} hidden>Please enter a valid 10-digit mobile number.</p>
+    </div>
+    <div class="field">
+      <label for={`${id}-grade`}>Grade seeking admission</label>
+      <select class="select" id={`${id}-grade`} name="grade" required aria-describedby={`${id}-grade-err`}>
+        <option value="">Select grade</option>
+        {site.grades.map((g) => <option value={g}>{g}</option>)}
+      </select>
+      <p class="field-error" id={`${id}-grade-err`} hidden>Please choose a grade.</p>
+    </div>
+    <div class="field">
+      <label for={`${id}-branch`}>Preferred branch</label>
+      <select class="select" id={`${id}-branch`} name="branch">
+        {site.branches.map((b) => <option value={b}>{b}</option>)}
+      </select>
+    </div>
+    <div class="field enquiry__full">
+      <label for={`${id}-message`}>Anything you’d like to ask? <span class="muted">(optional)</span></label>
+      <textarea class="textarea" id={`${id}-message`} name="message" rows="3" maxlength="600"></textarea>
+    </div>
+  </div>
+
+  <div class="enquiry__actions">
+    <button type="submit" class="btn btn--whatsapp" data-channel="whatsapp">
+      <Icon name="whatsapp" /> Send via WhatsApp
+    </button>
+    <button type="submit" class="btn btn--outline" data-channel="email">
+      <Icon name="mail" /> Send by email
+    </button>
+  </div>
+
+  <p class="enquiry__note">
+    <Icon name="shield" size={16} />
+    <span>Your details go straight to the school’s admissions desk through WhatsApp or email. This website does not store them.</span>
+  </p>
+
+  <div class="enquiry__done" role="status" aria-live="polite" hidden>
+    <Icon name="check" size={20} />
+    <p>
+      <strong>Almost done!</strong> Your message is ready in <span data-done-channel>WhatsApp</span>. Just press send.
+      Prefer to talk? Call <a href={site.phones[0].href}>{site.phones[0].label}</a>.
+    </p>
+  </div>
+</form>
+
+<style>
+  .enquiry {
+    display: grid;
+    gap: 1.4rem;
+    padding: clamp(1.5rem, 3.5vw, 2.5rem);
+    border-radius: var(--radius-xl);
+    background: var(--white);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    color: var(--ink-2);
+  }
+
+  .enquiry__head {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .enquiry__purpose {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+    padding: 0.35rem;
+    border: 0;
+    border-radius: 14px;
+    background: var(--paper-2);
+  }
+
+  .enquiry__purpose label {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .enquiry__purpose input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+  }
+
+  .enquiry__purpose span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.9rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    font-weight: 620;
+    text-align: center;
+    color: var(--ink-3);
+    transition:
+      background-color 0.2s var(--ease),
+      color 0.2s var(--ease),
+      box-shadow 0.2s var(--ease);
+  }
+
+  .enquiry__purpose input:checked + span {
+    background: var(--white);
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .enquiry__purpose input:checked + span :global(svg) {
+    color: var(--red-600);
+  }
+
+  @media (max-width: 420px) {
+    .enquiry__purpose span :global(svg) {
+      display: none;
+    }
+  }
+
+  .enquiry__purpose input:focus-visible + span {
+    outline: 3px solid var(--gold-400);
+    outline-offset: 2px;
+  }
+
+  .enquiry__grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 560px) {
+    .enquiry__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .enquiry__full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .enquiry__actions {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 560px) {
+    .enquiry__actions {
+      grid-template-columns: 1.3fr 1fr;
+    }
+  }
+
+  .enquiry__note {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .enquiry__note :global(svg) {
+    flex: none;
+    margin-top: 0.15rem;
+    color: #0f7f3d;
+  }
+
+  .enquiry__done {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 1rem 1.1rem;
+    border-radius: 14px;
+    background: #e9f7ef;
+    color: #14532d;
+    font-size: 0.95rem;
+  }
+
+  .enquiry__done[hidden] {
+    display: none;
+  }
+
+  .enquiry__done :global(svg) {
+    flex: none;
+    margin-top: 0.1rem;
+  }
+</style>
+
+<script>
+  type Fields = { purpose: string; name: string; phone: string; grade: string; branch: string; message: string };
+
+  const compose = (f: Fields) => {
+    const lines = [
+      f.purpose === 'tour' ? 'Hello OTGS! I would like to book a school tour.' : 'Hello OTGS! I would like to enquire about admission.',
+      '',
+      `Parent’s name: ${f.name}`,
+      `Mobile: ${f.phone}`,
+      `Grade: ${f.grade}`,
+      `Branch: ${f.branch}`,
+    ];
+    if (f.message) lines.push('', f.message);
+    return lines.join('\n');
+  };
+
+  document.querySelectorAll<HTMLFormElement>('[data-enquiry-form]').forEach((form) => {
+    const done = form.querySelector<HTMLElement>('.enquiry__done');
+    const doneChannel = form.querySelector<HTMLElement>('[data-done-channel]');
+
+    const setError = (el: HTMLInputElement | HTMLSelectElement, bad: boolean) => {
+      el.setAttribute('aria-invalid', String(bad));
+      const err = document.getElementById(el.getAttribute('aria-describedby') ?? '');
+      if (err) err.hidden = !bad;
+      return bad;
+    };
+
+    form.addEventListener('input', (e) => {
+      const el = e.target as HTMLInputElement;
+      if (el.getAttribute('aria-invalid') === 'true') setError(el, false);
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const submitter = (e as SubmitEvent).submitter as HTMLButtonElement | null;
+      const channel = submitter?.dataset.channel ?? 'whatsapp';
+      const data = new FormData(form);
+      const get = (k: string) => String(data.get(k) ?? '').trim();
+
+      const name = form.elements.namedItem('name') as HTMLInputElement;
+      const phone = form.elements.namedItem('phone') as HTMLInputElement;
+      const grade = form.elements.namedItem('grade') as HTMLSelectElement;
+      const digits = get('phone').replace(/\D/g, '').replace(/^(91|0)(?=\d{10}$)/, '');
+
+      const invalid = [
+        setError(name, get('name').length < 2) && name,
+        setError(phone, !/^[6-9]\d{9}$/.test(digits)) && phone,
+        setError(grade, !get('grade')) && grade,
+      ].filter(Boolean) as HTMLElement[];
+
+      if (invalid.length) {
+        invalid[0].focus();
+        return;
+      }
+
+      const fields: Fields = {
+        purpose: get('purpose'),
+        name: get('name'),
+        phone: digits,
+        grade: get('grade'),
+        branch: get('branch'),
+        message: get('message'),
+      };
+      const text = compose(fields);
+
+      if (channel === 'email') {
+        const subject = fields.purpose === 'tour' ? `School tour request: ${fields.grade}` : `Admission enquiry: ${fields.grade}`;
+        window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
+      } else {
+        window.open(`https://wa.me/${form.dataset.whatsapp}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+      }
+
+      if (done && doneChannel) {
+        doneChannel.textContent = channel === 'email' ? 'your email app' : 'WhatsApp';
+        done.hidden = false;
+      }
+    });
+  });
+</script>

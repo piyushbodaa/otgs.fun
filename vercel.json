@@ -1,0 +1,43 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/_astro/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
+    }
+  ],
+  "redirects": [
+    { "source": "/about-otgs", "destination": "/about", "permanent": true },
+    { "source": "/vision-mission-values", "destination": "/about#vision", "permanent": true },
+    { "source": "/chairmans-message", "destination": "/leadership/chairman", "permanent": true },
+    { "source": "/secretary-message", "destination": "/leadership/secretary", "permanent": true },
+    { "source": "/managingdirector-message", "destination": "/leadership/managing-director", "permanent": true },
+    { "source": "/doo-message", "destination": "/leadership/director-of-operations", "permanent": true },
+    { "source": "/school-curriculum", "destination": "/academics", "permanent": true },
+    { "source": "/school-tour", "destination": "/contact#enquire", "permanent": true },
+    { "source": "/talking-points", "destination": "/academics#approach", "permanent": true },
+    { "source": "/admission-process", "destination": "/admissions", "permanent": true },
+    { "source": "/overview", "destination": "/academics", "permanent": true },
+    { "source": "/pre-primary", "destination": "/academics#pre-primary", "permanent": true },
+    { "source": "/primary-program", "destination": "/academics#primary", "permanent": true },
+    { "source": "/faculty", "destination": "/academics#faculty", "permanent": true },
+    { "source": "/we-love", "destination": "/life#we-love", "permanent": true },
+    { "source": "/prep-zone", "destination": "/academics/prep-zone", "permanent": true },
+    { "source": "/inclusion-wellbeing", "destination": "/academics#inclusion", "permanent": true },
+    { "source": "/activities", "destination": "/life#activities", "permanent": true },
+    { "source": "/school-life", "destination": "/life", "permanent": true },
+    { "source": "/public-disclosure", "destination": "/mandatory-disclosure", "permanent": true },
+    { "source": "/career", "destination": "/careers", "permanent": true },
+    { "source": "/contact-us", "destination": "/contact", "permanent": true }
+  ]
+}

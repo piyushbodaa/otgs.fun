@@ -1,0 +1,660 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { activities, houses, weLove, summerCamp } from '@/data/life';
+import { albums, photosByAlbum } from '@/data/gallery';
+
+import hero from '@/assets/gallery/annual-day/01.jpg';
+import camp1 from '@/assets/photos/summer-camp-1.jpg';
+import camp2 from '@/assets/photos/summer-camp-2.jpg';
+import camp3 from '@/assets/photos/summer-camp-3.jpg';
+import camp4 from '@/assets/photos/summer-camp-4.jpg';
+import kids from '@/assets/gallery/little-learners/03.jpg';
+
+const crumbs = [{ label: 'Life at OTGS', href: '/life' }];
+const covers = albums.map((a) => ({ ...a, cover: photosByAlbum(a.id)[0], count: photosByAlbum(a.id).length }));
+---
+
+<BaseLayout
+  title="Life at OTGS: Activities, Houses & Summer Camp"
+  description="Music, visual arts, dance and theatre, sports, leadership and the Eco Champs. Discover the house system, summer camp and everyday life at Oxford The Global School, Nanded."
+  image={hero}
+  header="overlay"
+  crumbs={crumbs}
+>
+  <PageHero
+    image={hero}
+    alt="Three students performing a classical dance in bright costumes on stage"
+    eyebrow="Life at OTGS"
+    title="OTGS is a <em>happening place</em>"
+    intro="Extra-curricular activities are woven seamlessly alongside academics, nurturing the mental and physical wellbeing of every student."
+    crumbs={crumbs}
+    position="50% 30%"
+  >
+    <nav class="jump" aria-label="On this page">
+      <a href="#activities">Activities</a>
+      <a href="#houses">Houses</a>
+      <a href="#we-love">We love</a>
+      <a href="#summer-camp">Summer camp</a>
+    </nav>
+  </PageHero>
+
+  <!-- Intro ------------------------------------------------------------------>
+  <section class="section" aria-labelledby="day-title">
+    <div class="container day">
+      <div class="stack" style="--stack: 1.3rem" data-reveal>
+        <p class="eyebrow">A day at OTGS</p>
+        <h2 class="t-h2" id="day-title">Every child holds the potential <em>for greatness</em></h2>
+        <div class="prose">
+          <p class="lead">
+            From the moment they arrive each morning, students are welcomed with warm smiles that set a peaceful tone for the day ahead.
+          </p>
+          <p>
+            Each class is guided by a Class Teacher who connects with students during circle time, a space to reflect, interact and build
+            meaningful relationships at the start and close of every day. Age-appropriate activities such as theatre, gardening, design
+            thinking, artificial intelligence, creative arts and community service enrich the curriculum, with room for self-expression,
+            teamwork and skill-building.
+          </p>
+          <p>
+            We see school not just as a place for learning but as a foundation for life. Values-based education and life lessons woven into
+            daily interactions guide students to become thoughtful, responsible and confident individuals.
+          </p>
+        </div>
+      </div>
+      <div class="day__media" data-reveal="fade">
+        <div class="media">
+          <Image src={kids} alt="Pre-primary children dressed in yellow celebrating Yellow Day in their decorated classroom" widths={[480, 720, 960]} sizes="(min-width: 960px) 42vw, 92vw" />
+        </div>
+        <p class="day__quote">“School life at OTGS radiates happiness, purpose and the promise of excellence.”</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activities ------------------------------------------------------------>
+  <section class="section section--white" id="activities" aria-labelledby="activities-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Holistic development"
+        title="Encouraging students <em>to pursue their passion</em>"
+        lead="Our extracurricular programmes are crafted not just to fill timetables, but to ignite interests, uncover hidden talents and build confidence."
+        align="split"
+        id="activities-title"
+      />
+      <ul class="activities rail-mobile" role="list">
+        {
+          activities.map((a, i) => (
+            <li class="activity" data-reveal style={`--d: ${(i % 3) * 90}`}>
+              <div class="activity__media media media--hover">
+                <Image src={a.image} alt={a.alt} widths={[400, 600, 800]} sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw" />
+                <span class="activity__icon">
+                  <Icon name={a.icon} size={22} />
+                </span>
+              </div>
+              <h3 class="t-h4">{a.name}</h3>
+              <ul class="activity__items" role="list">
+                {a.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="philosophy" data-reveal>
+        <p class="philosophy__quote">
+          “Learning doesn’t stop with books. It comes alive through every kick, every brushstroke, every note and every stage performance.”
+        </p>
+        <div class="philosophy__text prose">
+          <p>
+            Every student is unique, and so is their path. Our mentors listen closely, observe carefully and help students explore options,
+            change direction when needed and build discipline without pressure. We believe in growth over perfection, and exploration over
+            limitation.
+          </p>
+          <p>
+            We don’t lock students into one pursuit. Some find their passion in theatre and sport; others enjoy both coding and clay
+            modelling, and we welcome that diversity of interests.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Houses ----------------------------------------------------------------->
+  <section class="section houses-section on-dark" id="houses" aria-labelledby="houses-title">
+    <div class="container">
+      <div class="houses-head" data-reveal>
+        <p class="eyebrow eyebrow--center">House system</p>
+        <h2 class="t-h2" id="houses-title">
+          <span class="acro">
+            {
+              houses.map((h) => (
+                <span style={`--house: ${h.color}`}>{h.letter}</span>
+              ))
+            }
+          </span>
+          <span class="sr-only">: </span>
+          Orchid · Tulip · Gladiolus · Snowdrop
+        </h2>
+        <p class="lead">
+          Every student joins one of four vibrant houses that together spell out the spirit and identity of OTGS itself.
+        </p>
+      </div>
+      <ul class="house-cards" role="list">
+        {
+          houses.map((h, i) => (
+            <li class="house-card" style={`--house: ${h.color}; --d: ${i * 90}`} data-reveal>
+              <span class="house-card__letter" aria-hidden="true">
+                {h.letter}
+              </span>
+              <span class="house-card__name">{h.name}</span>
+              <span class="house-card__label">House</span>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="houses-text" data-reveal>
+        <p>
+          Each house is led by a House Coach and a House Captain, who motivate and guide their members with enthusiasm and leadership.
+          Inter-house events, especially in sports, games and physical challenges, bring healthy competition, teamwork and camaraderie.
+        </p>
+        <p>
+          The goal is simple: to instil sportsmanship, leadership and unity, and give students a vibrant platform to grow, shine and cheer
+          each other on.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- We love ------------------------------------------------------------>
+  <section class="section" id="we-love" aria-labelledby="welove-title">
+    <div class="container">
+      <SectionHead eyebrow="We love" title="The things that <em>make us, us</em>" align="split" id="welove-title" />
+      <ul class="welove rail-mobile" role="list">
+        {
+          weLove.map((w, i) => (
+            <li class="welove__item" data-reveal style={`--d: ${i * 80}`}>
+              <div class="media welove__media">
+                <Image src={w.image} alt={w.alt} widths={[360, 540, 720]} sizes="(min-width: 1080px) 19vw, (min-width: 640px) 46vw, 92vw" />
+              </div>
+              <p class="welove__kicker">We love</p>
+              <h3 class="t-h4">{w.title}</h3>
+              <p class="welove__tag">{w.tagline}</p>
+              <p class="welove__text">{w.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Summer camp ---------------------------------------------------------->
+  <section class="section section--paper-2" id="summer-camp" aria-labelledby="camp-title">
+    <div class="container camp">
+      <div class="camp__text stack" style="--stack: 1.3rem" data-reveal>
+        <p class="eyebrow">Summer camp adventures</p>
+        <h2 class="t-h2" id="camp-title">Unplug. Explore. <em>Grow.</em></h2>
+        <p class="lead">
+          Our summer camps are designed for children aged 3 to 12, with limitless fun and adventure in a safe, nurturing environment.
+        </p>
+        <p>
+          With an ideal mix of fun, thrill, challenge and safety, campers step away from routine, make new friends, overcome fears and try
+          something for the first time, building confidence and a deeper connection with the outdoors.
+        </p>
+        <h3 class="camp__subtitle">Showstopper activities</h3>
+        <ul class="cluster" role="list">
+          {summerCamp.map((s) => <li class="chip">{s}</li>)}
+        </ul>
+      </div>
+      <div class="camp__gallery" data-reveal="fade">
+        <div class="media camp__img camp__img--a">
+          <Image src={camp1} alt="Young campers in chef caps posing with a cardboard train at the summer camp" widths={[360, 540, 720]} sizes="(min-width: 1024px) 22vw, 46vw" />
+        </div>
+        <div class="media camp__img camp__img--b">
+          <Image src={camp2} alt="Children with their teacher and soft toys at a pyjama party" widths={[360, 540, 720]} sizes="(min-width: 1024px) 22vw, 46vw" />
+        </div>
+        <div class="media camp__img camp__img--c">
+          <Image src={camp3} alt="Children lying in a circle with their heads together during a camp game" widths={[360, 540, 720]} sizes="(min-width: 1024px) 22vw, 46vw" />
+        </div>
+        <div class="media camp__img camp__img--d">
+          <Image src={camp4} alt="A young camper resting her chin on her hands and smiling" widths={[360, 540, 720]} sizes="(min-width: 1024px) 22vw, 46vw" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery teaser -------------------------------------------------------->
+  <section class="section section--white" aria-labelledby="albums-title">
+    <div class="container">
+      <SectionHead eyebrow="Gallery" title="Moments <em>from our campus</em>" align="split" id="albums-title">
+        <a href="/gallery" class="link-arrow albums-all">Open the full gallery <Icon name="arrow-right" /></a>
+      </SectionHead>
+      <ul class="albums" role="list">
+        {
+          covers.map((a, i) => (
+            <li data-reveal style={`--d: ${i * 80}`}>
+              <a href={`/gallery#${a.id}`} class="album">
+                <Image src={a.cover.image} alt="" widths={[320, 480, 640]} sizes="(min-width: 1080px) 19vw, (min-width: 640px) 30vw, 46vw" />
+                <span class="album__body">
+                  <span class="album__name">{a.name}</span>
+                  <span class="album__count">{a.count} photos</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .jump a {
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.3);
+    background: rgb(255 255 255 / 0.08);
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+  }
+
+  .jump a:hover {
+    background: rgb(255 255 255 / 0.2);
+  }
+
+  .day {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 960px) {
+    .day {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: center;
+    }
+  }
+
+  .day__media .media {
+    aspect-ratio: 1;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .day__quote {
+    margin-top: 1.25rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.25rem;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+
+  .activities {
+    display: grid;
+    gap: 2.5rem 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .activities {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .activities {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .activity {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+  }
+
+  .activity__media {
+    aspect-ratio: 5 / 4;
+    margin-bottom: 0.6rem;
+  }
+
+  .activity__icon {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: grid;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    border-radius: 14px;
+    background: var(--white);
+    color: var(--red-600);
+    box-shadow: var(--shadow);
+  }
+
+  .activity__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0;
+    color: var(--ink-3);
+    font-size: 0.97rem;
+  }
+
+  .activity__items li:not(:last-child)::after {
+    content: '·';
+    margin-inline: 0.55rem;
+    color: var(--gold-500);
+    font-weight: 700;
+  }
+
+  .philosophy {
+    display: grid;
+    gap: 2rem;
+    margin-top: clamp(3.5rem, 7vw, 5rem);
+    padding-top: clamp(2.5rem, 5vw, 3.5rem);
+    border-top: 1px solid var(--line);
+  }
+
+  @media (min-width: 960px) {
+    .philosophy {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .philosophy__quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.2rem);
+    line-height: 1.3;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .houses-section {
+    background:
+      radial-gradient(40rem 22rem at 15% 10%, rgb(122 62 157 / 0.25), transparent 70%),
+      radial-gradient(40rem 22rem at 85% 90%, rgb(47 127 184 / 0.25), transparent 70%),
+      var(--navy-950);
+  }
+
+  .houses-head {
+    display: grid;
+    justify-items: center;
+    gap: 1.25rem;
+    max-width: 50rem;
+    margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+    text-align: center;
+  }
+
+  .houses-head h2 {
+    display: grid;
+    justify-items: center;
+    gap: 0.75rem;
+  }
+
+  .acro {
+    display: flex;
+    gap: 0.15em;
+    font-size: clamp(4rem, 2.5rem + 6vw, 7.5rem);
+    line-height: 1;
+    font-weight: 600;
+  }
+
+  .acro span {
+    color: color-mix(in srgb, var(--house) 55%, white);
+  }
+
+  .houses-head .lead {
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  .house-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (min-width: 900px) {
+    .house-cards {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .house-card {
+    position: relative;
+    display: grid;
+    gap: 0.25rem;
+    padding: 1.75rem 1.5rem;
+    min-height: 13rem;
+    align-content: end;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--house) 70%, black), color-mix(in srgb, var(--house) 30%, var(--navy-950)));
+    border: 1px solid color-mix(in srgb, var(--house) 60%, transparent);
+  }
+
+  .house-card__letter {
+    position: absolute;
+    top: -1.5rem;
+    right: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 9rem;
+    line-height: 1;
+    font-weight: 600;
+    color: rgb(255 255 255 / 0.14);
+  }
+
+  .house-card__name {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    color: var(--white);
+  }
+
+  .house-card__label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.7);
+  }
+
+  .houses-text {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  @media (min-width: 900px) {
+    .houses-text {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .welove {
+    display: grid;
+    gap: 2rem 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .welove {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .welove {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  .welove__item {
+    display: grid;
+    gap: 0.45rem;
+    align-content: start;
+  }
+
+  .welove__media {
+    aspect-ratio: 4 / 5;
+    margin-bottom: 0.75rem;
+  }
+
+  .welove__kicker {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--red-600);
+  }
+
+  .welove__tag {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  .welove__text {
+    font-size: 0.93rem;
+    line-height: 1.55;
+    color: var(--ink-3);
+  }
+
+  .camp {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 1024px) {
+    .camp {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: center;
+    }
+  }
+
+  .camp__subtitle {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-top: 0.5rem;
+  }
+
+  .camp__gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(6, 4.5rem);
+    gap: 0.9rem;
+  }
+
+  @media (min-width: 640px) {
+    .camp__gallery {
+      grid-template-rows: repeat(6, 6rem);
+    }
+  }
+
+  .camp__img--a {
+    grid-row: 1 / 4;
+  }
+
+  .camp__img--b {
+    grid-row: 1 / 3;
+  }
+
+  .camp__img--c {
+    grid-row: 3 / 7;
+  }
+
+  .camp__img--d {
+    grid-row: 4 / 7;
+  }
+
+  .albums-all {
+    justify-self: end;
+  }
+
+  .albums {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .albums {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .albums {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  .album {
+    position: relative;
+    display: block;
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    color: var(--white);
+    text-decoration: none;
+    isolation: isolate;
+  }
+
+  .album :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    transition: transform 1s var(--ease-out);
+  }
+
+  .album::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, transparent 45%, rgb(6 17 42 / 0.88));
+  }
+
+  .album:hover :global(img) {
+    transform: scale(1.06);
+  }
+
+  .album__body {
+    position: absolute;
+    left: 1.1rem;
+    right: 1.1rem;
+    bottom: 1rem;
+    display: grid;
+  }
+
+  .album__name {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+
+  .album__count {
+    font-size: 0.82rem;
+    color: rgb(255 255 255 / 0.75);
+  }
+</style>

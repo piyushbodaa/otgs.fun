@@ -1,0 +1,603 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { nav, site } from '@/data/site';
+import { cleanPath } from '@/utils/path';
+
+interface Props {
+  variant?: 'overlay' | 'solid';
+}
+
+const { variant = 'solid' } = Astro.props;
+const path = cleanPath(Astro.url.pathname);
+const matches = (href: string) => {
+  const base = href.split('#')[0];
+  return base === '/' ? path === '/' : path === base || path.startsWith(base + '/');
+};
+// Highlight the top-level item for the page, falling back to the section whose menu lists it.
+const activeHref = (nav.find((item) => matches(item.href)) ?? nav.find((item) => item.children?.some((c) => matches(c.href))))?.href;
+const isActive = (href: string) => href === activeHref;
+---
+
+<nav class="topbar" aria-label="Contact and quick links">
+  <div class="container topbar__inner">
+    <p class="topbar__note">
+      <Icon name="badge" size={15} />
+      <span>CBSE Affiliation No. {site.affiliationNo}</span>
+      <span class="topbar__sep" aria-hidden="true"></span>
+      <span>Admissions open for {site.admissionsYear}</span>
+    </p>
+    <ul class="topbar__links" role="list">
+      <li><a href={site.phones[0].href}><Icon name="phone" size={14} />{site.phones[0].label}</a></li>
+      <li><a href={`mailto:${site.email}`}><Icon name="mail" size={14} />{site.email}</a></li>
+      <li><a href="/careers">Careers</a></li>
+      <li><a href="/mandatory-disclosure">Disclosure</a></li>
+      <li class="topbar__social">
+        {
+          site.socials.map((s) => (
+            <a href={s.href} target="_blank" rel="noopener" aria-label={`${site.shortName} on ${s.label}`}>
+              <Icon name={s.icon} size={14} />
+            </a>
+          ))
+        }
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<header class="site-header" data-variant={variant} data-header>
+  <div class="container site-header__inner">
+    <Logo />
+
+    <nav class="nav" aria-label="Primary">
+      <ul class="nav__list" role="list">
+        {
+          nav.map((item) => (
+            <li class:list={['nav__item', { 'has-menu': item.children }]}>
+              <a href={item.href} class="nav__link" aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+                {item.children && <Icon name="chevron-down" size={15} class="nav__chev" />}
+              </a>
+              {item.children && (
+                <div class="nav__menu">
+                  <ul role="list">
+                    {item.children.map((c) => (
+                      <li>
+                        <a href={c.href}>
+                          <span class="nav__menu-title">{c.label}</span>
+                          <span class="nav__menu-desc">{c.description}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a href="/contact#enquire" class="btn btn--primary btn--sm header-cta">
+        Enquire now
+        <Icon name="arrow-right" class="arrow" />
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+        <span class="sr-only">Open menu</span>
+        <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+  <div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-label="Site menu">
+    <nav aria-label="Mobile">
+      <ul class="mobile-menu__list" role="list">
+        {
+          nav.map((item) =>
+            item.children ? (
+              <li>
+                <details class="mobile-menu__group">
+                  <summary>
+                    {item.label}
+                    <Icon name="plus" size={20} class="mobile-menu__plus" />
+                  </summary>
+                  <ul role="list">
+                    {item.children.map((c) => (
+                      <li>
+                        <a href={c.href}>{c.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </li>
+            ) : (
+              <li>
+                <a class="mobile-menu__link" href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            ),
+          )
+        }
+        <li><a class="mobile-menu__link" href="/careers">Careers</a></li>
+      </ul>
+    </nav>
+    <div class="mobile-menu__foot">
+      <a href="/contact#enquire" class="btn btn--primary btn--block">Enquire for {site.admissionsYear} <Icon name="arrow-right" class="arrow" /></a>
+      <div class="mobile-menu__contact">
+        <a href={site.phones[0].href}><Icon name="phone" size={18} />{site.phones[0].label}</a>
+        <a href={`mailto:${site.email}`}><Icon name="mail" size={18} />{site.email}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Utility bar ----------------------------------------------------------- */
+  .topbar {
+    position: relative;
+    z-index: 60;
+    background: var(--navy-950);
+    color: rgb(255 255 255 / 0.72);
+    font-size: 0.8rem;
+    display: none;
+  }
+
+  @media (min-width: 1080px) {
+    .topbar {
+      display: block;
+    }
+  }
+
+  .topbar__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 2.5rem;
+  }
+
+  .topbar__note {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 560;
+    letter-spacing: 0.02em;
+  }
+
+  .topbar__note :global(svg) {
+    color: var(--gold-400);
+  }
+
+  .topbar__sep {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold-400);
+    margin-inline: 0.35rem;
+  }
+
+  .topbar__links {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .topbar__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    transition: color 0.2s var(--ease);
+  }
+
+  .topbar__links a:hover {
+    color: var(--white);
+  }
+
+  .topbar__social {
+    display: flex;
+    gap: 0.9rem;
+    padding-left: 1.3rem;
+    border-left: 1px solid rgb(255 255 255 / 0.16);
+  }
+
+  /* Main header ------------------------------------------------------------ */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-h);
+    color: var(--ink);
+    background: rgb(250 247 241 / 0.86);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid rgb(13 22 38 / 0.07);
+    transition:
+      background-color 0.35s var(--ease),
+      color 0.35s var(--ease),
+      border-color 0.35s var(--ease),
+      box-shadow 0.35s var(--ease);
+  }
+
+  .site-header[data-variant='overlay']:not([data-scrolled]):not([data-open]) {
+    color: var(--white);
+    background: linear-gradient(180deg, rgb(6 17 42 / 0.55), rgb(6 17 42 / 0));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-color: transparent;
+    --logo-fg: var(--white);
+  }
+
+  .site-header[data-scrolled] {
+    box-shadow: 0 10px 30px -18px rgb(13 22 38 / 0.35);
+  }
+
+  .site-header__inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 400px) {
+    .site-header__inner {
+      gap: 0.75rem;
+    }
+  }
+
+  /* Desktop navigation ---------------------------------------------------- */
+  .nav {
+    display: none;
+  }
+
+  @media (min-width: 1080px) {
+    .nav {
+      display: block;
+    }
+  }
+
+  .nav__list {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  .nav__item {
+    position: relative;
+  }
+
+  .nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 580;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s var(--ease);
+  }
+
+  .nav__link:hover,
+  .nav__item:focus-within > .nav__link {
+    background: rgb(13 22 38 / 0.06);
+  }
+
+  .site-header[data-variant='overlay']:not([data-scrolled]) .nav__link:hover,
+  .site-header[data-variant='overlay']:not([data-scrolled]) .nav__item:focus-within > .nav__link {
+    background: rgb(255 255 255 / 0.12);
+  }
+
+  .nav__link[aria-current='page'] {
+    position: relative;
+  }
+
+  .nav__link[aria-current='page']::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0.2rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--red-600);
+    transform: translateX(-50%);
+  }
+
+  .site-header[data-variant='overlay']:not([data-scrolled]) .nav__link[aria-current='page']::after {
+    background: var(--gold-400);
+  }
+
+  .nav__item.has-menu .nav__link[aria-current='page']::after {
+    left: calc(50% - 0.5rem);
+  }
+
+  .nav__link :global(.nav__chev) {
+    opacity: 0.65;
+    transition: transform 0.25s var(--ease);
+  }
+
+  .nav__item:hover :global(.nav__chev),
+  .nav__item:focus-within :global(.nav__chev) {
+    transform: rotate(180deg);
+  }
+
+  .nav__menu {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    left: 50%;
+    width: 22rem;
+    padding: 0.6rem;
+    border-radius: var(--radius);
+    background: var(--white);
+    color: var(--ink);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--line);
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 8px);
+    transition:
+      opacity 0.22s var(--ease),
+      transform 0.22s var(--ease),
+      visibility 0.22s;
+  }
+
+  .nav__menu::before {
+    content: '';
+    position: absolute;
+    inset: -0.8rem 0 auto;
+    height: 0.8rem;
+  }
+
+  .nav__item:hover .nav__menu,
+  .nav__item:focus-within .nav__menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+
+  .nav__menu a {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background-color 0.18s var(--ease);
+  }
+
+  .nav__menu a:hover,
+  .nav__menu a:focus-visible {
+    background: var(--paper);
+  }
+
+  .nav__menu-title {
+    font-weight: 650;
+    font-size: 0.95rem;
+  }
+
+  .nav__menu-desc {
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--ink-3);
+  }
+
+  .header-cta {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .header-cta {
+      display: inline-flex;
+    }
+  }
+
+  /* Menu toggle ------------------------------------------------------------ */
+  .menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    border-color: rgb(127 127 127 / 0.35);
+  }
+
+  @media (min-width: 1080px) {
+    .menu-toggle {
+      display: none;
+    }
+  }
+
+  .menu-toggle__bars {
+    display: grid;
+    gap: 4px;
+    width: 18px;
+  }
+
+  .menu-toggle__bars span {
+    display: block;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition:
+      transform 0.3s var(--ease),
+      opacity 0.2s var(--ease);
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-toggle__bars span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-toggle__bars span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-toggle__bars span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* Mobile menu ------------------------------------------------------------ */
+  .mobile-menu {
+    position: fixed;
+    inset: var(--header-h) 0 0 0;
+    z-index: 45;
+    background: rgb(6 17 42 / 0.35);
+  }
+
+  .mobile-menu[hidden] {
+    display: none;
+  }
+
+  .mobile-menu__panel {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--paper);
+    padding: 1rem var(--gutter) 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    animation: menu-in 0.35s var(--ease-out);
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+  }
+
+  .mobile-menu__list > li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mobile-menu__link,
+  .mobile-menu__group summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.05rem 0.25rem;
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    font-weight: 520;
+    color: var(--ink);
+    text-decoration: none;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .mobile-menu__group summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-menu__group :global(.mobile-menu__plus) {
+    color: var(--red-600);
+    transition: transform 0.25s var(--ease);
+  }
+
+  .mobile-menu__group[open] :global(.mobile-menu__plus) {
+    transform: rotate(45deg);
+  }
+
+  .mobile-menu__group ul {
+    padding: 0 0.25rem 1rem;
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .mobile-menu__group ul a {
+    display: block;
+    padding: 0.55rem 0;
+    color: var(--ink-2);
+    font-weight: 560;
+    text-decoration: none;
+  }
+
+  .mobile-menu__link[aria-current='page'] {
+    color: var(--red-600);
+  }
+
+  .mobile-menu__foot {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .mobile-menu__contact {
+    display: grid;
+    gap: 0.6rem;
+    font-weight: 560;
+  }
+
+  .mobile-menu__contact a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--ink-2);
+  }
+
+  .mobile-menu__contact :global(svg) {
+    color: var(--red-600);
+  }
+
+  :global(html.menu-open) {
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+
+  if (header) {
+    const onScroll = () => header.toggleAttribute('data-scrolled', window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  if (header && toggle && menu) {
+    const label = toggle.querySelector('.sr-only');
+    const background = () => document.querySelectorAll<HTMLElement>('main, footer, .topbar');
+
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      if (label) label.textContent = open ? 'Close menu' : 'Open menu';
+      menu.hidden = !open;
+      header.toggleAttribute('data-open', open);
+      document.documentElement.classList.toggle('menu-open', open);
+      background().forEach((el) => (el.inert = open));
+      if (open) {
+        // Keep the panel below the header even when the utility bar is scrolled into view.
+        const top = Math.max(header.getBoundingClientRect().bottom, 0);
+        menu.style.top = `${top}px`;
+        menu.querySelector<HTMLElement>('a, summary')?.focus();
+      }
+    };
+
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    menu.addEventListener('click', (e) => {
+      if (e.target === menu || (e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    window.matchMedia('(min-width: 1080px)').addEventListener('change', (e) => e.matches && setOpen(false));
+  }
+</script>

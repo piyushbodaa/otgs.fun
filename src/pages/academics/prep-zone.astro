@@ -1,0 +1,192 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { exams, prepSupport } from '@/data/academics';
+import { site } from '@/data/site';
+import hero from '@/assets/photos/big-dreams.jpg';
+
+const crumbs = [
+  { label: 'Academics', href: '/academics' },
+  { label: "Scholars' Prep Zone", href: '/academics/prep-zone' },
+];
+
+const groups = [
+  { type: 'In-school', title: 'In-school assessments', icon: 'school' },
+  { type: 'Olympiad', title: 'National & international Olympiads', icon: 'globe' },
+  { type: 'State', title: 'State-level competitions & scholarships', icon: 'landmark' },
+];
+---
+
+<BaseLayout
+  title="Scholars’ Prep Zone: Olympiads & Competitive Exams"
+  description="How Oxford The Global School prepares students for SAAS, OMAT, NASO, IMO, NSO, ISSO, ICSO, IHO, the Homi Bhabha Balvaidnyanik Competition and Maharashtra Scholarship Exams."
+  image={hero}
+  header="overlay"
+  crumbs={crumbs}
+>
+  <PageHero
+    image={hero}
+    alt="A student proudly holding up her medals"
+    eyebrow="Scholars’ Prep Zone"
+    title="Competitive exams, <em>confidently conquered</em>"
+    intro="Participation in competitive exams builds critical thinking and problem-solving, and prepares students for the academic challenges ahead."
+    crumbs={crumbs}
+    position="50% 12%"
+  />
+
+  <section class="section">
+    <div class="container">
+      {
+        groups.map((g) => (
+          <div class="exam-group">
+            <h2 class="exam-group__title" data-reveal>
+              <span class="icon-badge">
+                <Icon name={g.icon} />
+              </span>
+              {g.title}
+            </h2>
+            <ul class="exams" role="list">
+              {exams
+                .filter((e) => e.type === g.type)
+                .map((e, i) => (
+                  <li class="exam" data-reveal style={`--d: ${i * 80}`}>
+                    <p class="exam__code">{e.code}</p>
+                    <h3 class="exam__name">{e.name}</h3>
+                    <p>{e.text}</p>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section section--paper-2" aria-labelledby="support-title">
+    <div class="container support">
+      <SectionHead
+        eyebrow="Preparation support"
+        title="Coaching, practice <em>and personal mentoring</em>"
+        lead="Oxford The Global School supports students preparing for these competitive exams at every step."
+        id="support-title"
+      />
+      <div class="support__card" data-reveal>
+        <ul class="checklist" role="list">
+          {prepSupport.map((s) => <li>{s}</li>)}
+        </ul>
+        <div class="support__cta">
+          <p>For more information about any of these exams, or to register your child, please contact the Academic Office.</p>
+          <div class="cluster">
+            <a href={site.phones[0].href} class="btn btn--dark"><Icon name="phone" /> {site.phones[0].label}</a>
+            <a href={`mailto:${site.email}?subject=${encodeURIComponent('Competitive exam enquiry')}`} class="btn btn--outline"><Icon name="mail" /> Email the school</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .exam-group + .exam-group {
+    margin-top: clamp(3.5rem, 7vw, 5rem);
+  }
+
+  .exam-group__title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem);
+  }
+
+  .exams {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  @media (min-width: 720px) {
+    .exams {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .exams {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .exam {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--gold-500);
+    transition:
+      transform 0.3s var(--ease),
+      box-shadow 0.3s var(--ease);
+  }
+
+  .exam:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+  }
+
+  .exam__code {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1;
+    font-weight: 600;
+    color: var(--navy-800);
+  }
+
+  .exam__name {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0;
+    color: var(--red-600);
+  }
+
+  .support {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .support {
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: center;
+    }
+
+    .support :global(.section-head) {
+      margin-bottom: 0;
+    }
+  }
+
+  .support__card {
+    display: grid;
+    gap: 2rem;
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+    border-radius: var(--radius-xl);
+    background: var(--white);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+
+  .support__cta {
+    display: grid;
+    gap: 1rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+</style>

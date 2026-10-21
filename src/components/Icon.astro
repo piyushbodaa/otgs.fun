@@ -1,0 +1,185 @@
+---
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Atom,
+  Award,
+  BadgeCheck,
+  Baby,
+  Blocks,
+  BookOpen,
+  Brain,
+  Briefcase,
+  CalendarDays,
+  Calculator,
+  Camera,
+  Check,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ClipboardCheck,
+  Clock,
+  Compass,
+  Download,
+  Drama,
+  ExternalLink,
+  Eye,
+  FileText,
+  FlaskConical,
+  Flower,
+  Globe,
+  GraduationCap,
+  Handshake,
+  Heart,
+  Images,
+  Landmark,
+  Languages,
+  Leaf,
+  Lightbulb,
+  ListChecks,
+  Mail,
+  MapPin,
+  Maximize2,
+  Medal,
+  Menu,
+  MessageCircle,
+  MicVocal,
+  Microscope,
+  Minus,
+  Monitor,
+  Navigation,
+  Palette,
+  PartyPopper,
+  PenLine,
+  Phone,
+  Plus,
+  Presentation,
+  Quote,
+  Rocket,
+  School,
+  ScrollText,
+  Search,
+  Send,
+  ShieldCheck,
+  Sparkles,
+  Sprout,
+  Star,
+  Target,
+  Telescope,
+  Theater,
+  Trophy,
+  UserRoundCheck,
+  Users,
+  X,
+} from '@lucide/astro';
+import { siFacebook, siInstagram, siWhatsapp, siYoutube } from 'simple-icons';
+
+const lucide = {
+  'arrow-left': ArrowLeft,
+  'arrow-right': ArrowRight,
+  'arrow-up-right': ArrowUpRight,
+  atom: Atom,
+  award: Award,
+  badge: BadgeCheck,
+  baby: Baby,
+  blocks: Blocks,
+  book: BookOpen,
+  brain: Brain,
+  briefcase: Briefcase,
+  calendar: CalendarDays,
+  calculator: Calculator,
+  camera: Camera,
+  check: Check,
+  'chevron-down': ChevronDown,
+  'chevron-left': ChevronLeft,
+  'chevron-right': ChevronRight,
+  clipboard: ClipboardCheck,
+  clock: Clock,
+  compass: Compass,
+  download: Download,
+  drama: Drama,
+  external: ExternalLink,
+  eye: Eye,
+  file: FileText,
+  flask: FlaskConical,
+  flower: Flower,
+  globe: Globe,
+  graduation: GraduationCap,
+  handshake: Handshake,
+  heart: Heart,
+  images: Images,
+  landmark: Landmark,
+  languages: Languages,
+  leaf: Leaf,
+  lightbulb: Lightbulb,
+  'list-checks': ListChecks,
+  mail: Mail,
+  'map-pin': MapPin,
+  maximize: Maximize2,
+  medal: Medal,
+  menu: Menu,
+  message: MessageCircle,
+  music: MicVocal,
+  microscope: Microscope,
+  minus: Minus,
+  monitor: Monitor,
+  navigation: Navigation,
+  palette: Palette,
+  party: PartyPopper,
+  pen: PenLine,
+  phone: Phone,
+  plus: Plus,
+  presentation: Presentation,
+  quote: Quote,
+  rocket: Rocket,
+  school: School,
+  scroll: ScrollText,
+  search: Search,
+  send: Send,
+  shield: ShieldCheck,
+  sparkles: Sparkles,
+  sprout: Sprout,
+  star: Star,
+  target: Target,
+  telescope: Telescope,
+  theatre: Theater,
+  trophy: Trophy,
+  'user-check': UserRoundCheck,
+  users: Users,
+  close: X,
+} as const;
+
+const brands = {
+  facebook: siFacebook,
+  instagram: siInstagram,
+  whatsapp: siWhatsapp,
+  youtube: siYoutube,
+} as const;
+
+export type IconName = keyof typeof lucide | keyof typeof brands;
+
+interface Props {
+  name: IconName | (string & {});
+  size?: number;
+  class?: string;
+  strokeWidth?: number;
+  label?: string;
+}
+
+const { name, size = 24, class: className, strokeWidth = 1.75, label } = Astro.props;
+const a11y = label ? ({ role: 'img', 'aria-label': label } as const) : ({ 'aria-hidden': 'true' } as const);
+const brand = brands[name as keyof typeof brands];
+const Lucide = lucide[name as keyof typeof lucide];
+if (!brand && !Lucide) throw new Error(`Unknown icon: ${name}`);
+---
+
+{
+  brand ? (
+    <svg class={className} width={size} height={size} viewBox="0 0 24 24" fill="currentColor" focusable="false" {...a11y}>
+      <path d={brand.path} />
+    </svg>
+  ) : (
+    <Lucide class={className} size={size} stroke-width={strokeWidth} focusable="false" {...a11y} />
+  )
+}

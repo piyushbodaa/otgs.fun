@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Icon from '@/components/Icon.astro';
+import crest from '@/assets/brand/crest.png';
+
+const links = [
+  { label: 'Admissions', href: '/admissions' },
+  { label: 'Academics', href: '/academics' },
+  { label: 'Life at OTGS', href: '/life' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Contact', href: '/contact' },
+];
+---
+
+<BaseLayout title="Page not found" description="The page you were looking for could not be found.">
+  <section class="section nf">
+    <div class="container--narrow nf__inner">
+      <Image src={crest} alt="" width={120} densities={[1, 2]} format="webp" class="nf__crest" />
+      <p class="eyebrow eyebrow--center">Error 404</p>
+      <h1 class="t-h1">This page has <em>wandered off campus</em></h1>
+      <p class="lead">The page you’re looking for doesn’t exist or may have moved. Perseverance is our motto, so let’s find your way.</p>
+      <div class="cluster nf__actions">
+        <a href="/" class="btn btn--primary">Back to home <Icon name="arrow-right" class="arrow" /></a>
+        <a href="/contact" class="btn btn--outline">Contact us</a>
+      </div>
+      <ul class="cluster nf__links" role="list">
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} class="chip">
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf__inner {
+    display: grid;
+    justify-items: center;
+    gap: 1.25rem;
+    text-align: center;
+  }
+
+  .nf__crest {
+    width: 120px;
+    margin-bottom: 0.5rem;
+  }
+
+  .nf__actions,
+  .nf__links {
+    justify-content: center;
+  }
+
+  .nf__links .chip {
+    text-decoration: none;
+  }
+</style>

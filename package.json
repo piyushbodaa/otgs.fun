@@ -1,0 +1,29 @@
+{
+  "name": "otgs-fun",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Oxford The Global School, Nanded: website rebuild",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@lucide/astro": "^1.61.0",
+    "astro": "^7.4.1",
+    "sharp": "^0.35.5",
+    "simple-icons": "^16.35.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.11",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=22.22.0"
+  }
+}

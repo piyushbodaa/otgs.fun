@@ -1,0 +1,527 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { site } from '@/data/site';
+import { values } from '@/data/academics';
+import { leaders } from '@/data/leaders';
+
+import hero from '@/assets/photos/campus-wide.jpg';
+import crest from '@/assets/brand/crest.png';
+import palms from '@/assets/photos/campus-palms.jpg';
+import microscope from '@/assets/photos/microscope.jpg';
+import graduates from '@/assets/photos/graduates.jpg';
+
+const crumbs = [{ label: 'About', href: '/about' }];
+
+const philosophy = [
+  {
+    icon: 'lightbulb',
+    title: 'Nurturing minds through meaningful learning',
+    text: 'Our curriculum emphasises the practical application of knowledge, connecting concepts with real-world experience. Classroom learning is designed to spark creativity, inspire exploration and build communication, collaboration and critical thinking.',
+  },
+  {
+    icon: 'users',
+    title: 'Shaping well-rounded individuals',
+    text: 'Every child holds talents waiting to be discovered. Performing arts, sports, science clubs, literary events and the student council let students explore, express and excel, and learn leadership through responsibility rather than titles.',
+  },
+  {
+    icon: 'globe',
+    title: 'Empowering global thinkers',
+    text: 'Research-based projects, discussion forums and presentations on globally relevant topics nurture critical thinking and informed perspectives, shaping socially aware individuals who lead with purpose and integrity.',
+  },
+];
+---
+
+<BaseLayout
+  title="About OTGS: Our Story, Vision & Values"
+  description="Founded on the Shri Gyan Saraswati Education Society’s three-decade legacy, Oxford The Global School is a forward-thinking, values-rooted CBSE school in Nanded."
+  image={hero}
+  header="overlay"
+  crumbs={crumbs}
+>
+  <PageHero
+    image={hero}
+    alt="The Oxford The Global School campus seen across its grounds"
+    eyebrow="Our story"
+    title="A legacy of learning, <em>a future without borders</em>"
+    intro="A co-educational CBSE school committed to high-quality, holistic education, in a caring, innovative and healthy environment."
+    crumbs={crumbs}
+    position="50% 60%"
+  />
+
+  <!-- Story ------------------------------------------------------------------>
+  <section class="section story" aria-labelledby="story-title">
+    <div class="container story__grid">
+      <div class="story__year" data-reveal>
+        <p class="eyebrow">Since</p>
+        <p class="story__num" aria-hidden="true">{site.legacyYear}</p>
+        <p class="story__caption">
+          The {site.society} has served the families of Nanded for over three decades, under the chairmanship of Mr. Srinivas Dhyavarshetty.
+        </p>
+      </div>
+      <div class="story__text stack" style="--stack: 1.3rem; --d: 120" data-reveal>
+        <h2 class="t-h2" id="story-title">A leading CBSE school in Nanded, <em>rooted in values</em></h2>
+        <div class="prose">
+          <p class="lead">
+            Oxford The Global School is a forward-thinking institution offering CBSE education from the early years through Grade 10. We
+            embrace modern advancements in technology and global learning, while our foundation remains deeply rooted in strong moral
+            values and holistic development.
+          </p>
+          <p>
+            Under the visionary leadership of our Chairman, we cultivate an environment where academic excellence, ethical grounding and
+            open-minded thinking come together to shape responsible, confident learners for tomorrow. Through a wide variety of
+            programmes, students develop their creative and social skills alongside their academic ones.
+          </p>
+          <p>
+            We follow the renowned Indian curriculum prescribed by the Central Board of Secondary Education (CBSE), New Delhi, a framework
+            adopted by over 20,000 schools across India and nearly 2,000 internationally, and known for its clarity, structure and
+            academic rigour.
+          </p>
+        </div>
+        <blockquote class="story__quote">
+          <p>
+            “We hope to invoke in students a love of learning through the development of their intellectual, emotional, social, physical and
+            creative potential.”
+          </p>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- Motto ------------------------------------------------------------------>
+  <section class="motto on-dark" aria-label="School motto">
+    <div class="container motto__inner" data-reveal>
+      <Image src={crest} alt="The Oxford The Global School crest" width={150} densities={[1, 2]} format="webp" class="motto__crest" />
+      <div>
+        <p class="eyebrow">Our motto</p>
+        <p class="motto__words">
+          <span>Perseverance</span>
+          <span class="motto__dot" aria-hidden="true"></span>
+          <span>Omniscience</span>
+        </p>
+        <p class="motto__text">The will to keep going, and the lifelong pursuit of knowing more. Carried by every OTGS student, from KG to Grade 10.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision & mission ----------------------------------------------------->
+  <section class="section" id="vision" aria-labelledby="vision-title">
+    <div class="container">
+      <div class="vision-statement" data-reveal>
+        <p class="eyebrow eyebrow--center">Vision &amp; mission · Cultivating tomorrow’s leaders</p>
+        <h2 class="display vision-statement__text" id="vision-title">
+          “Empower learners to grow with knowledge, integrity and leadership, shaping them into <em>responsible global citizens</em> and
+          future leaders.”
+        </h2>
+      </div>
+
+      <div class="vm">
+        <article class="vm__item" data-reveal>
+          <div class="media vm__media">
+            <Image src={microscope} alt="Students observing a slide under a microscope" widths={[480, 720, 960]} sizes="(min-width: 960px) 45vw, 92vw" />
+          </div>
+          <p class="eyebrow">Our vision</p>
+          <h3 class="t-h3">A launchpad for dreams</h3>
+          <p>
+            We envision an educational space where learning transforms lives: where students don’t just acquire knowledge, but discover
+            purpose. Our vision is to shape a generation of empowered, empathetic and intellectually agile individuals ready to lead and
+            thrive in a rapidly evolving world. We strive to be more than a school: a sanctuary for growth, and a place where every child is
+            inspired to imagine, explore and become the best version of themselves.
+          </p>
+        </article>
+        <article class="vm__item" data-reveal style="--d: 120">
+          <div class="media vm__media">
+            <Image src={graduates} alt="Pre-primary graduates celebrating in caps and gowns" widths={[480, 720, 960]} sizes="(min-width: 960px) 45vw, 92vw" />
+          </div>
+          <p class="eyebrow">Our mission</p>
+          <h3 class="t-h3">Redefining education for the modern world</h3>
+          <p>
+            We deliver a transformative learning experience that blends academic excellence with deep-rooted values, creativity and critical
+            thinking. Curiosity is celebrated, individuality is honoured, and every student is challenged to rise beyond limits. Through
+            innovative teaching, real-world learning and a relentless focus on holistic development, we nurture not just scholars but
+            future leaders: compassionate, courageous and committed to making a meaningful impact.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values ----------------------------------------------------------------->
+  <section class="section section--white" aria-labelledby="values-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Core values"
+        title="Nine values, <em>one character</em>"
+        lead="Every member of OTGS is expected to uphold the core values of the school. They are how we maintain our repute as one of the leading schools in Nanded."
+        align="split"
+        id="values-title"
+      />
+      <ol class="values" role="list">
+        {
+          values.map((v, i) => (
+            <li class="value" data-reveal style={`--d: ${(i % 3) * 80}`}>
+              <span class="value__num">{String(i + 1).padStart(2, '0')}</span>
+              <span class="value__name">{v}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Philosophy -------------------------------------------------------------->
+  <section class="section" aria-labelledby="philosophy-title">
+    <div class="container philosophy__grid">
+      <div class="philosophy__intro stack" style="--stack: 1.3rem" data-reveal>
+        <p class="eyebrow">How we educate</p>
+        <h2 class="t-h2" id="philosophy-title">Not just preparing students for exams, <em>preparing them for life</em></h2>
+        <div class="media philosophy__media">
+          <Image src={palms} alt="The OXFORD signage on the school building, framed by palm trees" widths={[480, 720, 960]} sizes="(min-width: 960px) 40vw, 92vw" />
+        </div>
+      </div>
+      <ul class="philosophy__list" role="list">
+        {
+          philosophy.map((p, i) => (
+            <li data-reveal style={`--d: ${i * 100}`}>
+              <span class="icon-badge">
+                <Icon name={p.icon} />
+              </span>
+              <div>
+                <h3 class="t-h4">{p.title}</h3>
+                <p>{p.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Leadership teaser ------------------------------------------------------->
+  <section class="section section--paper-2" aria-labelledby="lead-title">
+    <div class="container">
+      <SectionHead eyebrow="Leadership" title="The people who <em>guide OTGS</em>" align="split" id="lead-title">
+        <a href="/leadership" class="link-arrow lead-all">Read their messages <Icon name="arrow-right" /></a>
+      </SectionHead>
+      <ul class="mini-leaders" role="list">
+        {
+          leaders.map((l, i) => (
+            <li data-reveal style={`--d: ${i * 80}`}>
+              <a href={`/leadership/${l.slug}`}>
+                <Image src={l.portrait} alt="" width={96} height={96} densities={[1, 2]} class="mini-leaders__img" />
+                <span>
+                  <span class="mini-leaders__name">{l.name}</span>
+                  <span class="mini-leaders__role">{l.role}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .story__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 960px) {
+    .story__grid {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      align-items: start;
+    }
+
+    .story__year {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+
+  .story__num {
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 4rem + 9vw, 11rem);
+    font-weight: 500;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--navy-900);
+    margin-top: 0.75rem;
+    background: linear-gradient(180deg, var(--navy-800), var(--navy-600));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .story__caption {
+    margin-top: 1.25rem;
+    max-width: 22rem;
+    color: var(--ink-3);
+  }
+
+  .story__quote {
+    margin-top: 2rem !important;
+    padding: 1.5rem 1.75rem;
+    border-left: 3px solid var(--gold-500);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    background: var(--white);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .motto {
+    background:
+      radial-gradient(40rem 20rem at 20% 50%, rgb(226 174 56 / 0.18), transparent 70%),
+      var(--navy-900);
+    padding-block: clamp(3.5rem, 7vw, 5rem);
+  }
+
+  .motto__inner {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    justify-items: start;
+  }
+
+  @media (min-width: 760px) {
+    .motto__inner {
+      grid-template-columns: auto 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .motto__crest {
+    width: 150px;
+    filter: drop-shadow(0 16px 30px rgb(0 0 0 / 0.35));
+  }
+
+  .motto__words {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 1.4rem + 3.5vw, 4.25rem);
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .motto__dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--red-500);
+  }
+
+  .motto__text {
+    margin-top: 1rem;
+    max-width: 38rem;
+  }
+
+  .vision-statement {
+    display: grid;
+    justify-items: center;
+    gap: 1.5rem;
+    max-width: 62rem;
+    margin: 0 auto clamp(3.5rem, 7vw, 5.5rem);
+    text-align: center;
+  }
+
+  .vision-statement__text {
+    font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.3rem);
+    line-height: 1.15;
+    font-weight: 480;
+  }
+
+  .vision-statement__text em {
+    color: var(--red-600);
+  }
+
+  .vm {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .vm {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .vm__item {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+  }
+
+  .vm__media {
+    aspect-ratio: 16 / 10;
+    margin-bottom: 0.75rem;
+  }
+
+  .values {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  @media (min-width: 520px) {
+    .values {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 860px) {
+    .values {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .value {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.5rem 1.6rem;
+    border-radius: var(--radius);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    transition:
+      background-color 0.3s var(--ease),
+      color 0.3s var(--ease),
+      transform 0.3s var(--ease);
+  }
+
+  .value:hover {
+    background: var(--navy-900);
+    transform: translateY(-3px);
+  }
+
+  .value:hover .value__name {
+    color: var(--white);
+  }
+
+  .value__num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--red-600);
+  }
+
+  .value:hover .value__num {
+    color: var(--gold-400);
+  }
+
+  .value__name {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    line-height: 1.1;
+    color: var(--ink);
+    transition: color 0.3s var(--ease);
+  }
+
+  .philosophy__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  @media (min-width: 960px) {
+    .philosophy__grid {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      align-items: center;
+    }
+  }
+
+  .philosophy__media {
+    aspect-ratio: 4 / 3.4;
+    margin-top: 1.5rem !important;
+  }
+
+  .philosophy__list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .philosophy__list li {
+    display: grid;
+    gap: 1rem 1.25rem;
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+
+  .philosophy__list p {
+    margin-top: 0.5rem;
+  }
+
+  @media (min-width: 560px) {
+    .philosophy__list li {
+      grid-template-columns: auto 1fr;
+    }
+  }
+
+  .lead-all {
+    justify-self: end;
+  }
+
+  .mini-leaders {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  }
+
+  .mini-leaders a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: var(--radius);
+    background: var(--white);
+    border: 1px solid var(--line);
+    text-decoration: none;
+    transition:
+      box-shadow 0.3s var(--ease),
+      transform 0.3s var(--ease);
+  }
+
+  .mini-leaders a:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  .mini-leaders a > span {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .mini-leaders__img {
+    width: 4.25rem;
+    height: 4.25rem;
+    border-radius: 50%;
+    object-fit: cover;
+    flex: none;
+  }
+
+  .mini-leaders__name {
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .mini-leaders__role {
+    font-size: 0.85rem;
+    color: var(--red-600);
+    font-weight: 600;
+  }
+</style>

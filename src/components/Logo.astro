@@ -1,0 +1,102 @@
+---
+import { Image } from 'astro:assets';
+import crest from '@/assets/brand/crest.png';
+
+interface Props {
+  size?: 'md' | 'lg';
+  tone?: 'auto' | 'light';
+  class?: string;
+}
+
+const { size = 'md', tone = 'auto', class: className } = Astro.props;
+const px = size === 'lg' ? 68 : 52;
+---
+
+<a href="/" class:list={['logo', `logo--${size}`, `logo--${tone}`, className]} aria-label="Oxford The Global School, Nanded: home">
+  <Image src={crest} alt="" width={px} densities={[1, 2]} format="webp" class="logo__crest" loading="eager" />
+  <span class="logo__text" aria-hidden="true">
+    <span class="logo__name">Oxford</span>
+    <span class="logo__sub">The Global School · Nanded</span>
+  </span>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    color: var(--logo-fg, var(--ink));
+    flex: none;
+  }
+
+  .logo__crest {
+    width: 52px;
+    height: auto;
+    filter: drop-shadow(0 4px 10px rgb(6 17 42 / 0.18));
+  }
+
+  .logo--lg .logo__crest {
+    width: 68px;
+  }
+
+  .logo__text {
+    display: grid;
+    line-height: 1;
+  }
+
+  .logo__name {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+
+  .logo--lg .logo__name {
+    font-size: 2rem;
+  }
+
+  .logo__sub {
+    margin-top: 0.3rem;
+    font-size: 0.64rem;
+    font-weight: 650;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    white-space: nowrap;
+  }
+
+  .logo--light {
+    --logo-fg: var(--white);
+  }
+
+  @media (max-width: 400px) {
+    .logo {
+      gap: 0.6rem;
+    }
+
+    .logo__crest {
+      width: 46px;
+    }
+
+    .logo__sub {
+      letter-spacing: 0.15em;
+    }
+  }
+
+  @media (max-width: 340px) {
+    .logo__crest {
+      width: 40px;
+    }
+
+    .logo__name {
+      font-size: 1.4rem;
+    }
+
+    .logo__sub {
+      font-size: 0.56rem;
+      letter-spacing: 0.1em;
+    }
+  }
+</style>

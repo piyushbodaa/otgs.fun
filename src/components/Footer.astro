@@ -1,0 +1,340 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { footerNav, site } from '@/data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer on-dark">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <Logo size="lg" tone="light" />
+        <p class="site-footer__motto">
+          <span>{site.motto[0]}</span>
+          <span class="dot" aria-hidden="true"></span>
+          <span>{site.motto[1]}</span>
+        </p>
+        <p class="site-footer__blurb">
+          A co-educational CBSE school in Nanded, carrying forward the {site.society}’s legacy of quality education since {site.legacyYear}.
+        </p>
+        <ul class="site-footer__social" role="list">
+          {
+            site.socials.map((s) => (
+              <li>
+                <a href={s.href} target="_blank" rel="noopener" aria-label={`${site.shortName} on ${s.label}`}>
+                  <Icon name={s.icon} size={18} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      {
+        footerNav.map((col) => (
+          <nav class="site-footer__col" aria-label={col.title}>
+            <h2 class="site-footer__title">{col.title}</h2>
+            <ul role="list">
+              {col.links.map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+
+      <div class="site-footer__col site-footer__contact">
+        <h2 class="site-footer__title">Visit & contact</h2>
+        <address>
+          <a href={site.mapsUrl} target="_blank" rel="noopener" class="contact-line">
+            <Icon name="map-pin" size={18} />
+            <span>{site.address.line1},<br />{site.address.city}, {site.address.state} {site.address.postalCode}</span>
+          </a>
+          {
+            site.phones.map((p) => (
+              <a href={p.href} class="contact-line">
+                <Icon name="phone" size={18} />
+                <span>{p.label}</span>
+              </a>
+            ))
+          }
+          <a href={`mailto:${site.email}`} class="contact-line">
+            <Icon name="mail" size={18} />
+            <span>{site.email}</span>
+          </a>
+        </address>
+      </div>
+    </div>
+
+    <div class="site-footer__accred">
+      <span><strong>CBSE Affiliation No.</strong> {site.affiliationNo}</span>
+      <span><strong>UDISE</strong> {site.udise}</span>
+      <span><strong>Curriculum</strong> CBSE, New Delhi · Pre-Primary to Grade 10</span>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p>© {year} {site.name}, {site.city}. All rights reserved.</p>
+      <p>
+        Lovingly redesigned by an OTGS alumnus ·
+        <a href={site.repoUrl} target="_blank" rel="noopener">Open source</a> · Official site:
+        <a href={site.officialUrl} target="_blank" rel="noopener">oxfordtheglobalschool.com</a>
+      </p>
+    </div>
+  </div>
+
+  <a
+    class="wa-fab"
+    href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hello OTGS! I would like to know more about admissions.')}`}
+    target="_blank"
+    rel="noopener"
+    aria-label="Chat with the OTGS admissions desk on WhatsApp"
+  >
+    <Icon name="whatsapp" size={28} />
+    <span class="wa-fab__label" aria-hidden="true">Chat with us</span>
+  </a>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    background: var(--navy-950);
+    padding-block: clamp(4rem, 8vw, 6rem) 2rem;
+    overflow: hidden;
+  }
+
+  .site-footer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(60rem 30rem at 85% -10%, rgb(36 80 143 / 0.35), transparent 60%),
+      radial-gradient(40rem 24rem at -10% 110%, rgb(196 30 51 / 0.16), transparent 60%);
+    pointer-events: none;
+  }
+
+  .site-footer > .container {
+    position: relative;
+  }
+
+  .site-footer__top {
+    display: grid;
+    gap: 3rem 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 720px) {
+    .site-footer__top {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .site-footer__top {
+      grid-template-columns: 1.5fr 0.8fr 0.9fr 1.2fr;
+    }
+  }
+
+  .site-footer__motto {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 1.4rem;
+    font-size: 0.75rem;
+    font-weight: 650;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-400);
+  }
+
+  .site-footer__motto .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--red-500);
+  }
+
+  .site-footer__blurb {
+    margin-top: 1rem;
+    max-width: 24rem;
+    font-size: 0.95rem;
+    color: rgb(255 255 255 / 0.65);
+  }
+
+  .site-footer__social {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__social a {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    color: var(--white);
+    transition:
+      background-color 0.2s var(--ease),
+      color 0.2s var(--ease),
+      border-color 0.2s var(--ease);
+  }
+
+  .site-footer__social a:hover {
+    background: var(--gold-400);
+    border-color: var(--gold-400);
+    color: var(--navy-950);
+  }
+
+  .site-footer__title {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-400);
+    margin-bottom: 1.2rem;
+  }
+
+  .site-footer__col ul {
+    display: grid;
+    gap: 0.65rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__col a {
+    color: rgb(255 255 255 / 0.78);
+    text-decoration: none;
+    font-size: 0.97rem;
+    transition: color 0.2s var(--ease);
+  }
+
+  .site-footer__col a:hover {
+    color: var(--white);
+    text-decoration: underline;
+  }
+
+  .site-footer__contact address {
+    display: grid;
+    gap: 0.9rem;
+    font-style: normal;
+  }
+
+  .contact-line {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 0.75rem;
+    align-items: start;
+    line-height: 1.5;
+  }
+
+  .contact-line :global(svg) {
+    margin-top: 0.15rem;
+    color: var(--gold-400);
+  }
+
+  .site-footer__accred {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    margin-top: 3.5rem;
+    padding-block: 1.4rem;
+    border-block: 1px solid rgb(255 255 255 / 0.1);
+    font-size: 0.86rem;
+    color: rgb(255 255 255 / 0.6);
+  }
+
+  .site-footer__accred strong {
+    color: rgb(255 255 255 / 0.9);
+    font-weight: 650;
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    padding-top: 1.6rem;
+    font-size: 0.84rem;
+    color: rgb(255 255 255 / 0.55);
+  }
+
+  .site-footer__bottom a {
+    color: rgb(255 255 255 / 0.8);
+  }
+
+  /* Floating WhatsApp button ------------------------------------------------ */
+  .wa-fab {
+    position: fixed;
+    right: clamp(1rem, 3vw, 1.75rem);
+    bottom: clamp(1rem, 3vw, 1.75rem);
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    height: 3.6rem;
+    padding: 0 1rem;
+    border-radius: 999px;
+    background: #0f7f3d;
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 650;
+    font-size: 0.95rem;
+    box-shadow:
+      0 14px 30px -10px rgb(15 127 61 / 0.55),
+      0 4px 10px rgb(0 0 0 / 0.12);
+  }
+
+  .wa-fab:hover {
+    background: #0b6b33;
+    transform: translateY(-2px);
+  }
+
+  .wa-fab__label {
+    display: none;
+  }
+
+  @media (min-width: 760px) {
+    .wa-fab {
+      padding: 0 1.3rem 0 1.05rem;
+    }
+
+    .wa-fab__label {
+      display: inline;
+    }
+  }
+
+  :global(html.menu-open) .wa-fab {
+    display: none;
+  }
+
+  /* With JS, the button waits until the visitor scrolls past the first screen. */
+  :global(.js) .wa-fab:not([data-visible]) {
+    opacity: 0;
+    transform: translateY(16px) scale(0.9);
+    pointer-events: none;
+  }
+
+  .wa-fab {
+    transition:
+      opacity 0.35s var(--ease),
+      transform 0.35s var(--ease),
+      background-color 0.25s var(--ease);
+  }
+</style>
+
+<script>
+  const fab = document.querySelector<HTMLElement>('.wa-fab');
+  if (fab) {
+    const update = () => fab.toggleAttribute('data-visible', window.scrollY > window.innerHeight * 0.6);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+  }
+</script>

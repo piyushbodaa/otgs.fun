@@ -1,0 +1,1667 @@
+---
+import { Image, Picture } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Icon from '@/components/Icon.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import Testimonials from '@/components/Testimonials.astro';
+import EnquiryForm from '@/components/EnquiryForm.astro';
+import { site, boardResults, toppers } from '@/data/site';
+import { stages, pillars } from '@/data/academics';
+import { facilities } from '@/data/life';
+import { houses, activities } from '@/data/life';
+import { leaders } from '@/data/leaders';
+import { events, academicCalendarPdf } from '@/data/events';
+import { steps } from '@/data/admissions';
+import { photos } from '@/data/gallery';
+
+import heroCampus from '@/assets/photos/campus-front.jpg';
+import heroStage from '@/assets/gallery/annual-day/17.jpg';
+import heroLab from '@/assets/photos/microscope.jpg';
+import heroField from '@/assets/photos/football.jpg';
+import reception from '@/assets/photos/reception.jpg';
+import graduates from '@/assets/photos/graduates.jpg';
+import campusWide from '@/assets/photos/campus-wide.jpg';
+
+const slides = [
+  { src: heroCampus, alt: 'The Oxford The Global School building on its green campus in Nanded', position: '60% 50%' },
+  { src: heroStage, alt: 'Students forming a human pyramid on stage at the Annual Day', position: '50% 40%' },
+  { src: heroLab, alt: 'Students looking through a microscope in the science lab', position: '50% 35%' },
+  { src: heroField, alt: 'Students playing football on the school field', position: '50% 50%' },
+];
+
+const latest = boardResults[boardResults.length - 1];
+const above95 = toppers.filter((t) => t.score >= 95).length;
+
+const today = new Date().toISOString().slice(0, 10);
+const upcoming = events.filter((e) => e.date >= today).slice(0, 8);
+const fmtDay = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit' });
+const fmtMonth = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { month: 'short' });
+const fmtWeekday = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { weekday: 'long' });
+
+const pick = (album: string, indexes: number[]) => indexes.map((i) => photos.find((p) => p.album === album && p.index === i)!).filter(Boolean);
+const strip = [
+  ...pick('annual-day', [1, 6, 9, 13]),
+  ...pick('little-learners', [3, 14]),
+  ...pick('sports-games', [3, 6]),
+  ...pick('labs-learning', [2, 4]),
+  ...pick('annual-day', [19, 20]),
+];
+---
+
+<BaseLayout title="Oxford The Global School, Nanded · CBSE School, Pre-Primary to Grade 10" header="overlay">
+  <!-- Hero ----------------------------------------------------------------->
+  <section class="hero on-dark" aria-labelledby="hero-title">
+    <div class="hero__slides" aria-hidden="true">
+      {
+        slides.map((s, i) => (
+          <div class="hero__slide" style={`--i: ${i}`}>
+            <Picture
+              src={s.src}
+              alt=""
+              widths={[640, 960, 1280, 1600, 1920]}
+              sizes="100vw"
+              formats={['avif', 'webp']}
+              quality={62}
+              priority={i === 0}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              style={`object-position: ${s.position}`}
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="container hero__grid">
+      <div class="hero__content">
+        <p class="eyebrow hero__eyebrow">CBSE · Nanded · A legacy since {site.legacyYear}</p>
+        <h1 class="t-display" id="hero-title">Rooted in values. <em>Ready for the world.</em></h1>
+        <p class="lead hero__lead">
+          Oxford The Global School nurtures confident, curious and compassionate learners, from their first day in Pre-Primary to their
+          Grade 10 boards, on a 7-acre green campus in Nanded.
+        </p>
+        <div class="cluster hero__actions">
+          <a href="/contact#enquire" class="btn btn--primary">Book a school tour <Icon name="arrow-right" class="arrow" /></a>
+          <a href="/academics" class="btn btn--outline-light">Explore academics</a>
+        </div>
+      </div>
+
+      <a href="/admissions" class="hero__card">
+        <span class="hero__card-pulse" aria-hidden="true"></span>
+        <span class="hero__card-kicker">Admissions open</span>
+        <span class="hero__card-title">{site.admissionsYear}</span>
+        <span class="hero__card-text">Pre-Primary to Grade 10</span>
+        <span class="hero__card-link">How to apply <Icon name="arrow-up-right" size={16} /></span>
+      </a>
+    </div>
+
+    <div class="hero__facts">
+      <div class="container">
+        <dl class="facts">
+          <div>
+            <dt>CBSE Class X pass rate, {latest.year}</dt>
+            <dd><span data-count={latest.percent} data-decimals="2">{latest.percent.toFixed(2)}</span>%</dd>
+          </div>
+          <div>
+            <dt>Acres of green campus</dt>
+            <dd><span data-count="7">7</span></dd>
+          </div>
+          <div>
+            <dt>Maximum students per class</dt>
+            <dd><span data-count="40">40</span></dd>
+          </div>
+          <div>
+            <dt>Years of the society’s legacy</dt>
+            <dd><span data-count={new Date().getFullYear() - site.legacyYear}>{new Date().getFullYear() - site.legacyYear}</span>+</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why OTGS -------------------------------------------------------------->
+  <section class="section why" aria-labelledby="why-title">
+    <div class="container why__grid">
+      <div class="why__text stack" style="--stack: 1.4rem" data-reveal>
+        <p class="eyebrow">Why Oxford The Global School</p>
+        <h2 class="t-h2" id="why-title">An education as wide as the world, <em>as deep as our roots</em></h2>
+        <div class="prose">
+          <p class="lead">
+            We are living in a global, dynamic world where, as Thomas L. Friedman wrote in <cite>The World is Flat</cite>, the walls have come
+            down and the windows have opened up.
+          </p>
+          <p>
+            Our children need an education that equips them with the skills and knowledge to meet that world’s challenges and
+            opportunities. For more than three decades the {site.society} has worked toward exactly that in Nanded, creating a path of
+            success for each and every student, while keeping our feet firmly rooted in strong moral values.
+          </p>
+        </div>
+        <a href="/about" class="link-arrow">Discover our story <Icon name="arrow-right" /></a>
+      </div>
+
+      <div class="why__media" data-reveal="fade">
+        <div class="media why__img-main">
+          <Image src={reception} alt="The reception lobby of Oxford The Global School with the school name on the wall" widths={[480, 720, 960]} sizes="(min-width: 960px) 34vw, 80vw" />
+        </div>
+        <div class="media why__img-small">
+          <Image src={graduates} alt="Pre-primary graduates in blue gowns tossing their caps in celebration" widths={[360, 540, 720]} sizes="(min-width: 960px) 22vw, 50vw" />
+        </div>
+        <div class="why__badge">
+          <span class="why__badge-num">{site.legacyYear}</span>
+          <span class="why__badge-text">A legacy of quality education in Nanded</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <ul class="pillars rail-mobile" role="list">
+        {
+          pillars.map((p, i) => (
+            <li class="pillar" data-reveal style={`--d: ${(i % 3) * 100}`}>
+              <span class="icon-badge">
+                <Icon name={p.icon} />
+              </span>
+              <h3 class="t-h4">{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Results --------------------------------------------------------------->
+  <section class="section results on-dark" aria-labelledby="results-title">
+    <div class="container results__grid">
+      <div class="results__intro stack" style="--stack: 1.4rem" data-reveal>
+        <p class="eyebrow">CBSE Class X board results</p>
+        <h2 class="t-h2" id="results-title">Three years running, <em>99% and above</em></h2>
+        <p class="lead">
+          Consistent board results grow from everyday habits: weekly cycle tests, structured notes and practice papers, monthly parent
+          meetings, and teachers who know every child by name.
+        </p>
+
+        <ol class="results__bars" role="list" aria-label="Class X pass percentage by year">
+          {
+            boardResults.map((r) => (
+              <li>
+                <span class="results__year">{r.year}</span>
+                <span class="results__bar" aria-hidden="true">
+                  <span style={`--w: ${r.percent}%`} />
+                </span>
+                <span class="results__pct">{r.percent.toFixed(2)}%</span>
+                <span class="results__count">
+                  {r.passed} of {r.appeared} passed
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+
+        <dl class="results__stats">
+          <div>
+            <dt>Top score, {latest.year}</dt>
+            <dd><span data-count="99">99</span>%</dd>
+          </div>
+          <div>
+            <dt>Students scored 95% or more</dt>
+            <dd><span data-count={above95}>{above95}</span></dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="honour" data-reveal="fade">
+        <div class="honour__head">
+          <Icon name="trophy" size={26} />
+          <div>
+            <p class="honour__kicker">Honour roll</p>
+            <h3 class="honour__title">Top rankers {latest.year}</h3>
+          </div>
+        </div>
+        <ol class="honour__list" role="list">
+          {
+            toppers.map((t, i) => (
+              <li class:list={{ 'is-first': i === 0 }}>
+                <span class="honour__name">{t.name}</span>
+                <span class="honour__score">{t.score}%</span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="honour__foot">Heartiest congratulations to our shining stars: your achievement makes us truly proud.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stages ---------------------------------------------------------------->
+  <section class="section" aria-labelledby="stages-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Schooling stages"
+        title="One seamless journey, <em>from first steps to board exams</em>"
+        lead="Oxford The Global School offers a continuous CBSE pathway with quality education at every stage of growth, so children build on what they know, with teachers who know them."
+        align="split"
+        id="stages-title"
+      />
+      <ul class="stages rail-mobile" role="list">
+        {
+          stages.map((s, i) => (
+            <li data-reveal style={`--d: ${i * 110}`}>
+              <a href={`/academics#${s.id}`} class="stage-card">
+                <div class="stage-card__media">
+                  <Image src={s.image} alt={s.alt} widths={[360, 540, 720]} sizes="(min-width: 1080px) 24vw, (min-width: 640px) 46vw, 92vw" />
+                </div>
+                <span class="stage-card__num">0{i + 1}</span>
+                <div class="stage-card__body">
+                  <p class="stage-card__grades">{s.grades}</p>
+                  <h3 class="stage-card__title">{s.name}</h3>
+                  <p class="stage-card__text">{s.summary}</p>
+                  <span class="stage-card__link">
+                    Explore {s.name.toLowerCase()} <Icon name="arrow-right" size={16} />
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Campus ---------------------------------------------------------------->
+  <section class="section section--white" aria-labelledby="campus-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Campus & facilities"
+        title="Seven acres, built for <em>curiosity</em>"
+        lead="Students thrive in a vibrant environment with modern infrastructure and dedicated mentors. From academics and sports to arts, values and life skills, every child is guided to grow into a confident, capable and compassionate future leader."
+        align="split"
+        id="campus-title"
+      />
+
+      <div class="bento">
+        <figure class="bento__item bento__item--wide media media--hover" data-reveal="fade">
+          <Image src={campusWide} alt="A wide view of the Oxford The Global School campus with school buses lined up in front" widths={[640, 960, 1280, 1600]} sizes="(min-width: 960px) 66vw, 92vw" />
+          <figcaption>
+            <span class="bento__kicker">The campus</span>
+            <span class="bento__title">7 acres of lush, green land</span>
+          </figcaption>
+        </figure>
+        {
+          facilities.slice(0, 1).map((f) => (
+            <figure class="bento__item media media--hover" data-reveal="fade">
+              <Image src={f.image} alt={f.alt} widths={[400, 640, 900]} sizes="(min-width: 1024px) 31vw, (min-width: 720px) 46vw, 92vw" />
+              <figcaption>
+                <span class="bento__title">{f.title}</span>
+                <span class="bento__text">{f.text}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+        <div class="bento__item bento__rooms" data-reveal="fade">
+          <p class="eyebrow eyebrow--gold">Resource rooms</p>
+          <p class="bento__rooms-title">Purpose-built spaces for the arts</p>
+          <ul class="cluster" role="list">
+            <li class="chip"><Icon name="palette" /> Art</li>
+            <li class="chip"><Icon name="drama" /> Drama</li>
+            <li class="chip"><Icon name="music" /> Music</li>
+            <li class="chip"><Icon name="theatre" /> Theatre</li>
+          </ul>
+          <p class="bento__rooms-text">Led by trained subject experts, so every child can explore their creative and physical potential.</p>
+        </div>
+        {
+          [facilities[2], facilities[3], facilities[1]].map((f, i) => (
+            <figure class:list={['bento__item media media--hover', { 'bento__item--last': i === 2 }]} data-reveal="fade" style={`--d: ${i * 80}`}>
+              <Image src={f.image} alt={f.alt} widths={[400, 640, 900]} sizes="(min-width: 1024px) 31vw, (min-width: 720px) 46vw, 92vw" />
+              <figcaption>
+                <span class="bento__title">{f.title}</span>
+                <span class="bento__text">{f.text}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership ------------------------------------------------------------>
+  <section class="section section--paper-2" aria-labelledby="leaders-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Guiding lights of learning"
+        title="Led with vision, <em>run with heart</em>"
+        lead="Oxford The Global School stands tall among Nanded’s finest CBSE institutions, guided by people committed to nurturing bright minds and building a foundation of knowledge, values and lifelong learning."
+        align="split"
+        id="leaders-title"
+      />
+      <ul class="leaders rail-mobile" role="list">
+        {
+          leaders.map((l, i) => (
+            <li data-reveal style={`--d: ${i * 100}`}>
+              <a href={`/leadership/${l.slug}`} class="leader-card">
+                <div class="leader-card__media media">
+                  <Image src={l.portrait} alt={`Portrait of ${l.name}, ${l.role}`} widths={[320, 480, 640]} sizes="(min-width: 1080px) 22vw, (min-width: 640px) 45vw, 90vw" />
+                </div>
+                <p class="leader-card__role">{l.role}</p>
+                <h3 class="leader-card__name">{l.name}</h3>
+                <p class="leader-card__quote">“{l.quote}”</p>
+                <span class="link-arrow">
+                  Read message <Icon name="arrow-right" />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Life ------------------------------------------------------------------>
+  <section class="section life on-dark" aria-labelledby="life-title">
+    <div class="container life__grid">
+      <div class="stack" style="--stack: 1.4rem" data-reveal>
+        <p class="eyebrow">Life at OTGS</p>
+        <h2 class="t-h2" id="life-title">Learning comes alive in <em>every kick, brushstroke and note</em></h2>
+        <p class="lead">
+          From the football field to the stage, from the eco garden to the student council, children discover who they are beyond the
+          classroom, and grow not just smarter, but stronger.
+        </p>
+        <ul class="cluster" role="list">
+          {
+            activities.map((a) => (
+              <li class="chip">
+                <Icon name={a.icon} /> {a.name}
+              </li>
+            ))
+          }
+        </ul>
+        <a href="/life" class="link-arrow">See life at OTGS <Icon name="arrow-right" /></a>
+      </div>
+
+      <div class="houses" data-reveal="fade">
+        <p class="houses__kicker">Four houses. One spirit.</p>
+        <ul class="houses__grid" role="list">
+          {
+            houses.map((h) => (
+              <li class="house" style={`--house: ${h.color}`}>
+                <span class="house__letter" aria-hidden="true">
+                  {h.letter}
+                </span>
+                <span class="house__name">{h.name}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="houses__note">Orchid, Tulip, Gladiolus and Snowdrop spell out the very name of our school.</p>
+      </div>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <ul class="marquee__track" role="list">
+        {
+          [...strip, ...strip].map((p) => (
+            <li>
+              <Image src={p.image} alt="" widths={[240, 400, 560]} sizes="(min-width: 900px) 360px, 240px" loading="lazy" />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Events ---------------------------------------------------------------->
+  {
+    upcoming.length > 0 && (
+      <section class="section section--tight events" aria-labelledby="events-title" data-events>
+        <div class="container">
+          <SectionHead eyebrow="On the calendar" title="Coming up <em>at OTGS</em>" align="split" id="events-title">
+            <a href={academicCalendarPdf} class="link-arrow events__all" target="_blank" rel="noopener">
+              Full academic calendar 2026–27 <Icon name="arrow-up-right" />
+            </a>
+          </SectionHead>
+          <ol class="events__list" role="list">
+            {upcoming.map((e, i) => (
+              <li class="event" data-date={e.date} hidden={i >= 4 ? true : undefined} data-reveal style={`--d: ${(i % 4) * 90}`}>
+                <time datetime={e.date} class="event__date">
+                  <span class="event__day">{fmtDay(e.date)}</span>
+                  <span class="event__month">{fmtMonth(e.date)}</span>
+                </time>
+                <div>
+                  <p class="event__weekday">{fmtWeekday(e.date)}</p>
+                  <h3 class="event__title">{e.title}</h3>
+                  {e.who && <p class="event__who">{e.who}</p>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    )
+  }
+
+  <Testimonials />
+
+  <!-- Admissions ------------------------------------------------------------>
+  <section class="section section--paper-2 admit" id="admissions" aria-labelledby="admit-title">
+    <div class="container admit__grid">
+      <div class="stack" style="--stack: 1.4rem" data-reveal>
+        <p class="eyebrow">Admissions in Nanded</p>
+        <h2 class="t-h2" id="admit-title">Admissions are open <em>for {site.admissionsYear}</em></h2>
+        <p class="lead">
+          Finding the right CBSE school is a big decision. We believe in open conversations, so ask us anything and explore what your
+          child’s journey with us could look like.
+        </p>
+        <ol class="admit__steps" role="list">
+          {
+            steps.map((s, i) => (
+              <li>
+                <span class="admit__num">{i + 1}</span>
+                <div>
+                  <h3 class="t-h4">{s.title}</h3>
+                  <p>{s.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <a href="/admissions" class="link-arrow">Documents, placement interaction &amp; FAQs <Icon name="arrow-right" /></a>
+      </div>
+      <div data-reveal="fade">
+        <EnquiryForm id="home-enquiry" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Hero ------------------------------------------------------------------- */
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    min-height: max(40rem, 100svh);
+    margin-top: calc(-1 * var(--header-h));
+    padding-top: calc(var(--header-h) + 2rem);
+    background: var(--navy-950);
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .hero__slides {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .hero__slides::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgb(6 17 42 / 0.6) 0%, rgb(6 17 42 / 0.1) 30%, rgb(6 17 42 / 0.35) 60%, rgb(6 17 42 / 0.92) 100%),
+      linear-gradient(90deg, rgb(6 17 42 / 0.7) 0%, rgb(6 17 42 / 0.15) 65%);
+  }
+
+  .hero__slide {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__slide :global(picture),
+  .hero__slide :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero__slide :global(img) {
+    object-fit: cover;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__slide {
+      opacity: 0;
+      animation: hero-fade 28s infinite;
+      animation-delay: calc(var(--i) * 7s);
+    }
+
+    .hero__slide:first-child {
+      animation-name: hero-fade-first;
+    }
+
+    .hero__slide :global(img) {
+      animation: hero-drift 28s linear infinite;
+      animation-delay: calc(var(--i) * 7s);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__slide:not(:first-child) {
+      display: none;
+    }
+  }
+
+  @keyframes hero-fade {
+    0% {
+      opacity: 0;
+    }
+    4%,
+    25% {
+      opacity: 1;
+    }
+    30%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* The first slide is visible immediately on load. */
+  @keyframes hero-fade-first {
+    0%,
+    25% {
+      opacity: 1;
+    }
+    30%,
+    96% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes hero-drift {
+    from {
+      transform: scale(1.1);
+    }
+    30% {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  .hero__grid {
+    display: grid;
+    align-items: end;
+    gap: 2.5rem;
+    padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  @media (min-width: 1080px) {
+    .hero__grid {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+  }
+
+  .hero__content {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+    max-width: 50rem;
+  }
+
+  .hero__content h1 {
+    color: var(--white);
+  }
+
+  .hero__content h1 em {
+    color: var(--gold-300);
+  }
+
+  .hero__lead {
+    max-width: 38rem;
+    color: rgb(255 255 255 / 0.88);
+  }
+
+  .hero__actions {
+    margin-top: 0.5rem;
+  }
+
+  /* The headline is visible from the first frame; only the side card eases in. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__card {
+      animation: rise 1.1s var(--ease-out) 0.4s both;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+
+  .hero__card {
+    position: relative;
+    display: grid;
+    gap: 0.3rem;
+    width: min(100%, 17rem);
+    padding: 1.4rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background: rgb(255 255 255 / 0.1);
+    border: 1px solid rgb(255 255 255 / 0.22);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    color: var(--white);
+    text-decoration: none;
+    transition:
+      background-color 0.3s var(--ease),
+      transform 0.3s var(--ease);
+  }
+
+  .hero__card:hover {
+    background: rgb(255 255 255 / 0.16);
+    transform: translateY(-3px);
+  }
+
+  .hero__card-pulse {
+    position: absolute;
+    top: 1.55rem;
+    right: 1.5rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 0 rgb(74 222 128 / 0.6);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__card-pulse {
+      animation: pulse 2s infinite;
+    }
+  }
+
+  @keyframes pulse {
+    to {
+      box-shadow: 0 0 0 12px rgb(74 222 128 / 0);
+    }
+  }
+
+  .hero__card-kicker {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-300);
+  }
+
+  .hero__card-title {
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    line-height: 1.05;
+    font-weight: 520;
+  }
+
+  .hero__card-text {
+    color: rgb(255 255 255 / 0.8);
+    font-size: 0.95rem;
+  }
+
+  .hero__card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.6rem;
+    font-weight: 650;
+    font-size: 0.92rem;
+  }
+
+  .hero__facts {
+    border-top: 1px solid rgb(255 255 255 / 0.14);
+    background: rgb(6 17 42 / 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 900px) {
+    .facts {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .facts > div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.2rem;
+    padding: 1.3rem 1rem 1.4rem;
+    border-left: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .facts > div:nth-child(odd) {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  @media (min-width: 900px) {
+    .facts > div {
+      padding-inline: 1.5rem;
+    }
+
+    .facts > div:nth-child(odd) {
+      border-left: 1px solid rgb(255 255 255 / 0.12);
+    }
+
+    .facts > div:first-child {
+      border-left: 0;
+      padding-left: 0;
+    }
+  }
+
+  .facts dt {
+    font-size: 0.84rem;
+    color: rgb(255 255 255 / 0.7);
+    line-height: 1.35;
+  }
+
+  .facts dd {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--white);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Why ----------------------------------------------------------------------- */
+  .why__grid {
+    display: grid;
+    gap: clamp(3rem, 6vw, 5rem);
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .why__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+  }
+
+  .why__media {
+    position: relative;
+    padding: 0 0 3.5rem 0;
+  }
+
+  .why__img-main {
+    aspect-ratio: 4 / 4.4;
+    width: 82%;
+    margin-left: auto;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .why__img-small {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 52%;
+    aspect-ratio: 4 / 3;
+    border: 6px solid var(--paper);
+    box-shadow: var(--shadow);
+  }
+
+  .why__badge {
+    position: absolute;
+    top: 8%;
+    left: 2%;
+    display: grid;
+    gap: 0.2rem;
+    width: 11rem;
+    padding: 1.1rem 1.2rem;
+    border-radius: var(--radius);
+    background: var(--navy-900);
+    color: var(--white);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .why__badge-num {
+    font-family: var(--font-display);
+    font-size: 2.3rem;
+    line-height: 1;
+    color: var(--gold-400);
+  }
+
+  .why__badge-text {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: rgb(255 255 255 / 0.82);
+  }
+
+  .pillars {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: clamp(4rem, 8vw, 6rem);
+  }
+
+  @media (min-width: 640px) {
+    .pillars {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .pillars {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .pillar {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+    transition:
+      transform 0.35s var(--ease),
+      box-shadow 0.35s var(--ease),
+      border-color 0.35s var(--ease);
+  }
+
+  .pillar:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+    border-color: transparent;
+  }
+
+  .pillar .icon-badge {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Results ------------------------------------------------------------------ */
+  .results {
+    background:
+      radial-gradient(50rem 30rem at 100% 0%, rgb(36 80 143 / 0.45), transparent 60%),
+      radial-gradient(36rem 26rem at 0% 100%, rgb(226 174 56 / 0.12), transparent 60%),
+      var(--navy-900);
+  }
+
+  .results__grid {
+    display: grid;
+    gap: clamp(3rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .results__grid {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+  }
+
+  .results .lead {
+    color: rgb(255 255 255 / 0.8);
+  }
+
+  .results__bars {
+    display: grid;
+    gap: 1.1rem;
+    margin-top: 2rem !important;
+  }
+
+  .results__bars li {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr auto;
+    align-items: center;
+    gap: 0.4rem 1rem;
+  }
+
+  .results__year {
+    font-weight: 650;
+    color: var(--white);
+    font-size: 0.95rem;
+  }
+
+  .results__bar {
+    height: 10px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.1);
+    overflow: hidden;
+  }
+
+  .results__bar span {
+    display: block;
+    height: 100%;
+    width: var(--w);
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--gold-600), var(--gold-300));
+    transform-origin: left;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .js .results__bar span {
+      transform: scaleX(0);
+      transition: transform 1.6s var(--ease-out) 0.3s;
+    }
+
+    .js .is-in .results__bar span {
+      transform: none;
+    }
+  }
+
+  .results__pct {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--gold-300);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .results__count {
+    grid-column: 2 / -1;
+    font-size: 0.82rem;
+    color: rgb(255 255 255 / 0.6);
+    margin-top: -0.2rem;
+  }
+
+  .results__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 2.25rem !important;
+  }
+
+  .results__stats > div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    padding: 1.4rem 1.5rem;
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 0.05);
+    border: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .results__stats dd {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 1.8rem + 2vw, 3.4rem);
+    line-height: 1;
+    color: var(--white);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .results__stats dt {
+    font-size: 0.9rem;
+    color: rgb(255 255 255 / 0.72);
+  }
+
+  .honour {
+    position: relative;
+    padding: clamp(1.6rem, 3vw, 2.4rem);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(160deg, rgb(255 255 255 / 0.09), rgb(255 255 255 / 0.03));
+    border: 1px solid rgb(239 196 90 / 0.3);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+
+  .honour__head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .honour__head :global(svg) {
+    color: var(--gold-400);
+    flex: none;
+  }
+
+  .honour__kicker {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-300);
+  }
+
+  .honour__title {
+    font-size: 1.6rem;
+    color: var(--white);
+  }
+
+  .honour__list {
+    display: grid;
+    column-gap: 2rem;
+    counter-reset: rank;
+  }
+
+  @media (min-width: 560px) {
+    .honour__list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .honour__list li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px dashed rgb(255 255 255 / 0.12);
+    font-size: 0.95rem;
+  }
+
+  .honour__name {
+    color: rgb(255 255 255 / 0.9);
+  }
+
+  .honour__score {
+    font-weight: 700;
+    color: var(--gold-300);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .honour__list li.is-first {
+    grid-column: 1 / -1;
+    padding: 0.9rem 1rem;
+    margin: 0.5rem 0;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(90deg, rgb(239 196 90 / 0.22), rgb(239 196 90 / 0.04));
+  }
+
+  .honour__list li.is-first .honour__name {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--white);
+  }
+
+  .honour__list li.is-first .honour__score {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+  }
+
+  .honour__foot {
+    margin-top: 1.25rem;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: rgb(255 255 255 / 0.6);
+  }
+
+  /* Stages ------------------------------------------------------------------- */
+  .stages {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .stages {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .stages {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .stage-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 34rem;
+    height: 100%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    color: var(--white);
+    text-decoration: none;
+    isolation: isolate;
+    background: var(--navy-900);
+  }
+
+  .stage-card__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .stage-card__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease-out);
+  }
+
+  .stage-card__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgb(6 17 42 / 0) 25%, rgb(6 17 42 / 0.65) 55%, rgb(6 17 42 / 0.95) 100%);
+  }
+
+  .stage-card:hover .stage-card__media :global(img) {
+    transform: scale(1.06);
+  }
+
+  .stage-card__num {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.4rem;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    background: rgb(6 17 42 / 0.45);
+    backdrop-filter: blur(6px);
+  }
+
+  .stage-card__body {
+    display: grid;
+    gap: 0.6rem;
+    padding: 1.6rem;
+  }
+
+  .stage-card__grades {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-300);
+  }
+
+  .stage-card__title {
+    font-size: 1.85rem;
+    color: var(--white);
+  }
+
+  .stage-card__text {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: rgb(255 255 255 / 0.82);
+  }
+
+  .stage-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 650;
+    color: var(--gold-300);
+  }
+
+  .stage-card__link :global(svg) {
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .stage-card:hover .stage-card__link :global(svg) {
+    transform: translateX(4px);
+  }
+
+  /* Bento -------------------------------------------------------------------- */
+  .bento {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 720px) {
+    .bento {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 17rem;
+    }
+
+    .bento__item--wide,
+    .bento__item--last {
+      grid-column: span 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .bento {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 16.5rem;
+    }
+
+    .bento__item--wide {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .bento__item--last {
+      grid-column: auto;
+    }
+  }
+
+  .bento__item {
+    position: relative;
+    margin: 0;
+    min-height: 16rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .bento__item :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .bento figure.bento__item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgb(6 17 42 / 0.85));
+    pointer-events: none;
+  }
+
+  .bento figcaption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    display: grid;
+    gap: 0.3rem;
+    padding: 1.4rem 1.5rem;
+    color: var(--white);
+  }
+
+  .bento__kicker {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-300);
+  }
+
+  .bento__title {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .bento__item--wide .bento__title {
+    font-size: clamp(1.7rem, 1.2rem + 1.6vw, 2.6rem);
+  }
+
+  .bento__text {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: rgb(255 255 255 / 0.85);
+  }
+
+  .bento__rooms {
+    display: grid;
+    align-content: center;
+    gap: 0.9rem;
+    padding: 1.75rem;
+    background: var(--navy-900);
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  .bento__rooms .chip {
+    background: rgb(255 255 255 / 0.06);
+    border-color: rgb(255 255 255 / 0.18);
+    color: var(--white);
+  }
+
+  .bento__rooms .chip :global(svg) {
+    color: var(--gold-400);
+  }
+
+  .bento__rooms-title {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    line-height: 1.2;
+    color: var(--white);
+  }
+
+  .bento__rooms-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* Leaders ------------------------------------------------------------------ */
+  .leaders {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .leaders {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .leaders {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .leader-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    height: 100%;
+    text-decoration: none;
+  }
+
+  .leader-card__media {
+    aspect-ratio: 4 / 5;
+    margin-bottom: 0.75rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .leader-card__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease-out);
+  }
+
+  .leader-card:hover .leader-card__media :global(img) {
+    transform: scale(1.04);
+  }
+
+  .leader-card__role {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--red-600);
+  }
+
+  .leader-card__name {
+    font-size: 1.4rem;
+    line-height: 1.2;
+  }
+
+  .leader-card__quote {
+    flex: 1;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .leader-card .link-arrow {
+    margin-top: 0.4rem;
+  }
+
+  /* Life --------------------------------------------------------------------- */
+  .life {
+    background:
+      radial-gradient(48rem 28rem at 0% 0%, rgb(196 30 51 / 0.18), transparent 60%),
+      radial-gradient(48rem 28rem at 100% 100%, rgb(36 80 143 / 0.4), transparent 60%),
+      var(--navy-950);
+    padding-bottom: 0;
+  }
+
+  .life .lead {
+    color: rgb(255 255 255 / 0.8);
+  }
+
+  .life__grid {
+    display: grid;
+    gap: clamp(3rem, 6vw, 5rem);
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .life__grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    }
+  }
+
+  .houses {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border-radius: var(--radius-xl);
+    background: rgb(255 255 255 / 0.04);
+    border: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .houses__kicker {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-300);
+    margin-bottom: 1.25rem;
+  }
+
+  .houses__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+
+  @media (min-width: 560px) {
+    .houses__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .house {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    padding: 1.4rem 0.5rem 1.2rem;
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--house) 32%, transparent), color-mix(in srgb, var(--house) 8%, transparent));
+    border: 1px solid color-mix(in srgb, var(--house) 55%, transparent);
+    transition: transform 0.3s var(--ease);
+  }
+
+  .house:hover {
+    transform: translateY(-4px);
+  }
+
+  .house__letter {
+    font-family: var(--font-display);
+    font-size: 3.2rem;
+    line-height: 1;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .house__name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.85);
+  }
+
+  .houses__note {
+    margin-top: 1.25rem;
+    font-size: 0.92rem;
+    color: rgb(255 255 255 / 0.7);
+  }
+
+  .marquee {
+    margin-top: clamp(3.5rem, 7vw, 5.5rem);
+    padding-bottom: clamp(3.5rem, 7vw, 5.5rem);
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee__track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+  }
+
+  .marquee__track li {
+    flex: none;
+  }
+
+  .marquee__track :global(img) {
+    height: clamp(10rem, 18vw, 16rem);
+    width: auto;
+    border-radius: var(--radius);
+    object-fit: cover;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .marquee__track {
+      animation: marquee 70s linear infinite;
+    }
+
+    .marquee:hover .marquee__track {
+      animation-play-state: paused;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      overflow-x: auto;
+    }
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(calc(-50% - 0.5rem));
+    }
+  }
+
+  /* Events ------------------------------------------------------------------- */
+  .events__all {
+    justify-self: end;
+  }
+
+  .events__list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .events__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .events__list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .event {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    padding: 1.4rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+
+  .event[hidden] {
+    display: none;
+  }
+
+  .event__date {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 4.2rem;
+    padding: 0.6rem 0;
+    border-radius: 14px;
+    background: var(--navy-900);
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .event__day {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 560;
+  }
+
+  .event__month {
+    margin-top: 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-400);
+  }
+
+  .event__weekday {
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .event__title {
+    margin-top: 0.2rem;
+    font-size: 1.15rem;
+    line-height: 1.25;
+  }
+
+  .event__who {
+    margin-top: 0.35rem;
+    font-size: 0.86rem;
+    color: var(--red-600);
+    font-weight: 560;
+  }
+
+  /* Admissions -------------------------------------------------------------- */
+  .admit__grid {
+    display: grid;
+    gap: clamp(3rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .admit__grid {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    }
+  }
+
+  .admit__steps {
+    display: grid;
+    gap: 1.4rem;
+    margin-block: 1.75rem 0.5rem !important;
+  }
+
+  .admit__steps li {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr;
+    gap: 1rem;
+  }
+
+  .admit__steps p {
+    margin-top: 0.25rem;
+    font-size: 0.97rem;
+  }
+
+  .admit__num {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1.5px solid var(--line-2);
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--red-600);
+  }
+</style>
+
+<script>
+  // Hide calendar events that have already happened (the page may be cached for weeks).
+  const section = document.querySelector<HTMLElement>('[data-events]');
+  if (section) {
+    const today = new Date();
+    const iso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    const items = [...section.querySelectorAll<HTMLElement>('[data-date]')];
+    const future = items.filter((el) => (el.dataset.date ?? '') >= iso);
+    items.forEach((el) => (el.hidden = true));
+    future.slice(0, 4).forEach((el) => (el.hidden = false));
+    if (future.length === 0) section.hidden = true;
+  }
+</script>

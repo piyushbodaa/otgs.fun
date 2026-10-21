@@ -1,0 +1,371 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Icon from '@/components/Icon.astro';
+import { disclosures, generalInfo } from '@/data/disclosures';
+import { boardResults } from '@/data/site';
+
+const crumbs = [{ label: 'Mandatory Disclosure', href: '/mandatory-disclosure' }];
+---
+
+<BaseLayout
+  title="Mandatory Public Disclosure (CBSE)"
+  description="CBSE mandatory public disclosure for Oxford The Global School, Nanded (Affiliation No. 1130737): affiliation, safety certificates, fee structure, academic calendar, SMC, PTA and board results."
+  crumbs={crumbs}
+>
+  <section class="page-head">
+    <div class="container">
+      <nav aria-label="Breadcrumb" class="crumbs">
+        <ol role="list">
+          <li><a href="/">Home</a></li>
+          <li><Icon name="chevron-right" size={14} /><span aria-current="page">Mandatory Disclosure</span></li>
+        </ol>
+      </nav>
+      <p class="eyebrow">As per CBSE norms</p>
+      <h1 class="t-h1">Mandatory public <em>disclosure</em></h1>
+      <p class="lead">
+        This section compiles all mandatory public disclosure documents of Oxford The Global School, Nanded. Documents open from the school’s
+        official website.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container md">
+      <div class="md__info">
+        <h2 class="t-h4">General information</h2>
+        <dl class="info">
+          {
+            generalInfo.map((g) => (
+              <div>
+                <dt>{g.label}</dt>
+                <dd>{g.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <h2 class="t-h4 md__results-title">Board examination results · Class X</h2>
+        <div class="table-wrap" role="region" aria-label="Class X results for the last three years" tabindex="0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Year</th>
+                <th scope="col">Appeared</th>
+                <th scope="col">Passed</th>
+                <th scope="col">Pass %</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                boardResults.map((r) => (
+                  <tr>
+                    <th scope="row">{r.year}</th>
+                    <td>{r.appeared}</td>
+                    <td>{r.passed}</td>
+                    <td>
+                      <strong>{r.percent.toFixed(2)}%</strong>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="md__docs">
+        <div class="docs-head">
+          <h2 class="t-h4">Documents</h2>
+          <label class="search">
+            <Icon name="search" size={18} />
+            <span class="sr-only">Search documents</span>
+            <input type="search" placeholder="Search documents" data-doc-search autocomplete="off" />
+          </label>
+        </div>
+        <ol class="doc-list" role="list" data-doc-list>
+          {
+            disclosures.map((d) => (
+              <li class="doc" data-title={d.title.toLowerCase()}>
+                <span class="doc__no">{String(d.no).padStart(2, '0')}</span>
+                <span class="doc__body">
+                  <span class="doc__title">{d.title}</span>
+                  <span class="doc__group">{d.group}</span>
+                </span>
+                <span class="doc__actions">
+                  <a href={d.url} target="_blank" rel="noopener" class="btn btn--outline btn--sm">
+                    <Icon name="file" /> View PDF<span class="sr-only">: {d.title} (opens in a new tab)</span>
+                  </a>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="doc-empty" data-doc-empty hidden>
+          No documents match your search. Try a different keyword.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-block: clamp(3rem, 7vw, 5rem) clamp(1rem, 3vw, 2rem);
+    background:
+      radial-gradient(40rem 18rem at 100% 0%, rgb(226 174 56 / 0.18), transparent 70%),
+      var(--paper);
+  }
+
+  .page-head .container {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
+  .page-head .lead {
+    max-width: 44rem;
+  }
+
+  .crumbs ol {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0;
+    list-style: none;
+    font-size: 0.85rem;
+    color: var(--ink-3);
+  }
+
+  .crumbs li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .crumbs a {
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    text-decoration: underline;
+  }
+
+  .crumbs [aria-current] {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .md {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 1080px) {
+    .md {
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      align-items: start;
+    }
+
+    .md__info {
+      position: sticky;
+      top: calc(var(--header-h) + 1.5rem);
+    }
+  }
+
+  .md__info,
+  .md__docs {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border-radius: var(--radius-xl);
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+
+  .info {
+    display: grid;
+    margin-top: 1rem;
+  }
+
+  .info > div {
+    display: grid;
+    gap: 0.2rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (min-width: 560px) {
+    .info > div {
+      grid-template-columns: 11rem 1fr;
+      gap: 1rem;
+    }
+  }
+
+  .info dt {
+    font-size: 0.85rem;
+    font-weight: 650;
+    color: var(--ink-3);
+  }
+
+  .info dd {
+    color: var(--ink);
+    font-weight: 560;
+  }
+
+  .md__results-title {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .table thead th {
+    background: var(--navy-900);
+    color: var(--white);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .table tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+
+  .table strong {
+    color: var(--red-600);
+  }
+
+  .docs-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1 1 16rem;
+    max-width: 22rem;
+  }
+
+  .search :global(svg) {
+    position: absolute;
+    left: 0.9rem;
+    color: var(--ink-3);
+    pointer-events: none;
+  }
+
+  .search input {
+    width: 100%;
+    min-height: 2.9rem;
+    padding: 0.6rem 1rem 0.6rem 2.6rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--line-2);
+    background: var(--paper);
+  }
+
+  .search input:focus {
+    outline: none;
+    border-color: var(--navy-700);
+    box-shadow: 0 0 0 4px rgb(36 80 143 / 0.15);
+  }
+
+  .doc-list {
+    display: grid;
+  }
+
+  .doc {
+    display: grid;
+    grid-template-columns: 2.25rem 1fr;
+    gap: 0.75rem 1rem;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .doc[hidden] {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .doc {
+      grid-template-columns: 2.25rem 1fr auto;
+    }
+  }
+
+  .doc__no {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--gold-700);
+  }
+
+  .doc__body {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .doc__title {
+    font-weight: 650;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .doc__group {
+    font-size: 0.82rem;
+    color: var(--ink-3);
+  }
+
+  .doc__actions {
+    display: flex;
+    gap: 0.5rem;
+    grid-column: 2;
+  }
+
+  @media (min-width: 640px) {
+    .doc__actions {
+      grid-column: auto;
+    }
+  }
+
+  .doc-empty {
+    padding: 2rem 0 1rem;
+    text-align: center;
+    color: var(--ink-3);
+  }
+</style>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>('[data-doc-search]');
+  const items = [...document.querySelectorAll<HTMLElement>('[data-doc-list] > li')];
+  const empty = document.querySelector<HTMLElement>('[data-doc-empty]');
+  input?.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let shown = 0;
+    items.forEach((li) => {
+      const match = !q || (li.dataset.title ?? '').includes(q);
+      li.hidden = !match;
+      if (match) shown++;
+    });
+    if (empty) empty.hidden = shown > 0;
+  });
+</script>

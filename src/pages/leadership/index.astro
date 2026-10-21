@@ -1,0 +1,127 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { leaders } from '@/data/leaders';
+import hero from '@/assets/photos/reception.jpg';
+
+const crumbs = [{ label: 'Leadership', href: '/leadership' }];
+---
+
+<BaseLayout
+  title="Leadership"
+  description="Messages from the Chairman, Secretary, Managing Director and Director of Operations of Oxford The Global School, Nanded."
+  image={hero}
+  header="overlay"
+  crumbs={crumbs}
+>
+  <PageHero
+    image={hero}
+    alt="The reception lobby of Oxford The Global School"
+    eyebrow="Leadership"
+    title="Guiding lights <em>of learning</em>"
+    intro="Passionate leaders committed to nurturing bright minds and building a foundation of knowledge, values and lifelong learning."
+    crumbs={crumbs}
+    position="50% 45%"
+  />
+
+  <section class="section">
+    <div class="container">
+      <ol class="leader-rows" role="list">
+        {
+          leaders.map((l, i) => (
+            <li class:list={['leader-row', { 'leader-row--flip': i % 2 === 1 }]} data-reveal>
+              <div class="media leader-row__media">
+                <Image src={l.office} alt={`${l.name}, ${l.role}, at their desk`} widths={[560, 840, 1120]} sizes="(min-width: 960px) 48vw, 92vw" />
+              </div>
+              <div class="leader-row__body">
+                <p class="eyebrow">{l.role}</p>
+                <h2 class="t-h3">{l.name}</h2>
+                {l.honour && (
+                  <p class="leader-row__honour">
+                    <Icon name="award" size={18} />
+                    {l.honour}
+                  </p>
+                )}
+                <blockquote class="leader-row__quote">
+                  <p>“{l.headline}”</p>
+                </blockquote>
+                <p class="leader-row__excerpt">{l.message[0]}</p>
+                <a href={`/leadership/${l.slug}`} class="btn btn--outline">
+                  Read the full message <Icon name="arrow-right" class="arrow" />
+                </a>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .leader-rows {
+    display: grid;
+    gap: clamp(4rem, 9vw, 7rem);
+  }
+
+  .leader-row {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .leader-row {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 5rem);
+    }
+
+    .leader-row--flip .leader-row__media {
+      order: 2;
+    }
+  }
+
+  .leader-row__media {
+    aspect-ratio: 3 / 2;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .leader-row__body {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
+  .leader-row__honour {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: var(--gold-100);
+    color: #7a5a10;
+    font-size: 0.86rem;
+    font-weight: 650;
+  }
+
+  .leader-row__quote {
+    margin-top: 0.5rem;
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--red-600);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.2rem, 1rem + 0.6vw, 1.45rem);
+    line-height: 1.45;
+    color: var(--ink);
+  }
+
+  .leader-row__excerpt {
+    color: var(--ink-2);
+    margin-bottom: 0.5rem;
+  }
+</style>
