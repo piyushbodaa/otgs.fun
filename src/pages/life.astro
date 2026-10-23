@@ -13,10 +13,11 @@ import camp1 from '@/assets/photos/summer-camp-1.jpg';
 import camp2 from '@/assets/photos/summer-camp-2.jpg';
 import camp3 from '@/assets/photos/summer-camp-3.jpg';
 import camp4 from '@/assets/photos/summer-camp-4.jpg';
-import kids from '@/assets/gallery/little-learners/03.jpg';
 
 const crumbs = [{ label: 'Life at OTGS', href: '/life' }];
 const covers = albums.map((a) => ({ ...a, cover: photosByAlbum(a.id)[0], count: photosByAlbum(a.id).length }));
+// Assembly, class, yoga, playtime: a school day in four photos.
+const day = [1, 9, 4, 3].map((n) => photosByAlbum('moments')[n - 1]).filter(Boolean);
 ---
 
 <BaseLayout
@@ -66,9 +67,15 @@ const covers = albums.map((a) => ({ ...a, cover: photosByAlbum(a.id)[0], count: 
         </div>
       </div>
       <div class="day__media" data-reveal="fade">
-        <div class="media">
-          <Image src={kids} alt="Pre-primary children dressed in yellow celebrating Yellow Day in their decorated classroom" widths={[480, 720, 960]} sizes="(min-width: 960px) 42vw, 92vw" />
-        </div>
+        <ul class="day__collage" role="list">
+          {
+            day.map((p) => (
+              <li class="media">
+                <Image src={p.image} alt={p.caption ?? ''} widths={[280, 420, 560]} sizes="(min-width: 960px) 21vw, 46vw" />
+              </li>
+            ))
+          }
+        </ul>
         <p class="day__quote">“School life at OTGS radiates happiness, purpose and the promise of excellence.”</p>
       </div>
     </div>
@@ -238,7 +245,7 @@ const covers = albums.map((a) => ({ ...a, cover: photosByAlbum(a.id)[0], count: 
           covers.map((a, i) => (
             <li data-reveal style={`--d: ${i * 80}`}>
               <a href={`/gallery#${a.id}`} class="album">
-                <Image src={a.cover.image} alt="" widths={[320, 480, 640]} sizes="(min-width: 1080px) 19vw, (min-width: 640px) 30vw, 46vw" />
+                <Image src={a.cover.image} alt="" widths={[320, 480, 640]} sizes="(min-width: 1080px) 16vw, (min-width: 640px) 30vw, 46vw" />
                 <span class="album__body">
                   <span class="album__name">{a.name}</span>
                   <span class="album__count">{a.count} photos</span>
@@ -290,9 +297,16 @@ const covers = albums.map((a) => ({ ...a, cover: photosByAlbum(a.id)[0], count: 
     }
   }
 
-  .day__media .media {
+  .day__collage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .day__collage .media {
     aspect-ratio: 1;
-    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
   }
 
   .day__quote {
@@ -606,7 +620,7 @@ const covers = albums.map((a) => ({ ...a, cover: photosByAlbum(a.id)[0], count: 
 
   @media (min-width: 1080px) {
     .albums {
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
     }
   }
 

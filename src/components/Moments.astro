@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { photosByAlbum } from '@/data/gallery';
+import { site } from '@/data/site';
+
+const moments = photosByAlbum('moments').slice(0, 8);
+const instagram = site.socials.find((s) => s.icon === 'instagram');
+const handle = instagram ? new URL(instagram.href).pathname.replaceAll('/', '') : '';
+// A slight, uneven tilt makes the grid read like prints pinned to a board.
+const tilts = [-1.6, 1.2, -0.8, 1.8, 1, -1.4, 0.6, -1.1];
+---
+
+<section class="section moments" aria-labelledby="moments-title">
+  <div class="container">
+    <SectionHead
+      eyebrow="From our Instagram"
+      title="Real days, <em>real smiles</em>"
+      lead="Assemblies and classrooms, playtime and celebrations: a few recent moments from campus, just as the school shares them."
+      align="split"
+      id="moments-title"
+    >
+      <div class="cluster moments__links">
+        {
+          instagram && (
+            <a href={instagram.href} class="btn btn--outline btn--sm" target="_blank" rel="noopener">
+              <Icon name="instagram" /> @{handle}
+            </a>
+          )
+        }
+        <a href="/gallery#moments" class="link-arrow">See them all <Icon name="arrow-right" /></a>
+      </div>
+    </SectionHead>
+
+    <ul class="moments__grid rail-mobile" role="list">
+      {
+        moments.map((m, i) => (
+          <li class="moment" data-reveal style={`--d: ${Math.floor(i / 2) * 90}; --tilt: ${tilts[i % tilts.length]}deg`}>
+            <figure class="moment__card">
+              <Image src={m.image} alt="" widths={[320, 480, 640]} sizes="(min-width: 1080px) 22vw, (min-width: 640px) 30vw, 75vw" />
+              <figcaption>{m.caption}</figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Under the lead, in the heading's right-hand column. */
+  @media (min-width: 960px) {
+    .moments__links {
+      grid-column: 2;
+    }
+  }
+
+  .moments__grid {
+    columns: 3;
+    column-gap: 1.5rem;
+  }
+
+  @media (min-width: 1080px) {
+    .moments__grid {
+      columns: 4;
+    }
+  }
+
+  .moment {
+    break-inside: avoid;
+    padding-bottom: 1.6rem;
+  }
+
+  .moment__card {
+    margin: 0;
+    padding: 0.6rem 0.6rem 0.85rem;
+    border-radius: 6px;
+    background: var(--white);
+    box-shadow:
+      0 1px 2px rgb(13 22 38 / 0.08),
+      0 14px 30px -16px rgb(13 22 38 / 0.4);
+    transform: rotate(var(--tilt, 0deg));
+    transition:
+      transform 0.4s var(--ease),
+      box-shadow 0.4s var(--ease);
+  }
+
+  .moment__card:hover {
+    transform: rotate(0deg) translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .moment__card :global(img) {
+    width: 100%;
+    border-radius: 3px;
+  }
+
+  .moment__card figcaption {
+    padding: 0.7rem 0.2rem 0;
+    font-size: 0.86rem;
+    line-height: 1.4;
+    color: var(--ink-2);
+  }
+
+  /* On phones the prints become a straight, swipeable row. */
+  @media (max-width: 639px) {
+    .moment {
+      padding-bottom: 0.75rem;
+    }
+
+    .moment__card {
+      transform: none;
+    }
+  }
+</style>

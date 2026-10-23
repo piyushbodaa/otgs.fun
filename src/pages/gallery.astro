@@ -16,7 +16,8 @@ const items = await Promise.all(
     return {
       ...p,
       albumName: album.name,
-      alt: `${album.alt} (photo ${p.index} of ${total})`,
+      alt: p.caption ?? `${album.alt} (photo ${p.index} of ${total})`,
+      label: p.caption ?? `${album.name} · ${p.index}`,
       full: full.src,
       ratio: p.image.width / p.image.height,
     };
@@ -61,7 +62,7 @@ const items = await Promise.all(
         {
           items.map((p, i) => (
             <li class="tile" data-album={p.album} style={`--r: ${p.ratio.toFixed(4)}`}>
-              <a href={p.full} class="tile__link" data-index={i} data-caption={`${p.albumName} · ${p.index}`} aria-label={`Open photo: ${p.alt}`}>
+              <a href={p.full} class="tile__link" data-index={i} data-caption={p.label} aria-label={`Open photo: ${p.alt}`}>
                 <Image src={p.image} alt={p.alt} widths={[240, 360, 540, 720]} sizes="(min-width: 1080px) 22vw, (min-width: 640px) 32vw, 42vw" loading={i < 6 ? 'eager' : 'lazy'} />
                 <span class="tile__zoom" aria-hidden="true">
                   <Icon name="maximize" size={18} />

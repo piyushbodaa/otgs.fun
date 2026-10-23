@@ -28,6 +28,7 @@ Requires Node 22.12 or newer.
 | Admission steps, documents, placement table, FAQs | `src/data/admissions.ts` |
 | Upcoming events (from the Academic Calendar) | `src/data/events.ts` |
 | Mandatory disclosure PDFs | `src/data/disclosures.ts` (links to the official site) |
+| Gallery albums and photo captions | `src/data/gallery.ts` |
 | Pages | `src/pages/` |
 | Design tokens (colours, type, buttons) | `src/styles/global.css` |
 | Photos | `src/assets/` (Astro converts them to AVIF/WebP at build time) |
@@ -41,6 +42,9 @@ Requires Node 22.12 or newer.
 - **Gallery photos:** drop numbered photos (`22.jpg`, `23.jpg`, …; JPEG, PNG or WebP) into an album folder under
   `src/assets/gallery/`. To add a new album, create the folder and add an entry to `albums` in `src/data/gallery.ts`
   (the build stops with a message naming any folder that has no entry).
+- **Everyday moments:** the first eight photos in `src/assets/gallery/moments/` (recent photos from the school's
+  Instagram) appear on the homepage as "Real days, real smiles", and the first, ninth, fourth and third make up the
+  "A day at OTGS" collage on the Life page. Give each one a caption in `captions` in `src/data/gallery.ts`.
 
 ## How enquiries work
 
