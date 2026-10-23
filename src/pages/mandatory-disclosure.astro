@@ -50,7 +50,7 @@ const crumbs = [{ label: 'Mandatory Disclosure', href: '/mandatory-disclosure' }
             <thead>
               <tr>
                 <th scope="col">Year</th>
-                <th scope="col">Appeared</th>
+                <th scope="col" class="table__appeared">Appeared</th>
                 <th scope="col">Passed</th>
                 <th scope="col">Pass %</th>
               </tr>
@@ -60,8 +60,10 @@ const crumbs = [{ label: 'Mandatory Disclosure', href: '/mandatory-disclosure' }
                 boardResults.map((r) => (
                   <tr>
                     <th scope="row">{r.year}</th>
-                    <td>{r.appeared}</td>
-                    <td>{r.passed}</td>
+                    <td class="table__appeared">{r.appeared}</td>
+                    <td>
+                      {r.passed}<span class="table__of"> of {r.appeared}</span>
+                    </td>
                     <td>
                       <strong>{r.percent.toFixed(2)}%</strong>
                     </td>
@@ -174,7 +176,7 @@ const crumbs = [{ label: 'Mandatory Disclosure', href: '/mandatory-disclosure' }
 
   .md__info,
   .md__docs {
-    padding: clamp(1.5rem, 3vw, 2.25rem);
+    padding: clamp(1rem, 3vw, 2.25rem);
     border-radius: var(--radius-xl);
     background: var(--white);
     border: 1px solid var(--line);
@@ -241,6 +243,39 @@ const crumbs = [{ label: 'Mandatory Disclosure', href: '/mandatory-disclosure' }
     font-size: 0.78rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+  }
+
+  .table tbody th {
+    white-space: nowrap;
+  }
+
+  .table__of {
+    display: none;
+  }
+
+  /* Keep the table, Pass % included, on screen on phones: tighter cells, and
+     on the narrowest screens "Appeared" folds into "Passed" (198 of 199). */
+  @media (max-width: 520px) {
+    .table th,
+    .table td {
+      padding: 0.75rem 0.5rem;
+    }
+
+    .table thead th {
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .table__appeared {
+      display: none;
+    }
+
+    .table__of {
+      display: inline;
+      color: var(--ink-3);
+    }
   }
 
   .table tbody tr:last-child > * {

@@ -1,6 +1,6 @@
 import type { ImageMetadata } from 'astro';
 
-const files = import.meta.glob<{ default: ImageMetadata }>('/src/assets/gallery/*/*.jpg', { eager: true });
+const files = import.meta.glob<{ default: ImageMetadata }>('/src/assets/gallery/*/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true });
 
 export const albums = [
   {
@@ -37,11 +37,17 @@ export const albums = [
 
 export type AlbumId = (typeof albums)[number]['id'];
 
+const albumOrder = (id: string) => albums.findIndex((a) => a.id === id);
+
+// Photos sort by album, then by file name (01.jpg, 02.jpg, … 10.jpg); `index` is
+// the photo's 1-based position within its album.
 export const photos = Object.entries(files)
   .map(([path, mod]) => {
-    const [, album, file] = path.match(/gallery\/([^/]+)\/(\d+)\.jpg$/) ?? [];
-    return { album: album as AlbumId, index: Number(file), image: mod.default };
+    const [, album = '', file = ''] = path.match(/gallery\/([^/]+)\/([^/]+)$/) ?? [];
+    if (albumOrder(album) < 0) throw new Error(`Gallery folder "${album}" has no entry in albums (src/data/gallery.ts).`);
+    return { album: album as AlbumId, file, image: mod.default };
   })
-  .sort((a, b) => albums.findIndex((x) => x.id === a.album) - albums.findIndex((x) => x.id === b.album) || a.index - b.index);
+  .sort((a, b) => albumOrder(a.album) - albumOrder(b.album) || a.file.localeCompare(b.file, 'en', { numeric: true }))
+  .map(({ album, image }, i, all) => ({ album, image, index: all.slice(0, i + 1).filter((p) => p.album === album).length }));
 
 export const photosByAlbum = (id: AlbumId) => photos.filter((p) => p.album === id);

@@ -658,14 +658,23 @@ const crumbs = [{ label: 'Academics', href: '/academics' }];
 
 <script>
   // Highlight the stage tab for the stage currently in view.
+  const bar = document.querySelector<HTMLElement>('.stage-tabs');
   const tabs = [...document.querySelectorAll<HTMLAnchorElement>('.stage-tabs a')];
   const targets = tabs.map((a) => document.querySelector<HTMLElement>(a.hash)).filter(Boolean) as HTMLElement[];
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if ('IntersectionObserver' in window && targets.length) {
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (!e.isIntersecting) continue;
-          tabs.forEach((a) => a.classList.toggle('is-active', a.hash === `#${e.target.id}`));
+          tabs.forEach((a) => {
+            const active = a.hash === `#${e.target.id}`;
+            a.classList.toggle('is-active', active);
+            // On phones the bar scrolls sideways; keep the active tab in view.
+            if (active && bar && bar.scrollWidth > bar.clientWidth) {
+              bar.scrollTo({ left: a.offsetLeft - (bar.clientWidth - a.offsetWidth) / 2, behavior: reduced ? 'auto' : 'smooth' });
+            }
+          });
         }
       },
       { rootMargin: '-45% 0px -50% 0px' },

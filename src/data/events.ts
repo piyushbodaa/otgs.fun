@@ -1,6 +1,7 @@
 /** School activities from the official Academic Calendar 2026–27 (public holidays omitted). */
 export type SchoolEvent = { date: string; title: string; who?: string };
 
+export const academicCalendarYear = '2026–27';
 export const academicCalendarPdf = 'https://oxfordtheglobalschool.com/mpd/10-Academic-Calender-2026-27.pdf';
 
 export const events: SchoolEvent[] = [

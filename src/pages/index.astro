@@ -10,7 +10,7 @@ import { stages, pillars } from '@/data/academics';
 import { facilities } from '@/data/life';
 import { houses, activities } from '@/data/life';
 import { leaders } from '@/data/leaders';
-import { events, academicCalendarPdf } from '@/data/events';
+import { events, academicCalendarPdf, academicCalendarYear } from '@/data/events';
 import { steps } from '@/data/admissions';
 import { photos } from '@/data/gallery';
 
@@ -31,9 +31,13 @@ const slides = [
 
 const latest = boardResults[boardResults.length - 1];
 const above95 = toppers.filter((t) => t.score >= 95).length;
+const topScore = Math.max(...toppers.map((t) => t.score));
+const topDecimals = String(topScore).split('.')[1]?.length ?? 0;
 
+// Every remaining event is rendered: the site is only rebuilt on deploy, so the
+// script at the bottom picks the next four by the visitor's date.
 const today = new Date().toISOString().slice(0, 10);
-const upcoming = events.filter((e) => e.date >= today).slice(0, 8);
+const upcoming = events.filter((e) => e.date >= today);
 const fmtDay = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit' });
 const fmtMonth = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { month: 'short' });
 const fmtWeekday = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { weekday: 'long' });
@@ -200,7 +204,7 @@ const strip = [
         <dl class="results__stats">
           <div>
             <dt>Top score, {latest.year}</dt>
-            <dd><span data-count="99">99</span>%</dd>
+            <dd><span data-count={topScore} data-decimals={topDecimals}>{topScore.toFixed(topDecimals)}</span>%</dd>
           </div>
           <div>
             <dt>Students scored 95% or more</dt>
@@ -415,7 +419,7 @@ const strip = [
         <div class="container">
           <SectionHead eyebrow="On the calendar" title="Coming up <em>at OTGS</em>" align="split" id="events-title">
             <a href={academicCalendarPdf} class="link-arrow events__all" target="_blank" rel="noopener">
-              Full academic calendar 2026–27 <Icon name="arrow-up-right" />
+              Full academic calendar {academicCalendarYear} <Icon name="arrow-up-right" />
             </a>
           </SectionHead>
           <ol class="events__list" role="list">
@@ -1676,7 +1680,10 @@ const strip = [
     const items = [...section.querySelectorAll<HTMLElement>('[data-date]')];
     const future = items.filter((el) => (el.dataset.date ?? '') >= iso);
     items.forEach((el) => (el.hidden = true));
-    future.slice(0, 4).forEach((el) => (el.hidden = false));
+    future.slice(0, 4).forEach((el, i) => {
+      el.hidden = false;
+      el.style.setProperty('--d', String(i * 90));
+    });
     if (future.length === 0) section.hidden = true;
   }
 </script>

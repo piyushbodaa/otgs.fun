@@ -43,7 +43,7 @@ const items = await Promise.all(
 
   <section class="section gallery-section" aria-label="Photo gallery">
     <div class="container">
-      <div class="filters" role="toolbar" aria-label="Filter photos by album" data-filters>
+      <div class="filters" role="group" aria-label="Filter photos by album" data-filters>
         <button type="button" class="filter" aria-pressed="true" data-filter="all">
           All <span>{items.length}</span>
         </button>
@@ -238,6 +238,11 @@ const items = await Promise.all(
 
   .lightbox::backdrop {
     background: rgb(4 10 24 / 0.8);
+  }
+
+  /* Stop the page behind the viewer from scrolling. */
+  :global(html:has(.lightbox[open])) {
+    overflow: hidden;
   }
 
   .lightbox[open] {

@@ -77,7 +77,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="site-footer__bottom">
-      <p>© {year} {site.name}, {site.city}. All rights reserved.</p>
+      <p>© <span data-year>{year}</span> {site.name}, {site.city}. All rights reserved.</p>
       <p>
         Lovingly redesigned by an OTGS alumnus ·
         <a href={site.repoUrl} target="_blank" rel="noopener">Open source</a> · Official site:
@@ -102,7 +102,8 @@ const year = new Date().getFullYear();
   .site-footer {
     position: relative;
     background: var(--navy-950);
-    padding-block: clamp(4rem, 8vw, 6rem) 2rem;
+    /* The bottom padding keeps the last line clear of the floating WhatsApp button. */
+    padding-block: clamp(4rem, 8vw, 6rem) calc(3.6rem + clamp(1rem, 3vw, 1.75rem) + 1rem);
     overflow: hidden;
   }
 
@@ -318,6 +319,7 @@ const year = new Date().getFullYear();
   /* With JS, the button waits until the visitor scrolls past the first screen. */
   :global(.js) .wa-fab:not([data-visible]) {
     opacity: 0;
+    visibility: hidden;
     transform: translateY(16px) scale(0.9);
     pointer-events: none;
   }
@@ -326,6 +328,7 @@ const year = new Date().getFullYear();
     transition:
       opacity 0.35s var(--ease),
       transform 0.35s var(--ease),
+      visibility 0.35s,
       background-color 0.25s var(--ease);
   }
 </style>
@@ -333,8 +336,17 @@ const year = new Date().getFullYear();
 <script>
   const fab = document.querySelector<HTMLElement>('.wa-fab');
   if (fab) {
-    const update = () => fab.toggleAttribute('data-visible', window.scrollY > window.innerHeight * 0.6);
+    // Show it past the first screen, or near the end of pages too short to scroll that far.
+    const update = () => {
+      const atEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
+      fab.toggleAttribute('data-visible', window.scrollY > window.innerHeight * 0.6 || atEnd);
+    };
     update();
     window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
   }
+
+  // The site is static, so keep the copyright year current between deploys.
+  const year = document.querySelector<HTMLElement>('[data-year]');
+  if (year) year.textContent = String(Math.max(Number(year.textContent), new Date().getFullYear()));
 </script>

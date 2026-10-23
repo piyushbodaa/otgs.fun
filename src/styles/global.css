@@ -140,8 +140,8 @@ h5 {
   overflow-wrap: break-word;
 }
 
-ul[role='list'],
-ol[role='list'] {
+/* Zero specificity, so classes such as .rail-mobile can still add padding. */
+:where(ul[role='list'], ol[role='list']) {
   list-style: none;
   padding: 0;
 }

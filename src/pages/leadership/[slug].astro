@@ -32,7 +32,7 @@ const person = {
 ---
 
 <BaseLayout
-  title={`${leader.role}’s Message`}
+  title={`Message from the ${leader.role}`}
   description={`${leader.name}, ${leader.role} of Oxford The Global School, Nanded: “${leader.headline}”`}
   image={leader.office}
   crumbs={crumbs}
@@ -60,7 +60,7 @@ const person = {
       </div>
 
       <div class="message__body">
-        <p class="eyebrow">{leader.role}’s message</p>
+        <p class="eyebrow">Message from the {leader.role}</p>
         <h1 class="message__headline">“{leader.headline}”</h1>
         <div class="message__prose prose">
           {leader.message.map((p) => <p>{p}</p>)}

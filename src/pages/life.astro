@@ -657,10 +657,24 @@ const covers = albums.map((a) => ({ ...a, cover: photosByAlbum(a.id)[0], count: 
     line-height: 1.2;
     font-weight: 650;
     letter-spacing: -0.015em;
+    overflow-wrap: anywhere;
   }
 
   .album__count {
     font-size: 0.82rem;
     color: rgb(255 255 255 / 0.75);
+  }
+
+  /* Two narrow columns on small phones: long names like “Achievements” need the room. */
+  @media (max-width: 400px) {
+    .album__body {
+      left: 0.8rem;
+      right: 0.8rem;
+      bottom: 0.8rem;
+    }
+
+    .album__name {
+      font-size: 1rem;
+    }
   }
 </style>

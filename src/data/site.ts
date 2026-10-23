@@ -1,3 +1,6 @@
+// Change this for a new academic year; the description and FAQ follow it.
+const admissionsYear = '2026–27';
+
 export const site = {
   name: 'Oxford The Global School',
   shortName: 'OTGS',
@@ -7,13 +10,12 @@ export const site = {
   repoUrl: 'https://github.com/piyushbodaa/otgs.fun',
   tagline: 'Rooted in values. Ready for the world.',
   motto: ['Perseverance', 'Omniscience'],
-  description:
-    'Oxford The Global School is a co-educational CBSE school in Nanded, Maharashtra, offering Pre-Primary to Grade 10 on a 7-acre green campus. Admissions open for 2026–27.',
+  description: `Oxford The Global School is a co-educational CBSE school in Nanded, Maharashtra, offering Pre-Primary to Grade 10 on a 7-acre green campus. Admissions open for ${admissionsYear}.`,
   society: 'Shri Gyan Saraswati Education Society',
   legacyYear: 1994,
   affiliationNo: '1130737',
   udise: '27150105803',
-  admissionsYear: '2026–27',
+  admissionsYear,
   address: {
     line1: 'At Post Puyni, Nilla Road',
     city: 'Nanded',

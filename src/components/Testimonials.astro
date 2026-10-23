@@ -21,10 +21,11 @@ const initials = (name: string) =>
       </div>
     </SectionHead>
 
-    <ul class="testimonials__track" role="list" data-track tabindex="0" aria-label="Parent testimonials">
+    <!-- The row reveals as one piece: cards scrolled in sideways would otherwise sit blank. -->
+    <ul class="testimonials__track" role="list" data-track tabindex="0" aria-label="Parent testimonials" data-reveal>
       {
-        testimonials.map((t, i) => (
-          <li class="quote-card" data-reveal style={`--d: ${i * 90}`}>
+        testimonials.map((t) => (
+          <li class="quote-card">
             <Icon name="quote" size={34} class="quote-card__mark" />
             <blockquote>
               <p>{t.quote}</p>
@@ -36,7 +37,7 @@ const initials = (name: string) =>
               <div>
                 <p class="quote-card__name">{t.name}</p>
                 <p class="quote-card__rel">
-                  {t.relation} · {t.grade}
+                  {t.relation} · <span class="quote-card__grade">{t.grade}</span>
                 </p>
               </div>
             </div>
@@ -154,6 +155,10 @@ const initials = (name: string) =>
   .quote-card__rel {
     font-size: 0.86rem;
     color: var(--ink-3);
+  }
+
+  .quote-card__grade {
+    white-space: nowrap;
   }
 </style>
 

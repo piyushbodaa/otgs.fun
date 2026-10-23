@@ -17,9 +17,11 @@ interface Props {
   /** Breadcrumb trail (excluding Home) for structured data. */
   crumbs?: { label: string; href: string }[];
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /** Keep the page out of search results (the 404 page). */
+  noindex?: boolean;
 }
 
-const { title, description = site.description, image, header = 'solid', crumbs = [], jsonLd } = Astro.props;
+const { title, description = site.description, image, header = 'solid', crumbs = [], jsonLd, noindex = false } = Astro.props;
 
 const path = cleanPath(Astro.url.pathname);
 const isHome = path === '/';
@@ -76,7 +78,7 @@ const structured = [isHome ? school : null, breadcrumbs, ...(Array.isArray(jsonL
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content="#0a1c38" />
     <meta name="color-scheme" content="light" />
 
@@ -102,7 +104,7 @@ const structured = [isHome ? school : null, breadcrumbs, ...(Array.isArray(jsonL
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    {structured.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data)} />)}
+    {structured.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data).replace(/</g, '\\u003c')} />)}
 
     <script is:inline>
       document.documentElement.classList.add('js');

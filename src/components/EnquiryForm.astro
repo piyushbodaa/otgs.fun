@@ -18,9 +18,22 @@ const {
   headingLevel = 'h3',
 } = Astro.props;
 const Heading = headingLevel;
+// The script composes the message. If it hasn't loaded, action/formaction still
+// send the visitor to the school (rather than reloading this page with their
+// details in the URL).
 ---
 
-<form class="enquiry" data-enquiry-form data-whatsapp={site.whatsapp} data-email={site.email} novalidate aria-labelledby={`${id}-title`}>
+<form
+  class="enquiry"
+  data-enquiry-form
+  data-whatsapp={site.whatsapp}
+  data-email={site.email}
+  action={`https://wa.me/${site.whatsapp}`}
+  method="get"
+  target="_blank"
+  novalidate
+  aria-labelledby={`${id}-title`}
+>
   <div class="enquiry__head">
     <Heading class="t-h3" id={`${id}-title`}>{title}</Heading>
     <p class="muted">{intro}</p>
@@ -41,17 +54,17 @@ const Heading = headingLevel;
   <div class="enquiry__grid">
     <div class="field">
       <label for={`${id}-name`}>Parent’s name</label>
-      <input class="input" id={`${id}-name`} name="name" autocomplete="name" required minlength="2" aria-describedby={`${id}-name-err`} />
+      <input class="input" id={`${id}-name`} name="name" autocomplete="name" required minlength="2" />
       <p class="field-error" id={`${id}-name-err`} hidden>Please tell us your name.</p>
     </div>
     <div class="field">
       <label for={`${id}-phone`}>Mobile number</label>
-      <input class="input" id={`${id}-phone`} name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="10-digit mobile" required aria-describedby={`${id}-phone-err`} />
+      <input class="input" id={`${id}-phone`} name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="10-digit mobile" required />
       <p class="field-error" id={`${id}-phone-err`} hidden>Please enter a valid 10-digit mobile number.</p>
     </div>
     <div class="field">
       <label for={`${id}-grade`}>Grade seeking admission</label>
-      <select class="select" id={`${id}-grade`} name="grade" required aria-describedby={`${id}-grade-err`}>
+      <select class="select" id={`${id}-grade`} name="grade" required>
         <option value="">Select grade</option>
         {site.grades.map((g) => <option value={g}>{g}</option>)}
       </select>
@@ -73,7 +86,7 @@ const Heading = headingLevel;
     <button type="submit" class="btn btn--whatsapp" data-channel="whatsapp">
       <Icon name="whatsapp" /> Send via WhatsApp
     </button>
-    <button type="submit" class="btn btn--outline" data-channel="email">
+    <button type="submit" class="btn btn--outline" data-channel="email" formaction={`mailto:${site.email}`} formmethod="post" formenctype="text/plain">
       <Icon name="mail" /> Send by email
     </button>
   </div>
@@ -252,10 +265,14 @@ const Heading = headingLevel;
     const done = form.querySelector<HTMLElement>('.enquiry__done');
     const doneChannel = form.querySelector<HTMLElement>('[data-done-channel]');
 
+    // The message is only linked to its field while it shows, so screen readers
+    // don't announce an error before there is one.
     const setError = (el: HTMLInputElement | HTMLSelectElement, bad: boolean) => {
       el.setAttribute('aria-invalid', String(bad));
-      const err = document.getElementById(el.getAttribute('aria-describedby') ?? '');
+      const err = document.getElementById(`${el.id}-err`);
       if (err) err.hidden = !bad;
+      if (bad) el.setAttribute('aria-describedby', `${el.id}-err`);
+      else el.removeAttribute('aria-describedby');
       return bad;
     };
 

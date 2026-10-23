@@ -1,3 +1,5 @@
+import { site } from '@/data/site';
+
 export const steps = [
   {
     title: 'Enquire',
@@ -46,7 +48,7 @@ export const faqs = [
   },
   {
     q: 'For which grades are admissions open?',
-    a: 'Admissions for the 2026–27 academic year are open from Pre-Primary to Grade 10.',
+    a: `Admissions for the ${site.admissionsYear} academic year are open from Pre-Primary to Grade 10.`,
   },
   {
     q: 'How large are the classes?',

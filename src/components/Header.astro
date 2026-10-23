@@ -29,7 +29,7 @@ const isActive = (href: string) => href === activeHref;
     </p>
     <ul class="topbar__links" role="list">
       <li><a href={site.phones[0].href}><Icon name="phone" size={14} />{site.phones[0].label}</a></li>
-      <li><a href={`mailto:${site.email}`}><Icon name="mail" size={14} />{site.email}</a></li>
+      <li class="topbar__email"><a href={`mailto:${site.email}`}><Icon name="mail" size={14} />{site.email}</a></li>
       <li><a href="/careers">Careers</a></li>
       <li><a href="/mandatory-disclosure">Disclosure</a></li>
       <li class="topbar__social">
@@ -92,8 +92,8 @@ const isActive = (href: string) => href === activeHref;
 </header>
 
 <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
-  <div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-label="Site menu">
-    <nav aria-label="Mobile">
+  <div class="mobile-menu__panel">
+    <nav aria-label="Site menu">
       <ul class="mobile-menu__list" role="list">
         {
           nav.map((item) =>
@@ -198,6 +198,18 @@ const isActive = (href: string) => href === activeHref;
     color: var(--white);
   }
 
+  .topbar__note span,
+  .topbar__links a {
+    white-space: nowrap;
+  }
+
+  /* Just above the desktop breakpoint there's no room for the email address too. */
+  @media (max-width: 1199px) {
+    .topbar__email {
+      display: none;
+    }
+  }
+
   .topbar__social {
     display: flex;
     gap: 0.9rem;
@@ -290,6 +302,19 @@ const isActive = (href: string) => href === activeHref;
     transition: background-color 0.2s var(--ease);
   }
 
+  /* Just above the desktop breakpoint the full nav and the Enquire button don't
+     both fit, so tighten the spacing until there's room. */
+  @media (min-width: 1080px) and (max-width: 1199px) {
+    .site-header__inner {
+      gap: 0.75rem;
+    }
+
+    .nav__link {
+      padding-inline: 0.45rem;
+      font-size: 0.9rem;
+    }
+  }
+
   .nav__link:hover,
   .nav__item:focus-within > .nav__link {
     background: rgb(13 22 38 / 0.06);
@@ -325,6 +350,7 @@ const isActive = (href: string) => href === activeHref;
   }
 
   .nav__link :global(.nav__chev) {
+    flex: none;
     opacity: 0.65;
     transition: transform 0.25s var(--ease);
   }
@@ -366,6 +392,17 @@ const isActive = (href: string) => href === activeHref;
     opacity: 1;
     visibility: visible;
     transform: translate(-50%, 0);
+  }
+
+  /* Escape dismisses an open menu until focus or the pointer leaves the item. */
+  .nav__item.is-dismissed .nav__menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 8px);
+  }
+
+  .nav__item.is-dismissed :global(.nav__chev) {
+    transform: none;
   }
 
   .nav__menu a {
@@ -601,4 +638,17 @@ const isActive = (href: string) => href === activeHref;
     });
     window.matchMedia('(min-width: 1080px)').addEventListener('change', (e) => e.matches && setOpen(false));
   }
+
+  // Desktop dropdowns open on hover/focus; let keyboard users dismiss them with Escape.
+  document.querySelectorAll<HTMLElement>('.nav__item.has-menu').forEach((item) => {
+    item.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      item.classList.add('is-dismissed');
+      item.querySelector<HTMLElement>('.nav__link')?.focus();
+    });
+    item.addEventListener('focusout', (e) => {
+      if (!item.contains(e.relatedTarget as Node | null)) item.classList.remove('is-dismissed');
+    });
+    item.addEventListener('mouseleave', () => item.classList.remove('is-dismissed'));
+  });
 </script>

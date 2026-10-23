@@ -34,11 +34,13 @@ Requires Node 22.12 or newer.
 
 ### Common updates
 
-- **New academic year:** change `admissionsYear` in `src/data/site.ts` and replace the dates in `src/data/events.ts`.
-  Past events hide themselves automatically, and the section disappears once every listed event has passed.
+- **New academic year:** change `admissionsYear` in `src/data/site.ts`, and in `src/data/events.ts` replace the dates
+  and update `academicCalendarYear` and the calendar PDF link. Past events hide themselves automatically (by the
+  visitor's date, so the site doesn't need redeploying), and the section disappears once every listed event has passed.
 - **New results:** add a row to `boardResults` and replace `toppers` in `src/data/site.ts`.
-- **Gallery photos:** drop numbered JPEGs (`22.jpg`, `23.jpg`, …) into an album folder under `src/assets/gallery/`.
-  To add a new album, create the folder and add an entry to `albums` in `src/data/gallery.ts`.
+- **Gallery photos:** drop numbered photos (`22.jpg`, `23.jpg`, …; JPEG, PNG or WebP) into an album folder under
+  `src/assets/gallery/`. To add a new album, create the folder and add an entry to `albums` in `src/data/gallery.ts`
+  (the build stops with a message naming any folder that has no entry).
 
 ## How enquiries work
 

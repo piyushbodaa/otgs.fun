@@ -8,6 +8,7 @@ import Icon from '@/components/Icon.astro';
 import { site } from '@/data/site';
 import { steps, documents, placement, faqs } from '@/data/admissions';
 import { disclosures } from '@/data/disclosures';
+import { academicCalendarYear } from '@/data/events';
 import hero from '@/assets/photos/graduates.jpg';
 
 const crumbs = [{ label: 'Admissions', href: '/admissions' }];
@@ -139,7 +140,7 @@ const faqSchema = {
         <li>
           <a href={calendar.url} target="_blank" rel="noopener" class="resource">
             <Icon name="calendar" size={26} />
-            <span><strong>Academic calendar</strong><span>2026–27 · PDF</span></span>
+            <span><strong>Academic calendar</strong><span>{academicCalendarYear} · PDF</span></span>
             <Icon name="arrow-up-right" size={20} />
           </a>
         </li>
