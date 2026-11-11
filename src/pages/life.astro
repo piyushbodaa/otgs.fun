@@ -5,7 +5,7 @@ import PageHero from '@/components/PageHero.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Icon from '@/components/Icon.astro';
-import { activities, houses, weLove, summerCamp } from '@/data/life';
+import { activities, weLove, summerCamp } from '@/data/life';
 import { albums, photosByAlbum } from '@/data/gallery';
 
 import hero from '@/assets/gallery/annual-day/01.jpg';
@@ -21,8 +21,8 @@ const day = [1, 9, 4, 3].map((n) => photosByAlbum('moments')[n - 1]).filter(Bool
 ---
 
 <BaseLayout
-  title="Life at OTGS: Activities, Houses & Summer Camp"
-  description="Music, visual arts, dance and theatre, sports, leadership and the Eco Champs. Discover the house system, summer camp and everyday life at Oxford The Global School, Nanded."
+  title="Life at OTGS: Activities & Summer Camp"
+  description="Music, visual arts, dance and theatre, sports, leadership and the Eco Champs. Discover summer camp and everyday life at Oxford The Global School, Nanded."
   image={hero}
   header="overlay"
   crumbs={crumbs}
@@ -38,7 +38,6 @@ const day = [1, 9, 4, 3].map((n) => photosByAlbum('moments')[n - 1]).filter(Bool
   >
     <nav class="jump" aria-label="On this page">
       <a href="#activities">Activities</a>
-      <a href="#houses">Houses</a>
       <a href="#we-love">We love</a>
       <a href="#summer-camp">Summer camp</a>
     </nav>
@@ -127,52 +126,6 @@ const day = [1, 9, 4, 3].map((n) => photosByAlbum('moments')[n - 1]).filter(Bool
             modelling, and we welcome that diversity of interests.
           </p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Houses ----------------------------------------------------------------->
-  <section class="section houses-section on-dark" id="houses" aria-labelledby="houses-title">
-    <div class="container">
-      <div class="houses-head" data-reveal>
-        <p class="eyebrow eyebrow--center">House system</p>
-        <h2 class="t-h2" id="houses-title">
-          <span class="acro">
-            {
-              houses.map((h) => (
-                <span style={`--house: ${h.color}`}>{h.letter}</span>
-              ))
-            }
-          </span>
-          <span class="sr-only">: </span>
-          Orchid · Tulip · Gladiolus · Snowdrop
-        </h2>
-        <p class="lead">
-          Every student joins one of four vibrant houses that together spell out the spirit and identity of OTGS itself.
-        </p>
-      </div>
-      <ul class="house-cards" role="list">
-        {
-          houses.map((h, i) => (
-            <li class="house-card" style={`--house: ${h.color}; --d: ${i * 90}`} data-reveal>
-              <span class="house-card__letter" aria-hidden="true">
-                {h.letter}
-              </span>
-              <span class="house-card__name">{h.name}</span>
-              <span class="house-card__label">House</span>
-            </li>
-          ))
-        }
-      </ul>
-      <div class="houses-text" data-reveal>
-        <p>
-          Each house is led by a House Coach and a House Captain, who motivate and guide their members with enthusiasm and leadership.
-          Inter-house events, especially in sports, games and physical challenges, bring healthy competition, teamwork and camaraderie.
-        </p>
-        <p>
-          The goal is simple: to instil sportsmanship, leadership and unity, and give students a vibrant platform to grow, shine and cheer
-          each other on.
-        </p>
       </div>
     </div>
   </section>
@@ -397,110 +350,6 @@ const day = [1, 9, 4, 3].map((n) => photosByAlbum('moments')[n - 1]).filter(Bool
     color: var(--ink);
     font-weight: 650;
     letter-spacing: -0.025em;
-  }
-
-  .houses-section {
-    background:
-      radial-gradient(40rem 22rem at 15% 10%, rgb(122 62 157 / 0.25), transparent 70%),
-      radial-gradient(40rem 22rem at 85% 90%, rgb(47 127 184 / 0.25), transparent 70%),
-      var(--navy-950);
-  }
-
-  .houses-head {
-    display: grid;
-    justify-items: center;
-    gap: 1.25rem;
-    max-width: 50rem;
-    margin: 0 auto clamp(2.5rem, 5vw, 4rem);
-    text-align: center;
-  }
-
-  .houses-head h2 {
-    display: grid;
-    justify-items: center;
-    gap: 0.75rem;
-  }
-
-  .acro {
-    display: flex;
-    gap: 0.15em;
-    font-size: clamp(4rem, 2.5rem + 6vw, 7.5rem);
-    line-height: 1;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
-
-  .acro span {
-    color: color-mix(in srgb, var(--house) 55%, white);
-  }
-
-  .houses-head .lead {
-    color: rgb(255 255 255 / 0.78);
-  }
-
-  .house-cards {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  @media (min-width: 900px) {
-    .house-cards {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .house-card {
-    position: relative;
-    display: grid;
-    gap: 0.25rem;
-    padding: 1.75rem 1.5rem;
-    min-height: 13rem;
-    align-content: end;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    background: linear-gradient(160deg, color-mix(in srgb, var(--house) 70%, black), color-mix(in srgb, var(--house) 30%, var(--navy-950)));
-    border: 1px solid color-mix(in srgb, var(--house) 60%, transparent);
-  }
-
-  .house-card__letter {
-    position: absolute;
-    top: -1.5rem;
-    right: 0.75rem;
-    font-family: var(--font-display);
-    font-size: 9rem;
-    line-height: 1;
-    font-weight: 800;
-    color: rgb(255 255 255 / 0.14);
-  }
-
-  .house-card__name {
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    color: var(--white);
-    font-weight: 650;
-    letter-spacing: -0.025em;
-  }
-
-  .house-card__label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgb(255 255 255 / 0.7);
-  }
-
-  .houses-text {
-    display: grid;
-    gap: 1.25rem;
-    margin-top: clamp(2.5rem, 5vw, 3.5rem);
-  }
-
-  @media (min-width: 900px) {
-    .houses-text {
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-    }
   }
 
   .welove {

@@ -9,7 +9,7 @@ import EnquiryForm from '@/components/EnquiryForm.astro';
 import { site, boardResults, toppers } from '@/data/site';
 import { stages, pillars } from '@/data/academics';
 import { facilities } from '@/data/life';
-import { houses, activities } from '@/data/life';
+import { activities } from '@/data/life';
 import { leaders } from '@/data/leaders';
 import { events, academicCalendarPdf, academicCalendarYear } from '@/data/events';
 import { steps } from '@/data/admissions';
@@ -382,22 +382,6 @@ const strip = [
         <a href="/life" class="link-arrow">See life at OTGS <Icon name="arrow-right" /></a>
       </div>
 
-      <div class="houses" data-reveal="fade">
-        <p class="houses__kicker">Four houses. One spirit.</p>
-        <ul class="houses__grid" role="list">
-          {
-            houses.map((h) => (
-              <li class="house" style={`--house: ${h.color}`}>
-                <span class="house__letter" aria-hidden="true">
-                  {h.letter}
-                </span>
-                <span class="house__name">{h.name}</span>
-              </li>
-            ))
-          }
-        </ul>
-        <p class="houses__note">Orchid, Tulip, Gladiolus and Snowdrop spell out the very name of our school.</p>
-      </div>
     </div>
 
     <div class="marquee" aria-hidden="true">
@@ -1426,77 +1410,8 @@ const strip = [
     align-items: center;
   }
 
-  @media (min-width: 1024px) {
-    .life__grid {
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    }
-  }
-
-  .houses {
-    padding: clamp(1.5rem, 3vw, 2.25rem);
-    border-radius: var(--radius-xl);
-    background: rgb(255 255 255 / 0.04);
-    border: 1px solid rgb(255 255 255 / 0.12);
-  }
-
-  .houses__kicker {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--gold-300);
-    margin-bottom: 1.25rem;
-  }
-
-  .houses__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.9rem;
-  }
-
-  @media (min-width: 560px) {
-    .houses__grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .house {
-    position: relative;
-    display: grid;
-    justify-items: center;
-    gap: 0.5rem;
-    padding: 1.4rem 0.5rem 1.2rem;
-    border-radius: var(--radius);
-    background: linear-gradient(180deg, color-mix(in srgb, var(--house) 32%, transparent), color-mix(in srgb, var(--house) 8%, transparent));
-    border: 1px solid color-mix(in srgb, var(--house) 55%, transparent);
-    transition: transform 0.3s var(--ease);
-  }
-
-  .house:hover {
-    transform: translateY(-4px);
-  }
-
-  .house__letter {
-    font-family: var(--font-display);
-    font-size: 3.2rem;
-    line-height: 1;
-    font-weight: 800;
-    color: var(--white);
-    letter-spacing: -0.04em;
-  }
-
-  .house__name {
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgb(255 255 255 / 0.85);
-  }
-
-  .houses__note {
-    margin-top: 1.25rem;
-    font-size: 0.92rem;
-    color: rgb(255 255 255 / 0.7);
+  .life__grid > .stack {
+    max-width: 46rem;
   }
 
   .marquee {

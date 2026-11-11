@@ -86,7 +86,6 @@ export const nav: NavItem[] = [
     href: '/life',
     children: [
       { label: 'Activities & Clubs', href: '/life#activities', description: 'Music, arts, sport, leadership and more' },
-      { label: 'House System', href: '/life#houses', description: 'Orchid · Tulip · Gladiolus · Snowdrop' },
       { label: 'Summer Camp', href: '/life#summer-camp', description: 'Unplug, explore, grow' },
       { label: 'Gallery', href: '/gallery', description: 'Moments from our campus' },
     ],
