@@ -75,33 +75,6 @@ export const activities: Activity[] = [
   },
 ];
 
-export const houses = [
-  {
-    letter: 'O',
-    name: 'Orchid',
-    color: '#7a3e9d',
-    soft: '#f1e8f6',
-  },
-  {
-    letter: 'T',
-    name: 'Tulip',
-    color: '#c41e33',
-    soft: '#fbeceb',
-  },
-  {
-    letter: 'G',
-    name: 'Gladiolus',
-    color: '#d9822b',
-    soft: '#fcf0e2',
-  },
-  {
-    letter: 'S',
-    name: 'Snowdrop',
-    color: '#2f7fb8',
-    soft: '#e6f1f9',
-  },
-];
-
 export const weLove = [
   {
     title: 'Creativity',
