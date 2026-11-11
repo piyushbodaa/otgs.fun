@@ -51,6 +51,10 @@ export const faqs = [
     a: `Admissions for the ${site.admissionsYear} academic year are open from Pre-Primary to Grade 10.`,
   },
   {
+    q: 'What are the fees?',
+    a: `The latest fee structure published by the school is for 2025–26 and is available as a PDF in the mandatory disclosure section. For ${site.admissionsYear} fees, including any transport or other charges, please contact the admissions desk on WhatsApp or by phone.`,
+  },
+  {
     q: 'How large are the classes?',
     a: 'Each class has a maximum of 40 students, and every class is led by a full-time teacher. Pre-primary classes are supported by two teachers each.',
   },

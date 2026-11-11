@@ -256,3 +256,66 @@ export const prepSupport = [
   'Regular assessment and feedback',
   'Previous years’ question papers and analysis',
 ];
+
+/**
+ * Hands-on learning from the Academic Calendar 2026–27. Dates and grades are as
+ * published; add real project photos and student work once the school approves them.
+ */
+export const learningInAction: { date: string; title: string; who?: string; icon: string; text: string }[] = [
+  {
+    date: '2026-04-17',
+    title: 'Financial Literacy Workshop',
+    who: 'Grades 1 – 8',
+    icon: 'calculator',
+    text: 'Saving, spending and budgeting, explained through everyday examples children recognise.',
+  },
+  {
+    date: '2026-07-11',
+    title: 'STEM Workshop & Science Expo',
+    who: 'Pre-Primary – Grade 8',
+    icon: 'flask',
+    text: 'Students build, test and present their own experiments and models.',
+  },
+  {
+    date: '2026-07-31',
+    title: 'Storytelling with Props',
+    who: 'Pre-Primary – Grade 2',
+    icon: 'book',
+    text: 'Young learners retell stories with props, growing their vocabulary and confidence to speak.',
+  },
+  {
+    date: '2026-08-07',
+    title: 'Oxford Model UN',
+    who: undefined,
+    icon: 'globe',
+    text: 'Students represent countries, research global issues and debate solutions in committee.',
+  },
+  {
+    date: '2026-09-26',
+    title: 'Farm Day: Seedball Activity',
+    who: 'Pre-Primary – Grade 8',
+    icon: 'sprout',
+    text: 'Learning about soil, seeds and the environment by making seedballs with their own hands.',
+  },
+  {
+    date: '2026-11-28',
+    title: 'Robotics & AI Expo',
+    who: 'Grades 5 – 10',
+    icon: 'rocket',
+    text: 'Students showcase robots and AI projects they have designed and programmed.',
+  },
+  {
+    date: '2027-02-13',
+    title: 'Reading Carnival',
+    who: 'Grades 1 – 10',
+    icon: 'scroll',
+    text: 'A celebration of books and reading, building the daily reading habit at the heart of our curriculum.',
+  },
+  {
+    date: '2027-02-20',
+    title: 'Debate & Elocution',
+    who: 'Grades 9 – 10',
+    icon: 'presentation',
+    text: 'Senior students research, structure and deliver arguments in front of an audience.',
+  },
+];

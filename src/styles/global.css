@@ -847,3 +847,52 @@ h3 em,
     background: #fff;
   }
 }
+
+/* Document / resource link cards -------------------------------------------- */
+.resources {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 900px) {
+  .resources {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.resource {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.35rem 1.5rem;
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  transition:
+    box-shadow 0.3s var(--ease),
+    transform 0.3s var(--ease);
+}
+
+.resource:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.resource > svg:first-child {
+  color: var(--red-600);
+}
+
+.resource > span {
+  display: grid;
+}
+
+.resource strong {
+  color: var(--ink);
+}
+
+.resource span span {
+  font-size: 0.85rem;
+  color: var(--ink-3);
+}
