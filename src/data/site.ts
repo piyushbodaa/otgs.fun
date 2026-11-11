@@ -36,7 +36,24 @@ export const site = {
     { label: 'Instagram', href: 'https://www.instagram.com/oxford_the_global_schools', icon: 'instagram' },
     { label: 'YouTube', href: 'https://www.youtube.com/@oxfordtheglobalschool6137', icon: 'youtube' },
   ],
-  branches: ['Puyni', 'Kautha', 'New Mondha', 'Tirumala', 'Ardhapur'],
+  /**
+   * Branch names come from the official enquiry form. Only Puyni's details are
+   * published by the school; add address/grades/phone for the others once the
+   * school confirms them and the contact page will show them automatically.
+   */
+  branches: [
+    {
+      name: 'Puyni',
+      address: 'At Post Puyni, Nilla Road, Nanded, Maharashtra 431605',
+      grades: 'Pre-Primary to Grade 10',
+      note: 'CBSE Affiliation No. 1130737',
+      mapsUrl: 'https://maps.google.com/?q=Oxford+The+Global+School,+Nanded',
+    },
+    { name: 'Kautha' },
+    { name: 'New Mondha' },
+    { name: 'Tirumala' },
+    { name: 'Ardhapur' },
+  ] as { name: string; address?: string; grades?: string; note?: string; mapsUrl?: string; phone?: string }[],
   grades: [
     'Pre-Primary · KG',
     'Pre-Primary · LKG',
@@ -91,7 +108,7 @@ export const nav: NavItem[] = [
     ],
   },
   { label: 'Admissions', href: '/admissions' },
-  { label: 'Gallery', href: '/gallery' },
+  { label: 'Parents', href: '/parents' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -105,6 +122,16 @@ export const footerNav = [
       { label: "Scholars' Prep Zone", href: '/academics/prep-zone' },
       { label: 'Life at OTGS', href: '/life' },
       { label: 'Gallery', href: '/gallery' },
+    ],
+  },
+  {
+    title: 'Parents',
+    links: [
+      { label: 'Parent Hub', href: '/parents' },
+      { label: 'School Calendar', href: '/parents#calendar' },
+      { label: 'Safety & Wellbeing', href: '/parents#safety' },
+      { label: 'Documents', href: '/parents#documents' },
+      { label: 'Our Branches', href: '/contact#branches' },
     ],
   },
   {

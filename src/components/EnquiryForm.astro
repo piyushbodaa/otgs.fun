@@ -73,8 +73,26 @@ const Heading = headingLevel;
     <div class="field">
       <label for={`${id}-branch`}>Preferred branch</label>
       <select class="select" id={`${id}-branch`} name="branch">
-        {site.branches.map((b) => <option value={b}>{b}</option>)}
+        {site.branches.map((b) => <option value={b.name}>{b.name}</option>)}
       </select>
+    </div>
+    <div class="enquiry__tour enquiry__full" data-tour-only hidden={defaultPurpose !== 'tour' ? true : undefined}>
+      <div class="field">
+        <label for={`${id}-date`}>Preferred date <span class="muted">(optional)</span></label>
+        <input class="input" id={`${id}-date`} name="date" type="date" data-tour-date />
+      </div>
+      <div class="field">
+        <label for={`${id}-time`}>Preferred time <span class="muted">(optional)</span></label>
+        <select class="select" id={`${id}-time`} name="time">
+          <option value="">Any time</option>
+          <option value="Morning">Morning</option>
+          <option value="Afternoon">Afternoon</option>
+        </select>
+      </div>
+      <p class="enquiry__tour-note enquiry__full">
+        <Icon name="clock" size={16} />
+        <span>This is a request, not a confirmed booking. The admissions team will contact you to confirm a time that works.</span>
+      </p>
     </div>
     <div class="field enquiry__full">
       <label for={`${id}-message`}>Anything you’d like to ask? <span class="muted">(optional)</span></label>
@@ -198,6 +216,39 @@ const Heading = headingLevel;
     }
   }
 
+  .enquiry__tour {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .enquiry__tour[hidden] {
+    display: none;
+  }
+
+  @media (min-width: 560px) {
+    .enquiry__tour {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .enquiry__tour-note {
+    display: flex;
+    gap: 0.55rem;
+    align-items: flex-start;
+    padding: 0.75rem 0.9rem;
+    border-radius: 12px;
+    background: var(--gold-100);
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .enquiry__tour-note :global(svg) {
+    flex: none;
+    margin-top: 0.15rem;
+    color: var(--gold-700);
+  }
+
   .enquiry__actions {
     display: grid;
     gap: 0.75rem;
@@ -246,7 +297,10 @@ const Heading = headingLevel;
 </style>
 
 <script>
-  type Fields = { purpose: string; name: string; phone: string; grade: string; branch: string; message: string };
+  type Fields = { purpose: string; name: string; phone: string; grade: string; branch: string; date: string; time: string; message: string };
+
+  const fmtDate = (iso: string) =>
+    new Date(iso + 'T00:00:00').toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
   const compose = (f: Fields) => {
     const lines = [
@@ -257,6 +311,9 @@ const Heading = headingLevel;
       `Grade: ${f.grade}`,
       `Branch: ${f.branch}`,
     ];
+    if (f.purpose === 'tour' && (f.date || f.time)) {
+      lines.push(`Preferred visit: ${[f.date && fmtDate(f.date), f.time].filter(Boolean).join(', ')} (please confirm)`);
+    }
     if (f.message) lines.push('', f.message);
     return lines.join('\n');
   };
@@ -264,6 +321,22 @@ const Heading = headingLevel;
   document.querySelectorAll<HTMLFormElement>('[data-enquiry-form]').forEach((form) => {
     const done = form.querySelector<HTMLElement>('.enquiry__done');
     const doneChannel = form.querySelector<HTMLElement>('[data-done-channel]');
+    const tourOnly = form.querySelector<HTMLElement>('[data-tour-only]');
+    const tourDate = form.querySelector<HTMLInputElement>('[data-tour-date]');
+
+    // Tour requests can only be for a day after today.
+    if (tourDate) {
+      const t = new Date();
+      t.setDate(t.getDate() + 1);
+      tourDate.min = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+    }
+
+    const syncPurpose = () => {
+      const purpose = (form.querySelector<HTMLInputElement>('input[name="purpose"]:checked')?.value ?? 'admission');
+      if (tourOnly) tourOnly.hidden = purpose !== 'tour';
+    };
+    form.querySelectorAll('input[name="purpose"]').forEach((r) => r.addEventListener('change', syncPurpose));
+    syncPurpose();
 
     // The message is only linked to its field while it shows, so screen readers
     // don't announce an error before there is one.
@@ -310,6 +383,8 @@ const Heading = headingLevel;
         phone: digits,
         grade: get('grade'),
         branch: get('branch'),
+        date: tourDate && tourDate.value >= tourDate.min ? get('date') : '',
+        time: get('time'),
         message: get('message'),
       };
       const text = compose(fields);

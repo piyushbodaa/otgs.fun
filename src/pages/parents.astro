@@ -1,0 +1,416 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import UpcomingEvents from '@/components/UpcomingEvents.astro';
+import Icon from '@/components/Icon.astro';
+import { site } from '@/data/site';
+import { disclosures } from '@/data/disclosures';
+import { academicCalendarPdf, academicCalendarYear } from '@/data/events';
+import { partnership, principal, safetySessions, safetyDocs, parentDocs } from '@/data/parents';
+import hero from '@/assets/photos/reception.jpg';
+
+const crumbs = [{ label: 'Parents', href: '/parents' }];
+const byNo = (n: number) => disclosures.find((d) => d.no === n)!;
+const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hello OTGS! I am a parent and have a question.')}`;
+const fmtDate = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+
+<BaseLayout
+  title="Parent Hub"
+  description="The school calendar, parent–teacher meetings, safety and wellbeing, key documents and contacts for parents at Oxford The Global School, Nanded."
+  image={hero}
+  header="overlay"
+  crumbs={crumbs}
+>
+  <PageHero
+    image={hero}
+    alt="The reception area at Oxford The Global School"
+    eyebrow="Parent hub"
+    title="Everything parents need, <em>in one place</em>"
+    intro="The school calendar, how to meet teachers, how we keep children safe, and the documents and contacts you reach for most."
+    crumbs={crumbs}
+    position="50% 60%"
+  >
+    <nav class="jump" aria-label="On this page">
+      <a href="#calendar">Calendar</a>
+      <a href="#meet">Meet the school</a>
+      <a href="#safety">Safety & wellbeing</a>
+      <a href="#documents">Documents</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </PageHero>
+
+  <!-- Calendar -------------------------------------------------------------->
+  <section class="section" id="calendar" aria-labelledby="calendar-title" data-events-section>
+    <div class="container">
+      <SectionHead eyebrow="School calendar" title={`Coming up <em>in ${academicCalendarYear}</em>`} align="split" id="calendar-title">
+        <a href={academicCalendarPdf} class="link-arrow" target="_blank" rel="noopener">
+          Full academic calendar (PDF) <Icon name="arrow-up-right" />
+        </a>
+      </SectionHead>
+      <UpcomingEvents limit={8} />
+    </div>
+  </section>
+
+  <!-- Meet the school ------------------------------------------------------->
+  <section class="section section--white" id="meet" aria-labelledby="meet-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Partnership"
+        title="Parents are <em>our partners</em>"
+        lead="Regular conversations between home and school help every child do their best. Here is how to stay in touch."
+        align="split"
+        id="meet-title"
+      />
+      <ul class="partner" role="list">
+        {
+          partnership.map((p, i) => (
+            <li class="card partner__card" data-reveal style={`--d: ${i * 90}`}>
+              <span class="icon-badge">
+                <Icon name={p.icon} />
+              </span>
+              <h3 class="t-h4">{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Safety ---------------------------------------------------------------->
+  <section class="section section--navy on-dark safety" id="safety" aria-labelledby="safety-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Safety & wellbeing"
+        title="Safe, heard <em>and valued</em>"
+        lead="A child’s emotional, social and physical wellbeing matters as much as their marks. Teachers act as mentors, and safety is taught as well as practised."
+        align="split"
+        id="safety-title"
+      />
+
+      <div class="safety__grid">
+        <div class="safety__sessions" data-reveal>
+          <h3 class="t-h4">On this year’s calendar</h3>
+          <p class="safety__muted">Safety and wellbeing sessions from the Academic Calendar {academicCalendarYear}.</p>
+          <ol class="sessions" role="list">
+            {
+              safetySessions.map((s) => (
+                <li>
+                  <time datetime={s.date}>{fmtDate(s.date)}</time>
+                  <span class="sessions__title">{s.title}</span>
+                  <span class="sessions__who">{s.who}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+
+        <div class="safety__side">
+          <div class="concern" data-reveal style="--d: 100">
+            <span class="icon-badge"><Icon name="shield" /></span>
+            <h3 class="t-h4">Have a concern about your child?</h3>
+            <p>
+              Speak to the principal, <strong>{principal.name}</strong>, or any member of staff. You can meet the principal at school on
+              Saturdays, or call or email the school office.
+            </p>
+            <div class="cluster">
+              {
+                site.phones.map((p) => (
+                  <a href={p.href} class="chip chip--light">
+                    <Icon name="phone" /> {p.label}
+                  </a>
+                ))
+              }
+              <a href={`mailto:${site.email}`} class="chip chip--light"><Icon name="mail" /> Email</a>
+            </div>
+            <p class="concern__helpline">
+              <Icon name="phone" size={18} />
+              <span>
+                <strong>Childline 1098</strong>, India’s free national helpline for children, is open 24 hours a day.
+              </span>
+            </p>
+          </div>
+
+          <div class="safety__certs" data-reveal style="--d: 160">
+            <h3 class="t-h4">Safety certificates</h3>
+            <ul class="certs" role="list">
+              {
+                safetyDocs.map(byNo).map((d) => (
+                  <li>
+                    <a href={d.url} target="_blank" rel="noopener">
+                      <Icon name="file" size={18} />
+                      <span>{d.title}</span>
+                      <Icon name="arrow-up-right" size={16} />
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Documents ------------------------------------------------------------->
+  <section class="section" id="documents" aria-labelledby="documents-title">
+    <div class="container">
+      <SectionHead eyebrow="Documents" title="Frequently needed <em>documents</em>" align="split" id="documents-title">
+        <a href="/mandatory-disclosure" class="link-arrow">All disclosure documents <Icon name="arrow-right" /></a>
+      </SectionHead>
+      <ul class="resources" role="list">
+        {
+          parentDocs.map(byNo).map((d) => (
+            <li>
+              <a href={d.url} target="_blank" rel="noopener" class="resource">
+                <Icon name={d.no === 10 ? 'calendar' : 'file'} size={26} />
+                <span>
+                  <strong>{d.title}</strong>
+                  <span>PDF</span>
+                </span>
+                <Icon name="arrow-up-right" size={20} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Contact --------------------------------------------------------------->
+  <section class="section section--paper-2 section--tight" id="contact" aria-labelledby="contact-title">
+    <div class="container contact">
+      <div>
+        <h2 class="t-h3" id="contact-title">Reach the school office</h2>
+        <p class="muted">For questions about your child, fees, documents or events.</p>
+      </div>
+      <div class="cluster">
+        {
+          site.phones.map((p) => (
+            <a href={p.href} class="btn btn--outline btn--sm">
+              <Icon name="phone" /> {p.label}
+            </a>
+          ))
+        }
+        <a href={`mailto:${site.email}`} class="btn btn--outline btn--sm"><Icon name="mail" /> {site.email}</a>
+        <a href={whatsappHref} target="_blank" rel="noopener" class="btn btn--whatsapp btn--sm"><Icon name="whatsapp" /> WhatsApp</a>
+        <a href="/contact#branches" class="btn btn--dark btn--sm"><Icon name="map-pin" /> Our branches</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .jump a {
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.3);
+    background: rgb(255 255 255 / 0.08);
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+  }
+
+  .jump a:hover {
+    background: rgb(255 255 255 / 0.2);
+  }
+
+  section[id] {
+    scroll-margin-top: var(--header-h);
+  }
+
+  section[hidden] {
+    display: none;
+  }
+
+  /* Partnership */
+  .partner {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 860px) {
+    .partner {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .partner__card {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+  }
+
+  /* Safety */
+  .safety :global(.lead) {
+    color: rgb(255 255 255 / 0.8);
+  }
+
+  .safety__grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 1000px) {
+    .safety__grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: start;
+    }
+  }
+
+  .safety__sessions,
+  .concern,
+  .safety__certs {
+    padding: clamp(1.4rem, 2.5vw, 2rem);
+    border-radius: var(--radius-lg);
+    background: rgb(255 255 255 / 0.05);
+    border: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .safety__side {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .safety__muted {
+    margin-top: 0.4rem;
+    font-size: 0.92rem;
+    color: rgb(255 255 255 / 0.7);
+  }
+
+  .sessions {
+    display: grid;
+    margin-top: 1.25rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sessions li {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 0.15rem 1rem;
+    padding-block: 0.85rem;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+  }
+
+  .sessions time {
+    grid-row: span 2;
+    font-size: 0.85rem;
+    font-weight: 650;
+    color: var(--gold-300);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sessions__title {
+    font-weight: 620;
+    color: var(--white);
+  }
+
+  .sessions__who {
+    font-size: 0.86rem;
+    color: rgb(255 255 255 / 0.65);
+  }
+
+  @media (max-width: 420px) {
+    .sessions li {
+      grid-template-columns: 1fr;
+    }
+
+    .sessions time {
+      grid-row: auto;
+    }
+  }
+
+  .concern {
+    display: grid;
+    gap: 0.9rem;
+    background: rgb(196 30 51 / 0.14);
+    border-color: rgb(196 30 51 / 0.4);
+  }
+
+  .concern p {
+    color: rgb(255 255 255 / 0.85);
+  }
+
+  .chip--light {
+    color: var(--white);
+    background: rgb(255 255 255 / 0.08);
+    border-color: rgb(255 255 255 / 0.25);
+    text-decoration: none;
+  }
+
+  .chip--light:hover {
+    background: rgb(255 255 255 / 0.16);
+  }
+
+  .concern__helpline {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    padding-top: 0.9rem;
+    border-top: 1px solid rgb(255 255 255 / 0.14);
+    font-size: 0.92rem;
+  }
+
+  .concern__helpline :global(svg) {
+    flex: none;
+    margin-top: 0.15rem;
+    color: var(--gold-300);
+  }
+
+  .certs {
+    display: grid;
+    gap: 0.25rem;
+    margin-top: 0.9rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .certs a {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.7rem 0;
+    color: rgb(255 255 255 / 0.88);
+    text-decoration: none;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  }
+
+  .certs li:last-child a {
+    border-bottom: 0;
+  }
+
+  .certs a:hover {
+    color: var(--gold-300);
+  }
+
+  /* Contact */
+  .contact {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .contact {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    }
+
+    .contact .cluster {
+      justify-content: flex-end;
+    }
+  }
+</style>

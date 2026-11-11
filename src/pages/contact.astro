@@ -3,16 +3,19 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHero from '@/components/PageHero.astro';
 import EnquiryForm from '@/components/EnquiryForm.astro';
 import Icon from '@/components/Icon.astro';
+import SectionHead from '@/components/SectionHead.astro';
 import { site } from '@/data/site';
 import hero from '@/assets/photos/campus-panorama.jpg';
 
 const crumbs = [{ label: 'Contact', href: '/contact' }];
 const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Hello OTGS! I have a question.')}`;
+const askBranch = (name: string) =>
+  `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(`Hello OTGS! Could you share the address, classes offered and contact number for the ${name} branch?`)}`;
 ---
 
 <BaseLayout
-  title="Contact & Book a School Tour"
-  description="Visit Oxford The Global School at Puyni, Nilla Road, Nanded. Call +91 93224 13340, email oxfordtgsnnd@gmail.com, or book a school tour."
+  title="Contact, Branches & School Tours"
+  description="Visit Oxford The Global School at Puyni, Nilla Road, Nanded, or one of our branches. Call +91 93224 13340, email oxfordtgsnnd@gmail.com, or request a school tour."
   image={hero}
   header="overlay"
   crumbs={crumbs}
@@ -22,7 +25,7 @@ const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('
     alt="A panoramic view of the Oxford The Global School campus"
     eyebrow="Reach us"
     title="We’d love to <em>hear from you</em>"
-    intro="Book a school tour, ask about admissions, or simply say hello. Our team will be glad to help."
+    intro="Request a school tour, ask about admissions, or simply say hello. Our team will be glad to help."
     crumbs={crumbs}
     position="50% 55%"
   />
@@ -74,6 +77,69 @@ const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('
     </div>
   </section>
 
+  <section class="section section--tight branches-section" id="branches" aria-labelledby="branches-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Our branches"
+        title={`${site.branches.length} branches <em>across Nanded</em>`}
+        lead="Choose the branch closest to you. For branches without details listed here, our admissions desk will share the address, classes offered and directions."
+        align="split"
+        id="branches-title"
+      />
+      <ul class="branches" role="list">
+        {
+          site.branches.map((b, i) => (
+            <li class:list={['branch', { 'branch--full': b.address }]} data-reveal style={`--d: ${i * 70}`}>
+              <div class="branch__head">
+                <span class="icon-badge">
+                  <Icon name="school" />
+                </span>
+                <h3 class="t-h4">{b.name}</h3>
+              </div>
+              {b.address ? (
+                <dl class="branch__facts">
+                  <div>
+                    <dt>Address</dt>
+                    <dd>{b.address}</dd>
+                  </div>
+                  {b.grades && (
+                    <div>
+                      <dt>Classes</dt>
+                      <dd>{b.grades}</dd>
+                    </div>
+                  )}
+                  {b.note && (
+                    <div>
+                      <dt>Affiliation</dt>
+                      <dd>{b.note}</dd>
+                    </div>
+                  )}
+                  <div>
+                    <dt>Phone</dt>
+                    <dd>
+                      {b.phone ?? site.phones.map((p) => p.label).join(' · ')}
+                    </dd>
+                  </div>
+                </dl>
+              ) : (
+                <p class="branch__ask">Address, classes offered and directions are available from the admissions desk.</p>
+              )}
+              {b.mapsUrl ? (
+                <a href={b.mapsUrl} target="_blank" rel="noopener" class="link-arrow">
+                  Get directions <Icon name="arrow-up-right" />
+                </a>
+              ) : (
+                <a href={askBranch(b.name)} target="_blank" rel="noopener" class="link-arrow">
+                  Ask about {b.name} <Icon name="arrow-up-right" />
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
   <section class="section section--paper-2" id="enquire" aria-labelledby="contact-enquiry-title">
     <div class="container contact-grid">
       <div class="map-card" data-reveal="fade">
@@ -111,8 +177,8 @@ const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('
       <div data-reveal>
         <EnquiryForm
           id="contact-enquiry"
-          title="Book a school tour"
-          intro="Experience OTGS first-hand. Tell us a little about your child and we’ll arrange a visit with our admissions team."
+          title="Request a school tour"
+          intro="Experience OTGS first-hand. Tell us about your child and suggest a day that suits you, and our admissions team will confirm your visit."
           defaultPurpose="tour"
           headingLevel="h2"
         />
@@ -122,6 +188,86 @@ const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent('
 </BaseLayout>
 
 <style>
+  .branches-section {
+    scroll-margin-top: var(--header-h);
+  }
+
+  .branches {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 700px) {
+    .branches {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 700px) {
+    .branch--full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .branches {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .branch--full {
+      grid-column: span 2;
+    }
+
+    .branch--full .branch__facts {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .branch {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    padding: 1.4rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+
+  .branch--full {
+    border-color: var(--navy-600);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .branch__head {
+    display: flex;
+    gap: 0.85rem;
+    align-items: center;
+  }
+
+  .branch__facts {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .branch__facts dt {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .branch__facts dd {
+    margin: 0.15rem 0 0;
+    color: var(--ink);
+  }
+
+  .branch__ask {
+    font-size: 0.94rem;
+    color: var(--ink-3);
+  }
+
   .ways {
     display: grid;
     gap: 1rem;

@@ -5,7 +5,8 @@ import PageHero from '@/components/PageHero.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Icon from '@/components/Icon.astro';
-import { stages, talkingPoints, structure, exams } from '@/data/academics';
+import { stages, talkingPoints, structure, exams, learningInAction } from '@/data/academics';
+import { academicCalendarYear } from '@/data/events';
 
 import hero from '@/assets/photos/creativity.jpg';
 import faculty from '@/assets/photos/faculty.jpg';
@@ -13,6 +14,7 @@ import inclusion from '@/assets/photos/inclusion.jpg';
 import handsOn from '@/assets/photos/hands-on.jpg';
 
 const crumbs = [{ label: 'Academics', href: '/academics' }];
+const fmtMonth = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
 ---
 
 <BaseLayout
@@ -34,6 +36,7 @@ const crumbs = [{ label: 'Academics', href: '/academics' }];
     <nav class="jump" aria-label="On this page">
       <a href="#stages">Stages</a>
       <a href="#approach">Our approach</a>
+      <a href="#in-action">Learning in action</a>
       <a href="#faculty">Faculty</a>
       <a href="#inclusion">Inclusion</a>
       <a href="/academics/prep-zone">Prep Zone</a>
@@ -180,6 +183,36 @@ const crumbs = [{ label: 'Academics', href: '/academics' }];
           </p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Learning in action ---------------------------------------------------->
+  <section class="section section--white" id="in-action" aria-labelledby="in-action-title">
+    <div class="container">
+      <SectionHead
+        eyebrow="Learning in action"
+        title="Learning you can <em>see, build and present</em>"
+        lead={`Our approach is easiest to understand through what students actually do. A few highlights from the ${academicCalendarYear} academic calendar.`}
+        align="split"
+        id="in-action-title"
+      />
+      <ul class="lia" role="list">
+        {
+          learningInAction.map((l, i) => (
+            <li class="lia__item" data-reveal style={`--d: ${(i % 4) * 80}`}>
+              <div class="lia__top">
+                <span class="icon-badge">
+                  <Icon name={l.icon} />
+                </span>
+                <time datetime={l.date}>{fmtMonth(l.date)}</time>
+              </div>
+              <h3 class="t-h4">{l.title}</h3>
+              <p>{l.text}</p>
+              {l.who && <p class="lia__who">{l.who}</p>}
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
@@ -653,6 +686,60 @@ const crumbs = [{ label: 'Academics', href: '/academics' }];
     font-weight: 700;
     font-size: 0.9rem;
     letter-spacing: 0.04em;
+  }
+
+  .lia {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .lia {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .lia {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .lia__item {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: 1.4rem;
+    border-radius: var(--radius-lg);
+    background: var(--paper);
+    border: 1px solid var(--line);
+  }
+
+  .lia__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .lia__top time {
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .lia__item p {
+    font-size: 0.95rem;
+  }
+
+  .lia__item .lia__who {
+    margin-top: auto;
+    font-size: 0.86rem;
+    font-weight: 560;
+    color: var(--red-600);
   }
 </style>
 

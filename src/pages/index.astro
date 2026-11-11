@@ -11,7 +11,8 @@ import { stages, pillars } from '@/data/academics';
 import { facilities } from '@/data/life';
 import { activities } from '@/data/life';
 import { leaders } from '@/data/leaders';
-import { events, academicCalendarPdf, academicCalendarYear } from '@/data/events';
+import { events } from '@/data/events';
+import UpcomingEvents from '@/components/UpcomingEvents.astro';
 import { steps } from '@/data/admissions';
 import { photos } from '@/data/gallery';
 
@@ -35,14 +36,6 @@ const above95 = toppers.filter((t) => t.score >= 95).length;
 const topScore = Math.max(...toppers.map((t) => t.score));
 const topDecimals = String(topScore).split('.')[1]?.length ?? 0;
 
-// Every remaining event is rendered: the site is only rebuilt on deploy, so the
-// script at the bottom picks the next four by the visitor's date.
-const today = new Date().toISOString().slice(0, 10);
-const upcoming = events.filter((e) => e.date >= today);
-const fmtDay = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit' });
-const fmtMonth = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { month: 'short' });
-const fmtWeekday = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { weekday: 'long' });
-
 const pick = (album: string, indexes: number[]) => indexes.map((i) => photos.find((p) => p.album === album && p.index === i)!).filter(Boolean);
 const strip = [
   ...pick('annual-day', [1, 6, 9, 13]),
@@ -51,6 +44,8 @@ const strip = [
   ...pick('labs-learning', [2, 4]),
   ...pick('annual-day', [19, 20]),
 ];
+
+const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(0, 10));
 ---
 
 <BaseLayout title="Oxford The Global School, Nanded · CBSE School, Pre-Primary to Grade 10" header="overlay">
@@ -399,29 +394,15 @@ const strip = [
 
   <!-- Events ---------------------------------------------------------------->
   {
-    upcoming.length > 0 && (
-      <section class="section section--tight events" aria-labelledby="events-title" data-events>
+    hasUpcoming && (
+      <section class="section section--tight events" aria-labelledby="events-title" data-events-section>
         <div class="container">
           <SectionHead eyebrow="On the calendar" title="Coming up <em>at OTGS</em>" align="split" id="events-title">
-            <a href={academicCalendarPdf} class="link-arrow events__all" target="_blank" rel="noopener">
-              Full academic calendar {academicCalendarYear} <Icon name="arrow-up-right" />
+            <a href="/parents#calendar" class="link-arrow events__all">
+              Full school calendar <Icon name="arrow-right" />
             </a>
           </SectionHead>
-          <ol class="events__list" role="list">
-            {upcoming.map((e, i) => (
-              <li class="event" data-date={e.date} hidden={i >= 4 ? true : undefined} data-reveal style={`--d: ${(i % 4) * 90}`}>
-                <time datetime={e.date} class="event__date">
-                  <span class="event__day">{fmtDay(e.date)}</span>
-                  <span class="event__month">{fmtMonth(e.date)}</span>
-                </time>
-                <div>
-                  <p class="event__weekday">{fmtWeekday(e.date)}</p>
-                  <h3 class="event__title">{e.title}</h3>
-                  {e.who && <p class="event__who">{e.who}</p>}
-                </div>
-              </li>
-            ))}
-          </ol>
+          <UpcomingEvents limit={4} />
         </div>
       </section>
     )
@@ -1465,86 +1446,6 @@ const strip = [
     justify-self: end;
   }
 
-  .events__list {
-    display: grid;
-    gap: 1rem;
-  }
-
-  @media (min-width: 640px) {
-    .events__list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1080px) {
-    .events__list {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .event {
-    display: flex;
-    gap: 1.1rem;
-    align-items: flex-start;
-    padding: 1.4rem;
-    border-radius: var(--radius-lg);
-    background: var(--white);
-    border: 1px solid var(--line);
-  }
-
-  .event[hidden] {
-    display: none;
-  }
-
-  .event__date {
-    display: grid;
-    place-items: center;
-    flex: none;
-    width: 4.2rem;
-    padding: 0.6rem 0;
-    border-radius: 14px;
-    background: var(--navy-900);
-    color: var(--white);
-    line-height: 1;
-  }
-
-  .event__day {
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-  }
-
-  .event__month {
-    margin-top: 0.25rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--gold-400);
-  }
-
-  .event__weekday {
-    font-size: 0.78rem;
-    font-weight: 650;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
-
-  .event__title {
-    margin-top: 0.2rem;
-    font-size: 1.05rem;
-    line-height: 1.25;
-  }
-
-  .event__who {
-    margin-top: 0.35rem;
-    font-size: 0.86rem;
-    color: var(--red-600);
-    font-weight: 560;
-  }
-
   /* Admissions -------------------------------------------------------------- */
   .admit__grid {
     display: grid;
@@ -1589,19 +1490,3 @@ const strip = [
   }
 </style>
 
-<script>
-  // Hide calendar events that have already happened (the page may be cached for weeks).
-  const section = document.querySelector<HTMLElement>('[data-events]');
-  if (section) {
-    const today = new Date();
-    const iso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    const items = [...section.querySelectorAll<HTMLElement>('[data-date]')];
-    const future = items.filter((el) => (el.dataset.date ?? '') >= iso);
-    items.forEach((el) => (el.hidden = true));
-    future.slice(0, 4).forEach((el, i) => {
-      el.hidden = false;
-      el.style.setProperty('--d', String(i * 90));
-    });
-    if (future.length === 0) section.hidden = true;
-  }
-</script>
