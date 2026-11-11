@@ -8,10 +8,13 @@ stored locally under `site-analytics-consent:v1`; analytics cookies are host-onl
 
 The production hostname is an exact HTTPS allowlist. Previews, localhost, and unknown
 paths are excluded. Only fixed public route/title values are used; dynamic entries are
-grouped. Queries, hashes, referrers, typed responses, form fields, personal records, and
-user IDs are not sent. This code emits only `page_view`. GA4 can also generate basic
+grouped. Queries, hashes, referrers, form fields and user IDs are not sent. This code emits only `page_view`. GA4 can also generate basic
 session/engagement events; those use the same sanitized context. No custom interaction
-events are registered. History/progress/private routes are not measured.
+events are registered. Pages missing from the `PAGES` allowlist in `public/analytics.js`
+(such as the 404 page) are not measured.
+
+**Adding a page:** add its route and title to `PAGES` in `public/analytics.js`. The test
+suite fails if a page in `src/pages` is missing from the allowlist.
 
 ## Required before production publication
 

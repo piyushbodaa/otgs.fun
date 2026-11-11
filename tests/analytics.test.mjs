@@ -125,3 +125,24 @@ test('cross-tab withdrawal is applied', () => {
 test('unavailable storage fails closed but an explicit in-memory choice still works', () => {
   const b = browser({ storageBlocked:true }); assert.equal(b.commands().length, 0); b.click('[data-allow]'); assert.equal(b.views().length, 1);
 });
+
+test('every public page in src/pages is in the analytics allowlist', () => {
+  const pagesDir = path.join(__dirname, '..', 'src', 'pages');
+  const routes = [];
+  const walk = dir => fs.readdirSync(dir, { withFileTypes: true }).forEach(entry => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) return walk(full);
+    if (!entry.name.endsWith('.astro') || entry.name === '404.astro') return;
+    const route = '/' + path.relative(pagesDir, full).replace(/\\/g, '/').replace(/\.astro$/, '').replace(/(^|\/)index$/, '');
+    routes.push(route === '/' ? '/' : route.replace(/\/$/, ''));
+  });
+  walk(pagesDir);
+  for (const route of routes) {
+    if (route.includes('[')) {
+      const sample = route.replace(/\[[^\]]+\]/g, 'sample');
+      assert.ok(groups.some(g => new RegExp(g.pattern).test(sample)), `dynamic route ${route} needs a GROUPS entry`);
+    } else {
+      assert.ok(Object.prototype.hasOwnProperty.call(pages, route), `page ${route} is missing from PAGES in public/analytics.js`);
+    }
+  }
+});

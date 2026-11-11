@@ -5,7 +5,7 @@
   'use strict';
   var MEASUREMENT_ID = "G-91KRDT4G1F";
   var HOST = "otgs.fun";
-  var PAGES = {"/": "Oxford The Global School", "/about": "Oxford The Global School - About", "/admissions": "Oxford The Global School - Admissions", "/contact": "Oxford The Global School - Contact", "/careers": "Oxford The Global School - Careers", "/life": "Oxford The Global School - School Life", "/gallery": "Oxford The Global School - Gallery", "/leadership": "Oxford The Global School - Leadership", "/mandatory-disclosure": "Oxford The Global School - Mandatory Disclosure", "/academics": "Oxford The Global School - Academics", "/academics/prep-zone": "Oxford The Global School - Prep Zone"};
+  var PAGES = {"/": "Oxford The Global School", "/about": "Oxford The Global School - About", "/admissions": "Oxford The Global School - Admissions", "/contact": "Oxford The Global School - Contact", "/careers": "Oxford The Global School - Careers", "/life": "Oxford The Global School - School Life", "/gallery": "Oxford The Global School - Gallery", "/leadership": "Oxford The Global School - Leadership", "/mandatory-disclosure": "Oxford The Global School - Mandatory Disclosure", "/academics": "Oxford The Global School - Academics", "/academics/prep-zone": "Oxford The Global School - Prep Zone", "/parents": "Oxford The Global School - Parent Hub"};
   var GROUPS = [{"pattern": "^/leadership/[^/]+$", "path": "/leadership/profile", "title": "Oxford The Global School - Leadership"}];
   var KEY = 'site-analytics-consent:v1';
   var DISABLE = 'ga-disable-' + MEASUREMENT_ID;
@@ -109,7 +109,7 @@
     panel.innerHTML = '<section role="region" aria-label="Analytics privacy">' +
       '<strong>Optional analytics</strong><p>' +
       (blocked ? 'Your browser privacy signal is respected. Analytics is off.' :
-        'Allow Google Analytics cookies to count visits to public pages? Only basic page and device information is collected. No typed text, answers, form details, personal plans, or shared links. Advertising features are off.') +
+        'Allow Google Analytics cookies to count visits to this site’s pages? Only the page name and basic device information are collected: never anything you type into a form, and no web addresses or links you came from. Advertising features are off.') +
       '</p><div class="actions">' +
       (blocked ? '' : '<button type="button" data-allow>Allow analytics</button><button type="button" data-deny>No thanks</button>') +
       (choice !== null || blocked ? '<button type="button" data-close>Close</button>' : '') +
@@ -128,7 +128,7 @@
       var host = document.createElement('div');
       host.id = ROOT_ID;
       root = host.attachShadow({ mode: 'open' });
-      root.innerHTML = '<style>:host{position:fixed;left:12px;bottom:12px;z-index:10000;font:14px/1.5 system-ui,sans-serif;color:#17232b;max-width:calc(100vw - 24px)}[hidden]{display:none!important}section{box-sizing:border-box;max-width:430px;max-height:70vh;overflow:auto;padding:18px;background:#fff;border:1px solid #53616c;border-radius:8px;box-shadow:0 3px 18px #0003;margin-bottom:8px}p{margin:8px 0 12px}strong{font-size:16px}.actions{display:flex;flex-wrap:wrap;gap:8px}button{font:inherit;line-height:1.4;color:#17232b;background:#fff;border:1px solid #53616c;border-radius:4px;padding:9px 12px;cursor:pointer}button:hover{background:#edf1f3}button:focus-visible{outline:3px solid #1769aa;outline-offset:3px}[data-settings]{font-size:12px;padding:5px 9px}</style><div data-panel></div><button type="button" data-settings aria-expanded="false">Analytics settings</button>';
+      root.innerHTML = '<style>:host{position:fixed;left:12px;bottom:12px;z-index:10000;font:14px/1.5 'Inter Variable',Inter,system-ui,sans-serif;color:#17232b;max-width:calc(100vw - 24px)}[hidden]{display:none!important}section{box-sizing:border-box;max-width:430px;max-height:70vh;overflow:auto;padding:18px;background:#fff;border:1px solid #53616c;border-radius:8px;box-shadow:0 3px 18px #0003;margin-bottom:8px}p{margin:8px 0 12px}strong{font-size:16px}.actions{display:flex;flex-wrap:wrap;gap:8px}button{font:inherit;line-height:1.4;color:#17232b;background:#fff;border:1px solid #53616c;border-radius:4px;padding:9px 12px;cursor:pointer}button:hover{background:#edf1f3}button:focus-visible{outline:3px solid #1769aa;outline-offset:3px}[data-settings]{font-size:12px;padding:5px 9px}</style><div data-panel></div><button type="button" data-settings aria-expanded="false">Analytics settings</button>';
       document.body.appendChild(host);
       panel = root.querySelector('[data-panel]');
       root.querySelector('[data-settings]').onclick = function () {
