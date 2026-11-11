@@ -21,6 +21,15 @@ const crumbs = [
   { label: leader.role, href: `/leadership/${leader.slug}` },
 ];
 
+// Search engines cut descriptions at roughly 160 characters, so trim long quotes at a word boundary.
+const intro = `${leader.name}, ${leader.role} of Oxford The Global School, Nanded: “`;
+const room = 160 - intro.length - 1;
+const quote =
+  leader.headline.length <= room
+    ? leader.headline
+    : `${leader.headline.slice(0, room).replace(/\s+\S*$/, '').replace(/[,;:.]$/, '')}…`;
+const description = `${intro}${quote}”`;
+
 const person = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -33,7 +42,7 @@ const person = {
 
 <BaseLayout
   title={`Message from the ${leader.role}`}
-  description={`${leader.name}, ${leader.role} of Oxford The Global School, Nanded: “${leader.headline}”`}
+  description={description}
   image={leader.office}
   crumbs={crumbs}
   jsonLd={person}

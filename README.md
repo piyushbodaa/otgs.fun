@@ -15,7 +15,7 @@ npm run preview   # serve the built site
 npm run check     # type-check the project
 ```
 
-Requires Node 22.12 or newer.
+Requires Node 22.22 or newer.
 
 ## Where things live
 
