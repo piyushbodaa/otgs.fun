@@ -83,6 +83,7 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
           <a href="/contact#enquire" class="btn btn--primary">Book a school tour <Icon name="arrow-right" class="arrow" /></a>
           <a href="/academics" class="btn btn--outline-light">Explore academics</a>
         </div>
+        <a href="/mandatory-disclosure" class="hero__mpd"><Icon name="shield" size={16} /> Mandatory Public Disclosure</a>
       </div>
 
       <a href="/admissions" class="hero__card">
@@ -97,10 +98,6 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
     <div class="hero__facts">
       <div class="container">
         <dl class="facts">
-          <div>
-            <dt>CBSE Class X pass rate, {latest.year}</dt>
-            <dd><span data-count={latest.percent} data-decimals="2">{latest.percent.toFixed(2)}</span>%</dd>
-          </div>
           <div>
             <dt>Acres of green campus</dt>
             <dd><span data-count="7">7</span></dd>
@@ -686,26 +683,45 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
     -webkit-backdrop-filter: blur(8px);
   }
 
-  .facts {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+  .hero__mpd {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    justify-self: start;
+    margin-top: 0.25rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.28);
+    background: rgb(255 255 255 / 0.08);
+    color: var(--white);
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
   }
 
-  @media (min-width: 900px) {
-    .facts {
-      grid-template-columns: repeat(4, 1fr);
-    }
+  .hero__mpd:hover {
+    background: rgb(255 255 255 / 0.18);
+  }
+
+  .hero__mpd :global(svg) {
+    color: var(--gold-400);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .facts > div {
     display: flex;
     flex-direction: column-reverse;
     gap: 0.2rem;
-    padding: 1.3rem 1rem 1.4rem;
+    padding: 1.3rem 0.75rem 1.4rem;
     border-left: 1px solid rgb(255 255 255 / 0.12);
   }
 
-  .facts > div:nth-child(odd) {
+  .facts > div:first-child {
     border-left: 0;
     padding-left: 0;
   }
@@ -713,15 +729,6 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
   @media (min-width: 900px) {
     .facts > div {
       padding-inline: 1.5rem;
-    }
-
-    .facts > div:nth-child(odd) {
-      border-left: 1px solid rgb(255 255 255 / 0.12);
-    }
-
-    .facts > div:first-child {
-      border-left: 0;
-      padding-left: 0;
     }
   }
 
