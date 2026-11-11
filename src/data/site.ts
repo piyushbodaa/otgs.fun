@@ -85,7 +85,7 @@ export const nav: NavItem[] = [
       { label: 'Our Story', href: '/about', description: 'Three decades of purposeful education in Nanded' },
       { label: 'Vision & Values', href: '/about#vision', description: 'What we believe and what we stand for' },
       { label: 'Leadership', href: '/leadership', description: 'Messages from the people who guide OTGS' },
-      { label: 'Mandatory Disclosure', href: '/mandatory-disclosure', description: 'CBSE public disclosure documents' },
+      { label: 'Mandatory Public Disclosure', href: '/mandatory-disclosure', description: 'CBSE Appendix IX documents and information' },
     ],
   },
   {
@@ -142,7 +142,7 @@ export const footerNav = [
       { label: 'Placement Interaction', href: '/admissions#placement' },
       { label: 'Book a School Tour', href: '/contact#enquire' },
       { label: 'Careers at OTGS', href: '/careers' },
-      { label: 'Mandatory Disclosure', href: '/mandatory-disclosure' },
+      { label: 'Mandatory Public Disclosure', href: '/mandatory-disclosure' },
     ],
   },
 ];
