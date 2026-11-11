@@ -1,7 +1,9 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
+import { Image } from 'astro:assets';
 import { footerNav, site } from '@/data/site';
+import batch2017 from '@/assets/photos/batch-2017.jpg';
 
 const year = new Date().getFullYear();
 ---
@@ -79,12 +81,29 @@ const year = new Date().getFullYear();
     <div class="site-footer__bottom">
       <p>© <span data-year>{year}</span> {site.name}, {site.city}. All rights reserved.</p>
       <p>
-        Lovingly redesigned by an OTGS alumnus ·
+        <a href={batch2017.src} class="batch-credit" data-batch-open aria-haspopup="dialog">
+          Made with <span role="img" aria-label="love">❤️</span> by the batch of 2017
+        </a> ·
         <a href={site.repoUrl} target="_blank" rel="noopener">Open source</a> · Official site:
         <a href={site.officialUrl} target="_blank" rel="noopener">oxfordtheglobalschool.com</a>
       </p>
     </div>
   </div>
+
+  <dialog class="batch-dialog" data-batch-dialog aria-labelledby="batch-title">
+    <figure class="batch-dialog__inner">
+      <button type="button" class="batch-dialog__close" data-batch-close aria-label="Close photo">
+        <Icon name="close" size={20} />
+      </button>
+      <Image
+        src={batch2017}
+        alt="Students of the batch of 2017 in school blazers with their teachers on the steps of Oxford The Global School"
+        widths={[480, 720]}
+        sizes="(min-width: 800px) 720px, 92vw"
+      />
+      <figcaption id="batch-title"><strong>The batch of 2017</strong> · Oxford The Global School, Nanded</figcaption>
+    </figure>
+  </dialog>
 
   <a
     class="wa-fab"
@@ -135,7 +154,7 @@ const year = new Date().getFullYear();
 
   @media (min-width: 1080px) {
     .site-footer__top {
-      grid-template-columns: 1.5fr 0.8fr 0.9fr 1.2fr;
+      grid-template-columns: 1.4fr 0.8fr 0.8fr 0.9fr 1.2fr;
     }
   }
 
@@ -271,6 +290,79 @@ const year = new Date().getFullYear();
     color: rgb(255 255 255 / 0.8);
   }
 
+  .site-footer__bottom .batch-credit {
+    color: rgb(255 255 255 / 0.8);
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+  }
+
+  .site-footer__bottom .batch-credit:hover {
+    color: var(--gold-300);
+  }
+
+  /* Batch of 2017 photo ------------------------------------------------------ */
+  .batch-dialog {
+    width: min(760px, calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--navy-950);
+    color: var(--white);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .batch-dialog::backdrop {
+    background: rgb(6 17 42 / 0.78);
+    backdrop-filter: blur(4px);
+  }
+
+  .batch-dialog__inner {
+    position: relative;
+    margin: 0;
+  }
+
+  .batch-dialog__inner :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .batch-dialog figcaption {
+    padding: 0.9rem 1.2rem 1.1rem;
+    font-size: 0.92rem;
+    color: rgb(255 255 255 / 0.75);
+  }
+
+  .batch-dialog figcaption strong {
+    color: var(--white);
+  }
+
+  .batch-dialog__close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0;
+    border-radius: 50%;
+    background: rgb(6 17 42 / 0.7);
+    color: var(--white);
+    cursor: pointer;
+  }
+
+  .batch-dialog__close:hover {
+    background: rgb(6 17 42 / 0.9);
+  }
+
+  .batch-dialog__close:focus-visible {
+    outline: 3px solid var(--gold-400);
+    outline-offset: 2px;
+  }
+
   /* Floating WhatsApp button ------------------------------------------------ */
   .wa-fab {
     position: fixed;
@@ -344,6 +436,21 @@ const year = new Date().getFullYear();
     update();
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update, { passive: true });
+  }
+
+  // "Made with love by the batch of 2017" opens the batch photo. Without
+  // JavaScript the link simply opens the image itself.
+  const batchDialog = document.querySelector<HTMLDialogElement>('[data-batch-dialog]');
+  if (batchDialog && typeof batchDialog.showModal === 'function') {
+    document.querySelector('[data-batch-open]')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      batchDialog.showModal();
+    });
+    batchDialog.querySelector('[data-batch-close]')?.addEventListener('click', () => batchDialog.close());
+    // A click on the backdrop (outside the photo) closes it too.
+    batchDialog.addEventListener('click', (e) => {
+      if (e.target === batchDialog) batchDialog.close();
+    });
   }
 
   // The site is static, so keep the copyright year current between deploys.

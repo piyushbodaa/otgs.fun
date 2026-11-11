@@ -31,7 +31,7 @@ const isActive = (href: string) => href === activeHref;
       <li><a href={site.phones[0].href}><Icon name="phone" size={14} />{site.phones[0].label}</a></li>
       <li class="topbar__email"><a href={`mailto:${site.email}`}><Icon name="mail" size={14} />{site.email}</a></li>
       <li><a href="/careers">Careers</a></li>
-      <li><a href="/mandatory-disclosure">Disclosure</a></li>
+      <li><a href="/mandatory-disclosure"><Icon name="shield" size={14} />Mandatory Public Disclosure</a></li>
       <li class="topbar__social">
         {
           site.socials.map((s) => (

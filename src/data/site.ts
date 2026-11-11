@@ -36,7 +36,24 @@ export const site = {
     { label: 'Instagram', href: 'https://www.instagram.com/oxford_the_global_schools', icon: 'instagram' },
     { label: 'YouTube', href: 'https://www.youtube.com/@oxfordtheglobalschool6137', icon: 'youtube' },
   ],
-  branches: ['Puyni', 'Kautha', 'New Mondha', 'Tirumala', 'Ardhapur'],
+  /**
+   * Branch names come from the official enquiry form. Only Puyni's details are
+   * published by the school; add address/grades/phone for the others once the
+   * school confirms them and the contact page will show them automatically.
+   */
+  branches: [
+    {
+      name: 'Puyni',
+      address: 'At Post Puyni, Nilla Road, Nanded, Maharashtra 431605',
+      grades: 'Pre-Primary to Grade 10',
+      note: 'CBSE Affiliation No. 1130737',
+      mapsUrl: 'https://maps.google.com/?q=Oxford+The+Global+School,+Nanded',
+    },
+    { name: 'Kautha' },
+    { name: 'New Mondha' },
+    { name: 'Tirumala' },
+    { name: 'Ardhapur' },
+  ] as { name: string; address?: string; grades?: string; note?: string; mapsUrl?: string; phone?: string }[],
   grades: [
     'Pre-Primary · KG',
     'Pre-Primary · LKG',
@@ -68,7 +85,7 @@ export const nav: NavItem[] = [
       { label: 'Our Story', href: '/about', description: 'Three decades of purposeful education in Nanded' },
       { label: 'Vision & Values', href: '/about#vision', description: 'What we believe and what we stand for' },
       { label: 'Leadership', href: '/leadership', description: 'Messages from the people who guide OTGS' },
-      { label: 'Mandatory Disclosure', href: '/mandatory-disclosure', description: 'CBSE public disclosure documents' },
+      { label: 'Mandatory Public Disclosure', href: '/mandatory-disclosure', description: 'CBSE Appendix IX documents and information' },
     ],
   },
   {
@@ -86,13 +103,12 @@ export const nav: NavItem[] = [
     href: '/life',
     children: [
       { label: 'Activities & Clubs', href: '/life#activities', description: 'Music, arts, sport, leadership and more' },
-      { label: 'House System', href: '/life#houses', description: 'Orchid · Tulip · Gladiolus · Snowdrop' },
       { label: 'Summer Camp', href: '/life#summer-camp', description: 'Unplug, explore, grow' },
       { label: 'Gallery', href: '/gallery', description: 'Moments from our campus' },
     ],
   },
   { label: 'Admissions', href: '/admissions' },
-  { label: 'Gallery', href: '/gallery' },
+  { label: 'Parents', href: '/parents' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -109,6 +125,16 @@ export const footerNav = [
     ],
   },
   {
+    title: 'Parents',
+    links: [
+      { label: 'Parent Hub', href: '/parents' },
+      { label: 'School Calendar', href: '/parents#calendar' },
+      { label: 'Safety & Wellbeing', href: '/parents#safety' },
+      { label: 'Documents', href: '/parents#documents' },
+      { label: 'Our Branches', href: '/contact#branches' },
+    ],
+  },
+  {
     title: 'Admissions',
     links: [
       { label: 'Admission Process', href: '/admissions' },
@@ -116,7 +142,7 @@ export const footerNav = [
       { label: 'Placement Interaction', href: '/admissions#placement' },
       { label: 'Book a School Tour', href: '/contact#enquire' },
       { label: 'Careers at OTGS', href: '/careers' },
-      { label: 'Mandatory Disclosure', href: '/mandatory-disclosure' },
+      { label: 'Mandatory Public Disclosure', href: '/mandatory-disclosure' },
     ],
   },
 ];

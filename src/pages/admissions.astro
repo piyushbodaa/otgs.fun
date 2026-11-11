@@ -14,6 +14,7 @@ import hero from '@/assets/photos/graduates.jpg';
 const crumbs = [{ label: 'Admissions', href: '/admissions' }];
 const fee = disclosures.find((d) => d.no === 9)!;
 const calendar = disclosures.find((d) => d.no === 10)!;
+const askFees = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(`Hello OTGS! Could you share the ${site.admissionsYear} fee structure, including any transport or other charges? My child is seeking admission to Grade: `)}`;
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -128,12 +129,20 @@ const faqSchema = {
   <!-- Resources ------------------------------------------------------------>
   <section class="section section--tight" aria-labelledby="resources-title">
     <div class="container">
-      <h2 class="t-h3 resources-title" id="resources-title">Helpful documents</h2>
+      <h2 class="t-h3 resources-title" id="resources-title">Fees & helpful documents</h2>
+      <div class="fee-note" id="fees">
+        <Icon name="calculator" size={22} />
+        <p>
+          The latest fee structure published by the school is for <strong>2025–26</strong>. Fees for <strong>{site.admissionsYear}</strong>,
+          including any transport or other charges, are confirmed by the admissions desk.
+        </p>
+        <a href={askFees} target="_blank" rel="noopener" class="btn btn--whatsapp btn--sm"><Icon name="whatsapp" /> Ask for {site.admissionsYear} fees</a>
+      </div>
       <ul class="resources" role="list">
         <li>
           <a href={fee.url} target="_blank" rel="noopener" class="resource">
             <Icon name="file" size={26} />
-            <span><strong>Fee structure, Grades I–X</strong><span>2025–26 · PDF</span></span>
+            <span><strong>Fee structure 2025–26</strong><span>Latest published · PDF</span></span>
             <Icon name="arrow-up-right" size={20} />
           </a>
         </li>
@@ -369,52 +378,36 @@ const faqSchema = {
     margin-bottom: 1.5rem;
   }
 
-  .resources {
+  .fee-note {
     display: grid;
-    gap: 1rem;
-  }
-
-  @media (min-width: 900px) {
-    .resources {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .resource {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 1rem;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem 1rem;
     align-items: center;
-    padding: 1.35rem 1.5rem;
+    margin-bottom: 1.25rem;
+    padding: 1.1rem 1.35rem;
     border-radius: var(--radius-lg);
-    background: var(--white);
-    border: 1px solid var(--line);
-    text-decoration: none;
-    transition:
-      box-shadow 0.3s var(--ease),
-      transform 0.3s var(--ease);
+    background: var(--gold-100);
+    border: 1px solid color-mix(in srgb, var(--gold-500) 40%, transparent);
+    scroll-margin-top: var(--header-h);
   }
 
-  .resource:hover {
-    box-shadow: var(--shadow);
-    transform: translateY(-2px);
+  .fee-note > :global(svg) {
+    color: var(--gold-700);
   }
 
-  .resource > :global(svg:first-child) {
-    color: var(--red-600);
+  .fee-note .btn {
+    grid-column: 1 / -1;
+    justify-self: start;
   }
 
-  .resource > span {
-    display: grid;
-  }
+  @media (min-width: 860px) {
+    .fee-note {
+      grid-template-columns: auto 1fr auto;
+    }
 
-  .resource strong {
-    color: var(--ink);
-  }
-
-  .resource span span {
-    font-size: 0.85rem;
-    color: var(--ink-3);
+    .fee-note .btn {
+      grid-column: auto;
+    }
   }
 
   .enquire {
