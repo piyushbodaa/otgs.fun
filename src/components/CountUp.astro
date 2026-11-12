@@ -1,0 +1,15 @@
+---
+// A number that counts up when scrolled into view (see scripts/reveal.ts).
+// Screen readers and text extraction get the real value from the sr-only copy;
+// only the visible, aria-hidden copy is animated, so it never reads as "0".
+interface Props {
+  value: number;
+  decimals?: number;
+  suffix?: string;
+}
+
+const { value, decimals = 0, suffix = '' } = Astro.props;
+const text = value.toFixed(decimals);
+---
+
+<span class="sr-only">{text}{suffix}</span><span aria-hidden="true"><span data-count={value} data-decimals={decimals}>{text}</span>{suffix}</span>

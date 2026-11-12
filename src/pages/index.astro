@@ -1,10 +1,12 @@
 ---
 import { Image, Picture } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import CountUp from '@/components/CountUp.astro';
 import Icon from '@/components/Icon.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import Testimonials from '@/components/Testimonials.astro';
 import Moments from '@/components/Moments.astro';
+import MotionToggle from '@/components/MotionToggle.astro';
 import EnquiryForm from '@/components/EnquiryForm.astro';
 import { site, boardResults, toppers } from '@/data/site';
 import { stages, pillars } from '@/data/academics';
@@ -85,7 +87,10 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
           <a href="/contact#enquire" class="btn btn--primary">Book a school tour <Icon name="arrow-right" class="arrow" /></a>
           <a href="/academics" class="btn btn--outline-light">Explore academics</a>
         </div>
-        <a href="/mandatory-disclosure" class="hero__mpd"><Icon name="shield" size={16} /> Mandatory Public Disclosure</a>
+        <div class="cluster hero__meta">
+          <a href="/mandatory-disclosure" class="hero__mpd"><Icon name="shield" size={16} /> Mandatory Public Disclosure</a>
+          <MotionToggle />
+        </div>
       </div>
 
       <a href="/admissions" class="hero__card">
@@ -102,15 +107,15 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
         <dl class="facts">
           <div>
             <dt>Acres of green campus</dt>
-            <dd><span data-count="7">7</span></dd>
+            <dd><CountUp value={7} /></dd>
           </div>
           <div>
             <dt>Maximum students per class</dt>
-            <dd><span data-count="40">40</span></dd>
+            <dd><CountUp value={40} /></dd>
           </div>
           <div>
             <dt>Years of the society’s legacy</dt>
-            <dd><span data-count={new Date().getFullYear() - site.legacyYear}>{new Date().getFullYear() - site.legacyYear}</span>+</dd>
+            <dd><CountUp value={new Date().getFullYear() - site.legacyYear} suffix="+" /></dd>
           </div>
         </dl>
       </div>
@@ -199,11 +204,11 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
         <dl class="results__stats">
           <div>
             <dt>Top score, {latest.year}</dt>
-            <dd><span data-count={topScore} data-decimals={topDecimals}>{topScore.toFixed(topDecimals)}</span>%</dd>
+            <dd><CountUp value={topScore} decimals={topDecimals} suffix="%" /></dd>
           </div>
           <div>
             <dt>Students scored 95% or more</dt>
-            <dd><span data-count={above95}>{above95}</span></dd>
+            <dd><CountUp value={above95} /></dd>
           </div>
         </dl>
       </div>
@@ -378,16 +383,21 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
 
     </div>
 
-    <div class="marquee" aria-hidden="true">
-      <ul class="marquee__track" role="list">
-        {
-          [...strip, ...strip].map((p) => (
-            <li>
-              <Image src={p.image} alt="" widths={[240, 400, 560]} sizes="(min-width: 900px) 360px, 240px" loading="lazy" />
-            </li>
-          ))
-        }
-      </ul>
+    <div class="marquee-block">
+      <div class="container marquee__controls">
+        <MotionToggle />
+      </div>
+      <div class="marquee" aria-hidden="true">
+        <ul class="marquee__track" role="list">
+          {
+            [...strip, ...strip].map((p) => (
+              <li>
+                <Image src={p.image} alt="" widths={[240, 400, 560]} sizes="(min-width: 900px) 360px, 240px" loading="lazy" />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -501,6 +511,13 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
     .hero__slide :global(img) {
       animation: hero-drift 28s linear infinite;
       animation-delay: calc(var(--i) * 7s);
+    }
+
+    /* Set by the "Pause animations" toggle (components/MotionToggle.astro). */
+    :global(html[data-motion='paused']) .hero__slide,
+    :global(html[data-motion='paused']) .hero__slide :global(img),
+    :global(html[data-motion='paused']) .hero__card-pulse {
+      animation-play-state: paused;
     }
   }
 
@@ -685,12 +702,21 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
     -webkit-backdrop-filter: blur(8px);
   }
 
+  .hero__meta {
+    --cluster: 0.6rem;
+    margin-top: 0.25rem;
+  }
+
+  .hero__meta :global(.motion-toggle) {
+    --motion-toggle-bg: rgb(255 255 255 / 0.08);
+    color: var(--white);
+    backdrop-filter: blur(6px);
+  }
+
   .hero__mpd {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    justify-self: start;
-    margin-top: 0.25rem;
     padding: 0.4rem 0.85rem;
     border-radius: 999px;
     border: 1px solid rgb(255 255 255 / 0.28);
@@ -1404,8 +1430,17 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
     max-width: 46rem;
   }
 
-  .marquee {
+  .marquee-block {
     margin-top: clamp(3.5rem, 7vw, 5.5rem);
+  }
+
+  .marquee__controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+  }
+
+  .marquee {
     padding-bottom: clamp(3.5rem, 7vw, 5.5rem);
     overflow: hidden;
     mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
@@ -1433,7 +1468,8 @@ const hasUpcoming = events.some((e) => e.date >= new Date().toISOString().slice(
       animation: marquee 70s linear infinite;
     }
 
-    .marquee:hover .marquee__track {
+    .marquee:hover .marquee__track,
+    :global(html[data-motion='paused']) .marquee__track {
       animation-play-state: paused;
     }
   }

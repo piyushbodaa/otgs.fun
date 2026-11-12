@@ -24,7 +24,8 @@ const countUp = (el: HTMLElement) => {
 };
 
 // Counters start the moment any part of them is on screen, so a number peeking
-// above the fold never sits at zero.
+// above the fold never sits at zero. Only the visible, aria-hidden copy animates
+// (see components/CountUp.astro); assistive tech reads the real value.
 if (supported && !reduced) {
   const counters = new IntersectionObserver(
     (entries) => {
@@ -41,6 +42,15 @@ if (supported && !reduced) {
     counters.observe(el);
   });
 }
+
+// Printing before scrolling shouldn't show zeros or blank, unrevealed sections.
+window.addEventListener('beforeprint', () => {
+  document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
+    const target = Number(el.dataset.count);
+    if (Number.isFinite(target)) el.textContent = format(el, target);
+  });
+  document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => el.classList.add('is-in'));
+});
 
 const revealables = document.querySelectorAll<HTMLElement>('[data-reveal]');
 

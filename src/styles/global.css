@@ -839,12 +839,20 @@ h3 em,
   .site-header,
   .site-footer,
   .wa-fab,
-  .cta-band {
+  .cta-band,
+  .motion-toggle {
     display: none !important;
   }
 
   body {
     background: #fff;
+  }
+
+  /* Belt and braces for reveal-on-scroll content the visitor never scrolled to
+     (the script also reveals everything on beforeprint). */
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
