@@ -354,8 +354,21 @@ const items = await Promise.all(
       history.replaceState(null, '', id === 'all' ? location.pathname : `#${id}`);
     });
 
-    const fromHash = location.hash.slice(1);
-    if (fromHash && filters.querySelector(`[data-filter="${CSS.escape(fromHash)}"]`)) applyFilter(fromHash);
+    // The album follows the URL fragment on load, on manual edits and on back/forward.
+    // Fragments that aren't albums (e.g. the skip link's #main) leave it alone.
+    const syncFromHash = () => {
+      let id = location.hash.slice(1);
+      try {
+        id = decodeURIComponent(id);
+      } catch {
+        // A malformed escape: match the raw fragment instead.
+      }
+      if (!id) applyFilter('all');
+      else if (filters.querySelector(`[data-filter="${CSS.escape(id)}"]`)) applyFilter(id);
+    };
+    syncFromHash();
+    window.addEventListener('hashchange', syncFromHash);
+    window.addEventListener('popstate', syncFromHash);
 
     // Lightbox ----------------------------------------------------------
     let list: HTMLAnchorElement[] = [];

@@ -36,7 +36,9 @@ const above95 = toppers.filter((t) => t.score >= 95).length;
 const topScore = Math.max(...toppers.map((t) => t.score));
 const topDecimals = String(topScore).split('.')[1]?.length ?? 0;
 
-const pick = (album: string, indexes: number[]) => indexes.map((i) => photos.find((p) => p.album === album && p.index === i)!).filter(Boolean);
+// Picked by file name (not position) so adding or removing photos doesn't swap them.
+const pick = (album: string, files: number[]) =>
+  files.map((n) => photos.find((p) => p.album === album && p.file === `${String(n).padStart(2, '0')}.jpg`)!).filter(Boolean);
 const strip = [
   ...pick('annual-day', [1, 6, 9, 13]),
   ...pick('little-learners', [3, 14]),
