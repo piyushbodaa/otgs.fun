@@ -4,8 +4,12 @@ import { site } from '@/data/site';
 
 interface Props {
   id?: string;
+  /** Heading and intro while "Admission enquiry" is selected. */
   title?: string;
   intro?: string;
+  /** Heading and intro while "Book a school tour" is selected. */
+  tourTitle?: string;
+  tourIntro?: string;
   defaultPurpose?: 'admission' | 'tour';
   headingLevel?: 'h2' | 'h3';
 }
@@ -14,10 +18,13 @@ const {
   id = 'enquiry',
   title = `Enquire for ${site.admissionsYear}`,
   intro = 'Share a few details and our admissions team will get in touch.',
+  tourTitle = 'Book a school tour',
+  tourIntro = 'Tell us about your child and suggest a day that suits you. Our admissions team will contact you to confirm your visit.',
   defaultPurpose = 'admission',
   headingLevel = 'h3',
 } = Astro.props;
 const Heading = headingLevel;
+const copy = { admission: { title, intro }, tour: { title: tourTitle, intro: tourIntro } };
 // The script composes the message. If it hasn't loaded, action/formaction still
 // send the visitor to the school (rather than reloading this page with their
 // details in the URL).
@@ -34,9 +41,9 @@ const Heading = headingLevel;
   novalidate
   aria-labelledby={`${id}-title`}
 >
-  <div class="enquiry__head">
-    <Heading class="t-h3" id={`${id}-title`}>{title}</Heading>
-    <p class="muted">{intro}</p>
+  <div class="enquiry__head" data-copy={JSON.stringify(copy)}>
+    <Heading class="t-h3" id={`${id}-title`} data-copy-title>{copy[defaultPurpose].title}</Heading>
+    <p class="muted" data-copy-intro>{copy[defaultPurpose].intro}</p>
   </div>
 
   <fieldset class="enquiry__purpose">
@@ -80,6 +87,7 @@ const Heading = headingLevel;
       <div class="field">
         <label for={`${id}-date`}>Preferred date <span class="muted">(optional)</span></label>
         <input class="input" id={`${id}-date`} name="date" type="date" data-tour-date />
+        <p class="field-error" id={`${id}-date-err`} hidden>Please choose a date from tomorrow onwards, or leave this blank.</p>
       </div>
       <div class="field">
         <label for={`${id}-time`}>Preferred time <span class="muted">(optional)</span></label>
@@ -323,6 +331,10 @@ const Heading = headingLevel;
     const doneChannel = form.querySelector<HTMLElement>('[data-done-channel]');
     const tourOnly = form.querySelector<HTMLElement>('[data-tour-only]');
     const tourDate = form.querySelector<HTMLInputElement>('[data-tour-date]');
+    const head = form.querySelector<HTMLElement>('[data-copy]');
+    const copy = JSON.parse(head?.dataset.copy ?? '{}') as Record<string, { title: string; intro: string } | undefined>;
+    const headTitle = head?.querySelector<HTMLElement>('[data-copy-title]');
+    const headIntro = head?.querySelector<HTMLElement>('[data-copy-intro]');
 
     // Tour requests can only be for a day after today.
     if (tourDate) {
@@ -334,6 +346,11 @@ const Heading = headingLevel;
     const syncPurpose = () => {
       const purpose = (form.querySelector<HTMLInputElement>('input[name="purpose"]:checked')?.value ?? 'admission');
       if (tourOnly) tourOnly.hidden = purpose !== 'tour';
+      const text = copy[purpose];
+      if (text && headTitle && headIntro) {
+        headTitle.textContent = text.title;
+        headIntro.textContent = text.intro;
+      }
     };
     form.querySelectorAll('input[name="purpose"]').forEach((r) => r.addEventListener('change', syncPurpose));
     syncPurpose();
@@ -366,10 +383,16 @@ const Heading = headingLevel;
       const grade = form.elements.namedItem('grade') as HTMLSelectElement;
       const digits = get('phone').replace(/\D/g, '').replace(/^(91|0)(?=\d{10}$)/, '');
 
+      // An optional tour date must still be a real date from tomorrow on; we
+      // flag it rather than silently dropping the visitor's preference.
+      const isTour = get('purpose') === 'tour';
+      const badDate = !!tourDate && isTour && (tourDate.validity.badInput || (!!tourDate.value && tourDate.value < tourDate.min));
+
       const invalid = [
         setError(name, get('name').length < 2) && name,
         setError(phone, !/^[6-9]\d{9}$/.test(digits)) && phone,
         setError(grade, !get('grade')) && grade,
+        tourDate && setError(tourDate, badDate) && tourDate,
       ].filter(Boolean) as HTMLElement[];
 
       if (invalid.length) {
@@ -383,7 +406,7 @@ const Heading = headingLevel;
         phone: digits,
         grade: get('grade'),
         branch: get('branch'),
-        date: tourDate && tourDate.value >= tourDate.min ? get('date') : '',
+        date: isTour ? get('date') : '',
         time: get('time'),
         message: get('message'),
       };

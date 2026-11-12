@@ -31,6 +31,9 @@ export const documents = [
 
 const interaction = 'Informal interaction with open-ended questions that gauge the child’s thinking ability.';
 
+// Source: oxfordtheglobalschool.com/admission-process ("Portions for Placement Test"),
+// which stops at Grade 9 and uses KG 1 / KG 2. Labels are kept as published; the
+// admissions page explains the naming differences and points Grade 10 to the school.
 export const placement: { grade: string; portion: string }[] = [
   { grade: 'KG 1', portion: interaction },
   { grade: 'KG 2', portion: interaction },

@@ -1,0 +1,84 @@
+---
+// Pauses and resumes the homepage's looping animations (hero slideshow, photo
+// marquee, "admissions open" pulse) for WCAG 2.2.2 Pause, Stop, Hide. Every
+// toggle on the page drives one shared state, `html[data-motion="paused"]`,
+// which BaseLayout restores before first paint. The button only appears when
+// JavaScript runs and the visitor hasn't asked for reduced motion (in which
+// case nothing animates in the first place).
+import Icon from './Icon.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<button type="button" class:list={['motion-toggle', className]} data-motion-toggle>
+  <span class="motion-toggle__state motion-toggle__state--running"><Icon name="pause" size={16} /> Pause animations</span>
+  <span class="motion-toggle__state motion-toggle__state--paused"><Icon name="play" size={16} /> Play animations</span>
+</button>
+
+<style>
+  .motion-toggle {
+    display: none;
+    align-items: center;
+    min-height: 2.25rem;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    border-radius: 999px;
+    background: var(--motion-toggle-bg, transparent);
+    color: inherit;
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .motion-toggle:hover {
+    background: color-mix(in srgb, currentColor 10%, transparent);
+  }
+
+  .motion-toggle:focus-visible {
+    outline: 3px solid var(--gold-400);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .motion-toggle {
+      display: inline-flex;
+    }
+  }
+
+  .motion-toggle__state {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .motion-toggle__state--paused,
+  :global(html[data-motion='paused']) .motion-toggle__state--running {
+    display: none;
+  }
+
+  :global(html[data-motion='paused']) .motion-toggle__state--paused {
+    display: inline-flex;
+  }
+</style>
+
+<script>
+  const root = document.documentElement;
+
+  document.querySelectorAll<HTMLButtonElement>('[data-motion-toggle]').forEach((button) =>
+    button.addEventListener('click', () => {
+      const paused = root.dataset.motion !== 'paused';
+      if (paused) root.dataset.motion = 'paused';
+      else delete root.dataset.motion;
+      try {
+        localStorage.setItem('otgs-motion', paused ? 'paused' : 'on');
+      } catch {
+        // Storage can be unavailable (private mode, blocked site data); the toggle still works for this page view.
+      }
+    }),
+  );
+</script>

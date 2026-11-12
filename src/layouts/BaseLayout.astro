@@ -112,6 +112,9 @@ const structured = [isHome ? school : null, breadcrumbs, ...(Array.isArray(jsonL
 
     <script is:inline>
       document.documentElement.classList.add('js');
+      try {
+        if (localStorage.getItem('otgs-motion') === 'paused') document.documentElement.dataset.motion = 'paused';
+      } catch (e) {}
     </script>
     <script is:inline defer src="/analytics.js"></script>
     <slot name="head" />

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Icon from '@/components/Icon.astro';
-import { disclosures, generalInfo } from '@/data/disclosures';
+import { disclosures, generalInfo, feeTable2025 } from '@/data/disclosures';
 import { boardResults } from '@/data/site';
 
 const crumbs = [{ label: 'Mandatory Disclosure', href: '/mandatory-disclosure' }];
@@ -23,8 +23,9 @@ const crumbs = [{ label: 'Mandatory Disclosure', href: '/mandatory-disclosure' }
       <p class="eyebrow">As per CBSE Affiliation Bye-Laws, Appendix IX</p>
       <h1 class="t-h1">Mandatory public <em>disclosure</em></h1>
       <p class="lead">
-        This section compiles all mandatory public disclosure documents of Oxford The Global School, Nanded. Documents open from the school’s
-        official website.
+        This page mirrors the mandatory public disclosure documents that Oxford The Global School, Nanded, publishes on its official website,
+        and the documents open from there. Not every item in the CBSE format is published yet, including sections D (staff) and E (school
+        infrastructure); please contact the school for anything missing here.
       </p>
     </div>
   </section>
@@ -91,11 +92,28 @@ const crumbs = [{ label: 'Mandatory Disclosure', href: '/mandatory-disclosure' }
                 <span class="doc__no">{String(d.no).padStart(2, '0')}</span>
                 <span class="doc__body">
                   <span class="doc__title">{d.title}</span>
-                  <span class="doc__group">{d.group}</span>
+                  <span class="doc__group">
+                    {d.group} · PDF, {d.size}
+                    {d.scanned && ' · scanned image, no selectable text'}
+                  </span>
+                  {
+                    d.status && (
+                      <span class="doc__status">
+                        <Icon name="clock" size={15} /> {d.status}
+                      </span>
+                    )
+                  }
+                  {
+                    d.no === 9 && (
+                      <a href="#fee-text" class="doc__alt">
+                        Read the fee table as text
+                      </a>
+                    )
+                  }
                 </span>
                 <span class="doc__actions">
                   <a href={d.url} target="_blank" rel="noopener" class="btn btn--outline btn--sm">
-                    <Icon name="file" /> View PDF<span class="sr-only">: {d.title} (opens in a new tab)</span>
+                    <Icon name="file" /> View PDF<span class="sr-only">: {d.title}, {d.size} (opens in a new tab)</span>
                   </a>
                 </span>
               </li>
@@ -105,6 +123,32 @@ const crumbs = [{ label: 'Mandatory Disclosure', href: '/mandatory-disclosure' }
         <p class="doc-empty" data-doc-empty hidden>
           No documents match your search. Try a different keyword.
         </p>
+
+        <details class="doc-text" id="fee-text">
+          <summary>Text version of document 09: Fee Structure 2025–26</summary>
+          <p class="doc-text__note">
+            Transcribed exactly as printed from the school’s scanned PDF (amounts in rupees). The PDF is the official version. These are
+            2025–26 fees; please ask the school for current fees.
+          </p>
+          <div class="table-wrap" role="region" aria-label="Fee structure 2025–26, text version" tabindex="0">
+            <table class="table doc-text__table">
+              <thead>
+                <tr>{feeTable2025.headers.map((h) => <th scope="col">{h}</th>)}</tr>
+              </thead>
+              <tbody>
+                {
+                  feeTable2025.rows.map(([cls, ...cells]) => (
+                    <tr>
+                      <th scope="row">{cls}</th>
+                      {cells.map((c) => <td>{c}</td>)}
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+          <p class="doc-text__note">{feeTable2025.months}</p>
+        </details>
       </div>
     </div>
   </section>
@@ -371,6 +415,59 @@ const crumbs = [{ label: 'Mandatory Disclosure', href: '/mandatory-disclosure' }
     color: var(--ink-3);
   }
 
+  .doc__status {
+    display: flex;
+    gap: 0.4rem;
+    align-items: flex-start;
+    margin-top: 0.35rem;
+    padding: 0.45rem 0.65rem;
+    border-radius: 10px;
+    background: var(--gold-100);
+    font-size: 0.84rem;
+    line-height: 1.45;
+    color: var(--ink-2);
+  }
+
+  .doc__status :global(svg) {
+    flex: none;
+    margin-top: 0.12rem;
+    color: var(--gold-700);
+  }
+
+  .doc__alt {
+    justify-self: start;
+    margin-top: 0.2rem;
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+
+  .doc-text {
+    margin-top: 1.5rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+
+  .doc-text summary {
+    font-weight: 650;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .doc-text__note {
+    margin: 0.75rem 0;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .doc-text__table {
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
   .doc__actions {
     display: flex;
     gap: 0.5rem;
@@ -404,4 +501,12 @@ const crumbs = [{ label: 'Mandatory Disclosure', href: '/mandatory-disclosure' }
     });
     if (empty) empty.hidden = shown > 0;
   });
+
+  // Jumping to the fee table's text version (#fee-text) should open it.
+  const feeText = document.querySelector<HTMLDetailsElement>('#fee-text');
+  const openFeeText = () => {
+    if (feeText && location.hash === '#fee-text') feeText.open = true;
+  };
+  openFeeText();
+  window.addEventListener('hashchange', openFeeText);
 </script>
