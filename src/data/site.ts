@@ -54,6 +54,9 @@ export const site = {
     { name: 'Tirumala' },
     { name: 'Ardhapur' },
   ] as { name: string; address?: string; grades?: string; note?: string; mapsUrl?: string; phone?: string }[],
+  // Pre-primary names follow the school's overview page ("KG, LKG, UKG"). The
+  // placement table (KG 1, KG 2) and the 2025–26 fee sheet (Nursery, LKG, UKG)
+  // use other names; we don't guess how they map. See src/data/admissions.ts.
   grades: [
     'Pre-Primary · KG',
     'Pre-Primary · LKG',

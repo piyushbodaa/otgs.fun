@@ -122,6 +122,11 @@ const faqSchema = {
             </tbody>
           </table>
         </div>
+        <p class="placement__note">
+          This is the school’s published table. It lists KG 1, KG 2 and Grades 1 to 9; elsewhere the school names its pre-primary classes
+          KG, LKG and UKG (overview) or Nursery, LKG and UKG (fee structure). For <strong>Grade 10</strong>, or if you are not sure which
+          row applies to your child, please <a href="#enquire">ask the admissions desk</a>.
+        </p>
       </div>
     </div>
   </section>
@@ -142,14 +147,14 @@ const faqSchema = {
         <li>
           <a href={fee.url} target="_blank" rel="noopener" class="resource">
             <Icon name="file" size={26} />
-            <span><strong>Fee structure 2025–26</strong><span>Latest published · PDF</span></span>
+            <span><strong>Fee structure 2025–26</strong><span>Latest published · PDF, {fee.size}</span></span>
             <Icon name="arrow-up-right" size={20} />
           </a>
         </li>
         <li>
           <a href={calendar.url} target="_blank" rel="noopener" class="resource">
             <Icon name="calendar" size={26} />
-            <span><strong>Academic calendar</strong><span>{academicCalendarYear} · PDF</span></span>
+            <span><strong>Academic calendar</strong><span>{academicCalendarYear} · PDF, {calendar.size}</span></span>
             <Icon name="arrow-up-right" size={20} />
           </a>
         </li>
@@ -191,6 +196,13 @@ const faqSchema = {
 </BaseLayout>
 
 <style>
+  .placement__note {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--ink-3);
+  }
+
   .hero-actions {
     margin-top: 0.75rem;
   }
