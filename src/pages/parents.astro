@@ -141,9 +141,12 @@ const fmtDate = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-
                   <li>
                     <a href={d.url} target="_blank" rel="noopener">
                       <Icon name="file" size={18} />
-                      <span>{d.title}</span>
+                      <span>
+                        {d.title} <span class="certs__size">(PDF, {d.size})</span>
+                      </span>
                       <Icon name="arrow-up-right" size={16} />
                     </a>
+                    {d.status && <p class="certs__status">{d.status}</p>}
                   </li>
                 ))
               }
@@ -168,7 +171,7 @@ const fmtDate = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-
                 <Icon name={d.no === 10 ? 'calendar' : 'file'} size={26} />
                 <span>
                   <strong>{d.title}</strong>
-                  <span>PDF</span>
+                  <span>PDF, {d.size}</span>
                 </span>
                 <Icon name="arrow-up-right" size={20} />
               </a>
@@ -386,11 +389,26 @@ const fmtDate = (d: string) => new Date(d + 'T00:00:00').toLocaleDateString('en-
     color: rgb(255 255 255 / 0.88);
     text-decoration: none;
     font-size: 0.95rem;
+  }
+
+  .certs li {
     border-bottom: 1px solid rgb(255 255 255 / 0.1);
   }
 
-  .certs li:last-child a {
+  .certs li:last-child {
     border-bottom: 0;
+  }
+
+  .certs__size {
+    font-size: 0.85em;
+    color: rgb(255 255 255 / 0.6);
+  }
+
+  .certs__status {
+    margin: -0.25rem 0 0.75rem calc(18px + 0.75rem);
+    font-size: 0.84rem;
+    line-height: 1.45;
+    color: var(--gold-300);
   }
 
   .certs a:hover {
